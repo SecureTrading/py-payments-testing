@@ -13,4 +13,5 @@ RUN poetry install
 
 # Get framework into docker
 COPY . /app
+RUN chmod 755 /app/geckodriver
 CMD poetry run behave tests/e2e/features
