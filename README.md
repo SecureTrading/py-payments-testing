@@ -1,2 +1,4 @@
 # py-payments-testing
-The integration testing framework written in python used in order to test the js-payments interface
+
+1. Build docker `docker build . -t py-payments-testing`
+2. Run docker `docker run -t py-payments-testing`
