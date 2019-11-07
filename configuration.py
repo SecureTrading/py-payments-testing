@@ -17,9 +17,10 @@ def load_config():
         'REPORTS_PATH': get_path_from_env('AUTOMATION_REPORTS', 'reports'),
         'BROWSER': get_from_env('AUTOMATION_BROWSER', 'chrome'),
         'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 10),
-        'REMOTE': get_from_env('AUTOMATION_REMOTE', 'true'),
+        'REMOTE': get_from_env('AUTOMATION_REMOTE', 'false'),
         'COMMAND_EXECUTOR': get_from_env('AUTOMATION_COMMAND_EXECUTOR',
-                                         "https://BROWSERSTACK_USERNAME:BROWSERSTACK_KEY@hub.browserstack.com/wd/hub")}
+                                         "https://BROWSERSTACK_USERNAME:BROWSERSTACK_KEY@hub.browserstack.com/wd/hub"),
+    }
 
     return AttrDict(config)
 

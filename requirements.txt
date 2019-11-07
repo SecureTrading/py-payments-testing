@@ -1,4 +1,0 @@
-attrdict
-behave
-pyioc
-selenium

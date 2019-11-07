@@ -8,6 +8,8 @@ It based on singleton pattern to operate on a single instance of a driver.
 import abc
 from enum import Enum
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
 from utils.exceptions import ConfigurationError
 
 
@@ -98,4 +100,10 @@ class SeleniumDriver(Driver):
 
     def _create(self):
         driver = Drivers[self._browser_name]
-        return driver.value()
+        kwargs = {}
+        if self._browser_name == "chrome":
+            kwargs['chrome_options'] = Options()
+            kwargs['chrome_options'].headless = True
+            kwargs['chrome_options'].add_argument('--no-sandbox')
+            kwargs['chrome_options'].add_argument('--disable-dev-shm-usage')
+        return driver.value(**kwargs)

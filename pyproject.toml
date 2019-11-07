@@ -8,11 +8,11 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.7"
 pyotp = "^2.3"
-
-[tool.poetry.dev-dependencies]
 behave = "^1.2"
 selenium = "^3.141"
-xvfbwrapper = "^0.2.9"
+pyioc = "^0.3.0"
+attrdict = "^2.0.1"
+
 
 [build-system]
 requires = ["poetry>=0.12"]
