@@ -1,0 +1,36 @@
+"""
+PageFactory module is responsible for creation of a Page objects
+"""
+from pyioc.containers import NamespacedContainer, InstanceLifetime
+from ioc_config import EXECUTOR, EXTENSIONS, REPORTER, CONFIG, WAITS
+
+
+# Register modules here
+from pages.sample_page import SamplePage
+
+MODULES = NamespacedContainer('modules')
+
+PAGES = NamespacedContainer('pages')
+PAGES.add_sub_container(EXECUTOR)
+PAGES.add_sub_container(EXTENSIONS)
+PAGES.add_sub_container(WAITS)
+PAGES.add_sub_container(REPORTER)
+PAGES.add_sub_container(CONFIG)
+PAGES.add_sub_container(MODULES)
+
+# Register pages here
+PAGES.register_callable_with_deps('sample_page', SamplePage,
+                                  lifetime=InstanceLifetime.Singleton)
+
+
+class PageFactory:
+    """PageFactory class to create proper page name"""
+
+    @staticmethod
+    def get_page(page_name):
+        """Get page name method"""
+        page_name = '%s_page' % page_name
+        page_name = page_name.lower()
+        page_name = page_name.replace(' ', '_')
+        page = PAGES.resolve(page_name)
+        return page
