@@ -38,10 +38,13 @@ class DriverFactory:
         self._browser_name = config__driver.browser
         self._remote = config__driver.remote
         self._command_executor = config__driver.command_executor
+        self._remote_capabilities = config__driver.remote_capabilities
 
     def _set_browser(self):
         driver = SeleniumDriver(browser_name=self._browser_name, remote=self._remote,
-                                command_executor=self._command_executor)
+                                command_executor=self._command_executor,
+                                remote_capabilities=self._remote_capabilities
+                                )
         browser = driver.get_driver()
         DriverFactory._browser = browser
 
@@ -54,9 +57,10 @@ class DriverFactory:
 class Driver:
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, browser_name, remote, command_executor):
+    def __init__(self, browser_name, remote, command_executor, remote_capabilities):
         self._browser_name = browser_name
         self._remote = remote
+        self._remote_capabilities = remote_capabilities
         self._command_executor = command_executor
 
     @abc.abstractmethod
@@ -84,18 +88,8 @@ class SeleniumDriver(Driver):
     def _create_remote(self):
         self._check_command_executor_is_set()
 
-        #Only for BrowserStack testing purpose - will be moved to other place
-        desired_cap = {
-            'browserName': 'android',
-            'device': 'Samsung Galaxy Note 9',
-            'realMobile': 'true',
-            'os_version': '8.1',
-            'name': 'Bstack-[Python] Sample Test'
-        }
-
-        desired_capabilities = self._get_desired_capabilities(self._browser_name)
         remote_driver = webdriver.Remote(command_executor=self._command_executor,
-                                         desired_capabilities=desired_cap)
+                                         desired_capabilities=self._remote_capabilities)
         return remote_driver
 
     def _create(self):

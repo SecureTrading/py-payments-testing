@@ -12,14 +12,17 @@ def load_config():
     Set config env variables
     """
     config = {
-
-        'URL': AttrDict({"BASE_URL": "http://www.google.com"}),
+        'URL': AttrDict({"BASE_URL": get_from_env("BASE_URL", "http://www.google.com")}),
         'REPORTS_PATH': get_path_from_env('AUTOMATION_REPORTS', 'reports'),
         'BROWSER': get_from_env('AUTOMATION_BROWSER', 'chrome'),
         'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 10),
-        'REMOTE': get_from_env('AUTOMATION_REMOTE', 'false'),
+        'REMOTE': strtobool(get_from_env('AUTOMATION_REMOTE', 'false')),
         'COMMAND_EXECUTOR': get_from_env('AUTOMATION_COMMAND_EXECUTOR',
                                          "https://BROWSERSTACK_USERNAME:BROWSERSTACK_KEY@hub.browserstack.com/wd/hub"),
+        'REMOTE_OS': get_from_env('AUTOMATION_REMOTE_OS', 'Windows'),
+        'REMOTE_OS_VERSION': get_from_env('AUTOMATION_REMOTE_OS_VERSION', '10'),
+        'REMOTE_BROWSER': get_from_env('AUTOMATION_REMOTE_BROWSER', 'Chrome'),
+        'REMOTE_BROWSER_VERSION': get_from_env('AUTOMATION_REMOTE_BROWSER_VERSION', '62.0'),
     }
 
     return AttrDict(config)
@@ -52,10 +55,19 @@ class DriverConfig:
     """
 
     def __init__(self):
-        self.browser = CONFIGURATION.BROWSER.lower()
-        remote = strtobool(CONFIGURATION.REMOTE)
-        self.remote = bool(remote)
-        self.command_executor = CONFIGURATION.COMMAND_EXECUTOR
+        self.remote = CONFIGURATION.REMOTE
+        if self.remote:
+            self.browser = CONFIGURATION.REMOTE_BROWSER.lower()
+            self.remote_capabilities = {"os": CONFIGURATION.REMOTE_OS,
+                                        "os_version": CONFIGURATION.REMOTE_OS_VERSION,
+                                        "browserName": CONFIGURATION.REMOTE_BROWSER,
+                                        "browserVersion": CONFIGURATION.REMOTE_BROWSER_VERSION,
+                                        }
+            self.command_executor = CONFIGURATION.COMMAND_EXECUTOR
+        else:
+            self.browser = CONFIGURATION.BROWSER.lower()
+            self.remote_capabilities = {}
+            self.command_executor = ""
 
 
 class TestExecutorConfig:

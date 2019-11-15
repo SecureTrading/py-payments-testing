@@ -1,5 +1,4 @@
 FROM python:latest
-
 # Get up to date
 RUN apt-get update
 
