@@ -6,8 +6,9 @@
 # USE: behave -D BEHAVE_DEBUG_ON_ERROR=yes     (to enable  debug-on-error)
 # USE: behave -D BEHAVE_DEBUG_ON_ERROR=no      (to disable debug-on-error)
 import ioc_config
-from page_factory import PageFactory
 
+from page_factory import PageFactory
+from utils.mock_handler import start_mock_server
 
 BEHAVE_DEBUG_ON_ERROR = False
 
@@ -23,6 +24,7 @@ def before_all(context):
     """Run before the whole shooting match"""
     context.config = ioc_config.CONFIG.resolve('test')
     context.test_data = ioc_config.TEST_DATA.resolve('test')
+    start_mock_server()
 
 
 def before_scenario(context, scenario):
