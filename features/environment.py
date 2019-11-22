@@ -24,7 +24,7 @@ def before_all(context):
     """Run before the whole shooting match"""
     context.config = ioc_config.CONFIG.resolve('test')
     context.test_data = ioc_config.TEST_DATA.resolve('test')
-    # start_mock_server()
+    start_mock_server()
 
 
 def before_scenario(context, scenario):

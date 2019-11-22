@@ -1,6 +1,7 @@
 import requests
 from behave import *
 
+from utils.logger import _get_logger
 from utils.mock_handler import stub_sample_json
 
 use_step_matcher("re")
@@ -16,5 +17,6 @@ def step_impl(context, title):
 def step_impl(context):
     stub_sample_json()
     response = requests.get('http://merchant.example.com:8084/test')
-    print(response.content)
+    logger = _get_logger()
+    logger.info(response.content)
     assert response.content is not None
