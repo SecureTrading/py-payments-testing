@@ -24,6 +24,8 @@ def load_config():
         'REMOTE_OS_VERSION': get_from_env('AUTOMATION_REMOTE_OS_VERSION', '10'),
         'REMOTE_BROWSER': get_from_env('AUTOMATION_REMOTE_BROWSER', 'Chrome'),
         'REMOTE_BROWSER_VERSION': get_from_env('AUTOMATION_REMOTE_BROWSER_VERSION', '62.0'),
+        'BROWSERSTACK_LOCAL': get_from_env('LOCAL', 'true'),
+        'BROWSERSTACK_LOCAL_IDENTIFIER': get_from_env('BROWSERSTACK_LOCAL_IDENTIFIER'),
     }
 
     return AttrDict(config)
@@ -63,6 +65,8 @@ class DriverConfig:
                                         "os_version": CONFIGURATION.REMOTE_OS_VERSION,
                                         "browserName": CONFIGURATION.REMOTE_BROWSER,
                                         "browserVersion": CONFIGURATION.REMOTE_BROWSER_VERSION,
+                                        "browserstack.local": CONFIGURATION.BROWSERSTACK_LOCAL,
+                                        "browserstack.localIdentifier": CONFIGURATION.BROWSERSTACK_LOCAL_IDENTIFIER
                                         }
             self.command_executor = CONFIGURATION.COMMAND_EXECUTOR
         else:
