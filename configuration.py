@@ -18,8 +18,8 @@ def load_config():
         'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 10),
         'REMOTE': strtobool(get_from_env('AUTOMATION_REMOTE', 'false')),
         'COMMAND_EXECUTOR': get_from_env('AUTOMATION_COMMAND_EXECUTOR',
-                                "https:///"+get_from_env('BROWSERSTACK_USERNAME')+":"+
-                                 get_from_env('BROWSERSTACK_ACCESS_KEY')+"@hub.browserstack.com/wd/hub"),
+                                "https://"+str(get_from_env('BROWSERSTACK_USERNAME'))+":"+
+                                 str(get_from_env('BROWSERSTACK_ACCESS_KEY'))+"@hub.browserstack.com/wd/hub"),
         'REMOTE_OS': get_from_env('AUTOMATION_REMOTE_OS', 'Windows'),
         'REMOTE_OS_VERSION': get_from_env('AUTOMATION_REMOTE_OS_VERSION', '10'),
         'REMOTE_BROWSER': get_from_env('AUTOMATION_REMOTE_BROWSER', 'Chrome'),
