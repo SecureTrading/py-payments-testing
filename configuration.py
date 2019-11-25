@@ -17,11 +17,9 @@ def load_config():
         'BROWSER': get_from_env('AUTOMATION_BROWSER', 'chrome'),
         'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 10),
         'REMOTE': strtobool(get_from_env('AUTOMATION_REMOTE', 'false')),
-        'BROWSERSTACK_USERNAME': get_from_env('BROWSERSTACK_USERNAME'),
-        'BROWSERSTACK_ACCESS_KEY': get_from_env('BROWSERSTACK_ACCESS_KEY'),
         'COMMAND_EXECUTOR': get_from_env('AUTOMATION_COMMAND_EXECUTOR',
-                                "https:///%s:%s@hub.browserstack.com/wd/hub"
-                                % (CONFIGURATION.BROWSERSTACK_USERNAME, CONFIGURATION.BROWSERSTACK_ACCESS_KEY)),
+                                "https:///"+get_from_env('BROWSERSTACK_USERNAME')+":"+
+                                 get_from_env('BROWSERSTACK_ACCESS_KEY')+"@hub.browserstack.com/wd/hub"),
         'REMOTE_OS': get_from_env('AUTOMATION_REMOTE_OS', 'Windows'),
         'REMOTE_OS_VERSION': get_from_env('AUTOMATION_REMOTE_OS_VERSION', '10'),
         'REMOTE_BROWSER': get_from_env('AUTOMATION_REMOTE_BROWSER', 'Chrome'),
