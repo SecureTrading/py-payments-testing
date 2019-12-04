@@ -53,10 +53,6 @@ class DriverFactory:
             self._set_browser()
         return DriverFactory._browser
 
-    @property
-    def browser_name(self):
-        return self._browser_name
-
 
 class Driver:
     __metaclass__ = abc.ABCMeta
@@ -79,11 +75,6 @@ class Driver:
     def _check_command_executor_is_set(self):
         if not self._command_executor:
             raise ConfigurationError("Command_executor is required property!")
-
-
-    @property
-    def browser_name(self):
-        return self._browser_name
 
 
 class SeleniumDriver(Driver):
