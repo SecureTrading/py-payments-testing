@@ -24,7 +24,7 @@ DRIVER.register_callable_with_deps('browser', DriverFactory, lifetime=InstanceLi
 EXECUTOR = NamespacedContainer('executor')
 EXECUTOR.add_sub_container(CONFIG)
 EXECUTOR.add_sub_container(DRIVER)
-EXECUTOR.register_callable_with_deps('test', Browser, CONFIG, lifetime=InstanceLifetime.Singleton)
+EXECUTOR.register_callable_with_deps('test', Browser, lifetime=InstanceLifetime.Singleton)
 
 EXTENSIONS = NamespacedContainer('extensions')
 EXTENSIONS.add_sub_container(CONFIG)

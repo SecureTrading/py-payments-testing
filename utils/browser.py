@@ -4,9 +4,6 @@ from utils.waits import Waits
 
 class Browser(Waits):
 
-    def __init__(self, config):
-        self.config = config
-
     def open_page(self, page_url):
         self._browser.get(page_url)
         self.fullscreen()
@@ -51,7 +48,8 @@ class Browser(Waits):
         self._browser.execute_script("window.scrollBy(100,0)")  # Scroll 100px to the right
 
     def fullscreen(self):
-        if not(self.config.REMOTE_DEVICE.startswith('iPhone')):
+        # maximize_window isn't implemented for the iOS driver
+        if not(self._config.REMOTE_DEVICE.startswith('iPhone')):
             self._browser.maximize_window()
 
     def scroll_into_view(self, element):

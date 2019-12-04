@@ -9,6 +9,7 @@ class Waits:
 
     def __init__(self, driver__browser, config__executor):
         self._browser = driver__browser.get_browser()
+        self._config = config__executor
         self._timeout = config__executor.timeout
         self._wait = WebDriverWait(self._browser, self._timeout)
 
