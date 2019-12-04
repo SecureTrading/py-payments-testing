@@ -1,7 +1,9 @@
 language: python
 python:
   - "3.8"
-
+env:
+  - DOCKER_TAG="-t py-payments-testing"
+  - BROWSERSTACK_ARGS="--env AUTOMATION_REMOTE='true' --env BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME --env BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY --env BROWSERSTACK_LOCAL_IDENTIFIER=$BROWSERSTACK_LOCAL_IDENTIFIER"
 addons:
   browserstack:
     forcelocal: true
@@ -14,17 +16,17 @@ services:
   - docker
 
 before_install:
-- docker build -t py-payments-testing .
+- docker build ${DOCKER_TAG} .
 
 jobs:
   include:
     - stage: 'Behavioural tests'
       name: 'Firefox 68.0'
       script:
-        - docker run -t py-payments-testing --env AUTOMATION_REMOTE="true" --env BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME --env BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY --env BROWSERSTACK_LOCAL_IDENTIFIER=$BROWSERSTACK_LOCAL_IDENTIFIER --env AUTOMATION_REMOTE_BROWSER="Firefox" --env AUTOMATION_REMOTE_BROWSER_VERSION=68.0
+        - docker run ${BROWSERSTACK_ARGS} --env AUTOMATION_REMOTE_BROWSER="Firefox" --env AUTOMATION_REMOTE_BROWSER_VERSION=68.0 ${DOCKER_TAG}
     - name: 'Chrome 78.0'
       script:
-        - docker run -t py-payments-testing --env AUTOMATION_REMOTE="true" --env BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME --env BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY --env BROWSERSTACK_LOCAL_IDENTIFIER=$BROWSERSTACK_LOCAL_IDENTIFIER --env AUTOMATION_REMOTE_BROWSER="Chrome" --env AUTOMATION_REMOTE_BROWSER_VERSION=78.0
+        - docker run ${BROWSERSTACK_ARGS} --env AUTOMATION_REMOTE_BROWSER="Chrome" --env AUTOMATION_REMOTE_BROWSER_VERSION=78.0 ${DOCKER_TAG}
     - name: 'Chrome local'
       script:
-        - docker run -t py-payments-testing
+        - docker run ${DOCKER_TAG}
