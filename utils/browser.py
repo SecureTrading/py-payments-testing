@@ -49,7 +49,7 @@ class Browser(Waits):
 
     def fullscreen(self):
         # maximize_window isn't implemented for the iOS driver
-        if not(self._config.REMOTE_DEVICE.startswith('iPhone')):
+        if not(self._browser.browser_name.REMOTE_DEVICE.startswith('iPhone')):
             self._browser.maximize_window()
 
     def scroll_into_view(self, element):

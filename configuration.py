@@ -62,7 +62,10 @@ class DriverConfig:
     def __init__(self):
         self.remote = CONFIGURATION.REMOTE
         if self.remote:
-            self.browser = CONFIGURATION.REMOTE_BROWSER.lower()
+            if CONFIGURATION.REMOTE_BROWSER:
+                self.browser = CONFIGURATION.REMOTE_BROWSER.lower()
+            else:
+                self.browser = CONFIGURATION.REMOTE_DEVICE.lower()
             self.remote_capabilities = self.get_remote_capabilities(CONFIGURATION)
             self.command_executor = CONFIGURATION.COMMAND_EXECUTOR
         else:

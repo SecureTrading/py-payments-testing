@@ -53,6 +53,10 @@ class DriverFactory:
             self._set_browser()
         return DriverFactory._browser
 
+    @property
+    def browser_name(self):
+        return self._browser_name
+
 
 class Driver:
     __metaclass__ = abc.ABCMeta
