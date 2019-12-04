@@ -18,5 +18,12 @@ services:
 before_install:
 - docker build -t py-payments-testing .
 
-script:
-- ${DOCKER_RUN} --env AUTOMATION_REMOTE_BROWSER="Firefox" --env AUTOMATION_REMOTE_BROWSER_VERSION=68.0
+jobs:
+  include:
+    - stage: 'Behavioural tests'
+      name: 'Firefox 68.0'
+      script:
+        - $DOCKER_RUN --env AUTOMATION_REMOTE_BROWSER="Firefox" --env AUTOMATION_REMOTE_BROWSER_VERSION=68.0
+    - name: 'Chrome 78.0'
+      script:
+        - $DOCKER_RUN --env AUTOMATION_REMOTE_BROWSER="Chrome" --env AUTOMATION_REMOTE_BROWSER_VERSION=78.0
