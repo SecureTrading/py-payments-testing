@@ -3,13 +3,11 @@
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
-from utils.logger import _get_logger
 
 
 class Waits:
 
     def __init__(self, driver__browser, config__executor):
-        self._logger = _get_logger()
         self._browser = driver__browser.get_browser()
         self._timeout = config__executor.timeout
         self._wait = WebDriverWait(self._browser, self._timeout)

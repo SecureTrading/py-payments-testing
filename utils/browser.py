@@ -4,10 +4,6 @@ from utils.waits import Waits
 
 class Browser(Waits):
 
-    def __init__(self, *args, **kwargs):
-        super(Browser, self).__init__(*args, **kwargs)
-        self._logger.info(f'CAPABILITIES: \n{self._browser.capabilities}')
-
     def open_page(self, page_url):
         self._browser.get(page_url)
         self.fullscreen()
