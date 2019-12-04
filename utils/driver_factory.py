@@ -81,6 +81,11 @@ class Driver:
             raise ConfigurationError("Command_executor is required property!")
 
 
+    @property
+    def browser_name(self):
+        return self._browser_name
+
+
 class SeleniumDriver(Driver):
     def get_driver(self):
         if self._remote:
