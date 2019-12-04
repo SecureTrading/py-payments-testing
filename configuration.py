@@ -25,7 +25,7 @@ def load_config():
         'REMOTE_BROWSER': get_from_env('AUTOMATION_REMOTE_BROWSER', ''),
         'REMOTE_BROWSER_VERSION': get_from_env('AUTOMATION_REMOTE_BROWSER_VERSION', ''),
         'REMOTE_DEVICE': get_from_env('AUTOMATION_REMOTE_DEVICE', ''),
-        'REMOTE_REAL_MOBILE': strtobool(get_from_env('AUTOMATION_REMOTE_REAL_MOBILE', 'false')),
+        'REMOTE_REAL_MOBILE': get_from_env('AUTOMATION_REMOTE_REAL_MOBILE', ''),
         'BROWSERSTACK_LOCAL': get_from_env('LOCAL', 'true'),
         'BROWSERSTACK_LOCAL_IDENTIFIER': get_from_env('BROWSERSTACK_LOCAL_IDENTIFIER'),
     }
