@@ -6,3 +6,4 @@ Feature: Behave Selenium Showcase
   @sampleTest
   Scenario: Showing off behave and Selenium
     Then the title should contain "Google"
+    And mock json should be visible on specific url
