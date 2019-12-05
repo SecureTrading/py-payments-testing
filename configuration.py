@@ -18,11 +18,14 @@ def load_config():
         'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 10),
         'REMOTE': strtobool(get_from_env('AUTOMATION_REMOTE', 'false')),
         'COMMAND_EXECUTOR': get_from_env('AUTOMATION_COMMAND_EXECUTOR',
-                                         "https://BROWSERSTACK_USERNAME:BROWSERSTACK_KEY@hub.browserstack.com/wd/hub"),
-        'REMOTE_OS': get_from_env('AUTOMATION_REMOTE_OS', 'Windows'),
-        'REMOTE_OS_VERSION': get_from_env('AUTOMATION_REMOTE_OS_VERSION', '10'),
-        'REMOTE_BROWSER': get_from_env('AUTOMATION_REMOTE_BROWSER', 'Chrome'),
-        'REMOTE_BROWSER_VERSION': get_from_env('AUTOMATION_REMOTE_BROWSER_VERSION', '62.0'),
+                                "https://"+str(get_from_env('BROWSERSTACK_USERNAME'))+":"+
+                                 str(get_from_env('BROWSERSTACK_ACCESS_KEY'))+"@hub.browserstack.com/wd/hub"),
+        'REMOTE_OS': get_from_env('AUTOMATION_REMOTE_OS', ''),
+        'REMOTE_OS_VERSION': get_from_env('AUTOMATION_REMOTE_OS_VERSION', ''),
+        'REMOTE_BROWSER': get_from_env('AUTOMATION_REMOTE_BROWSER', ''),
+        'REMOTE_BROWSER_VERSION': get_from_env('AUTOMATION_REMOTE_BROWSER_VERSION', ''),
+        'REMOTE_DEVICE': get_from_env('AUTOMATION_REMOTE_DEVICE', ''),
+        'REMOTE_REAL_MOBILE': get_from_env('AUTOMATION_REMOTE_REAL_MOBILE', ''),
         'BROWSERSTACK_LOCAL': get_from_env('LOCAL', 'true'),
         'BROWSERSTACK_LOCAL_IDENTIFIER': get_from_env('BROWSERSTACK_LOCAL_IDENTIFIER'),
     }
@@ -59,19 +62,33 @@ class DriverConfig:
     def __init__(self):
         self.remote = CONFIGURATION.REMOTE
         if self.remote:
-            self.browser = CONFIGURATION.REMOTE_BROWSER.lower()
-            self.remote_capabilities = {"os": CONFIGURATION.REMOTE_OS,
-                                        "os_version": CONFIGURATION.REMOTE_OS_VERSION,
-                                        "browserName": CONFIGURATION.REMOTE_BROWSER,
-                                        "browserVersion": CONFIGURATION.REMOTE_BROWSER_VERSION,
-                                        # "browserstack.local": CONFIGURATION.BROWSERSTACK_LOCAL,
-                                        "browserstack.localIdentifier": CONFIGURATION.BROWSERSTACK_LOCAL_IDENTIFIER
-                                        }
+            if CONFIGURATION.REMOTE_BROWSER:
+                self.browser = CONFIGURATION.REMOTE_BROWSER.lower()
+            else:
+                self.browser = CONFIGURATION.REMOTE_DEVICE.lower()
+            self.remote_capabilities = self.get_remote_capabilities(CONFIGURATION)
             self.command_executor = CONFIGURATION.COMMAND_EXECUTOR
         else:
             self.browser = CONFIGURATION.BROWSER.lower()
             self.remote_capabilities = {}
             self.command_executor = ""
+
+    @staticmethod
+    def get_remote_capabilities(config):
+        possible_caps = {"os": config.REMOTE_OS,
+                         "os_version": config.REMOTE_OS_VERSION,
+                         "browserName": config.REMOTE_BROWSER,
+                         "browserVersion": config.REMOTE_BROWSER_VERSION,
+                         "browserstack.local": config.BROWSERSTACK_LOCAL,
+                         "browserstack.localIdentifier": config.BROWSERSTACK_LOCAL_IDENTIFIER,
+                         "device": config.REMOTE_DEVICE,
+                         "real_mobile": config.REMOTE_REAL_MOBILE,
+                         }
+        capabilities = {}
+        for key, value in possible_caps.items():
+            if value:
+                capabilities[key] = value
+        return capabilities
 
 
 class TestExecutorConfig:

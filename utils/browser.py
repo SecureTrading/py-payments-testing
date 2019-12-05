@@ -48,7 +48,9 @@ class Browser(Waits):
         self._browser.execute_script("window.scrollBy(100,0)")  # Scroll 100px to the right
 
     def fullscreen(self):
-        self._browser.maximize_window()
+        # maximize_window isn't implemented for the iOS driver
+        if not(self._browser.name == 'safari' and self._browser.mobile):
+            self._browser.maximize_window()
 
     def scroll_into_view(self, element):
         self._browser.execute_script("arguments[0].scrollIntoView();", element)
