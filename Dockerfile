@@ -23,4 +23,4 @@ RUN poetry install
 COPY . /app
 RUN chmod 755 /app/chromedriver
 ENV PATH "$PATH:/app"
-CMD poetry run behave features
+#CMD poetry run behave features

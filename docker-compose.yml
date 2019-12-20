@@ -1,0 +1,18 @@
+version: "3.6"
+services:
+  app:
+    image: securetrading1/js-payments:${APP_BRANCH}
+    ports:
+      - 8443:8443
+    networks:
+      securetrading:
+        aliases:
+          - merchant.example.com
+  tests:
+    build: .
+    networks:
+      - securetrading
+
+networks:
+  securetrading:
+    driver: bridge
