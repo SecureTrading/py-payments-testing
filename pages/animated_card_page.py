@@ -1,8 +1,8 @@
-from locators.sample_test_locators import SamplePageLocators
+from locators.animated_card_locators import AnimatedCardLocators
 from pages.base_page import BasePage
 
 
-class SamplePage(BasePage, SamplePageLocators):
+class AnimatedCardPage(BasePage, AnimatedCardLocators):
 
     def get_page_title(self):
         page_title = self._executor.get_page_title()

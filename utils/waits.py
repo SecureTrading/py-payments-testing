@@ -32,3 +32,12 @@ class Waits:
             return self._wait.until(ec.alert_is_present())
         except TimeoutException:
             print(f'Alert was not presented in {self._timeout} seconds')
+
+    def wait_until_iframe_is_presented_and_switch_to_it(self, iframe_name):
+        try:
+            return self._wait.until(ec.frame_to_be_available_and_switch_to_it(iframe_name))
+        except TimeoutException:
+            print(f'Iframe was not presented in {self._timeout} seconds')
+
+    def switch_to_default_content(self):
+        self._browser.switch_to.default_content()

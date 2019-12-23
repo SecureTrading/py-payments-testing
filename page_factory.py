@@ -6,7 +6,8 @@ from ioc_config import EXECUTOR, EXTENSIONS, REPORTER, CONFIG, WAITS
 
 
 # Register modules here
-from pages.sample_page import SamplePage
+from pages.payment_methods_page import PaymentMethodsPage
+from pages.animated_card_page import AnimatedCardPage
 
 MODULES = NamespacedContainer('modules')
 
@@ -19,7 +20,9 @@ PAGES.add_sub_container(CONFIG)
 PAGES.add_sub_container(MODULES)
 
 # Register pages here
-PAGES.register_callable_with_deps('sample_page', SamplePage,
+PAGES.register_callable_with_deps('payment_methods_page', PaymentMethodsPage,
+                                  lifetime=InstanceLifetime.Singleton)
+PAGES.register_callable_with_deps('animated_card_page', AnimatedCardPage,
                                   lifetime=InstanceLifetime.Singleton)
 
 

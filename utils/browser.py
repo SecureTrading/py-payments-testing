@@ -54,3 +54,6 @@ class Browser(Waits):
 
     def scroll_into_view(self, element):
         self._browser.execute_script("arguments[0].scrollIntoView();", element)
+
+    def switch_to_default_content(self):
+        return self._browser.current_url
