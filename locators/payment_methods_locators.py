@@ -28,8 +28,8 @@ class PaymentMethodsLocators:
         'apple_pay_mock_button': (By.ID, 'st-apple-pay'),
 
         # labels
-        'card_number_label': (By.XPATH, '//label[@for="st-card-number-input'),
-        'expiration_date_label': (By.XPATH, '//label[@for="st-expiration-date-input'),
-        'security_code_label': (By.XPATH, '//label[@for="st-security-code-input'),
-        'pay_button_label': (By.XPATH, '//button[@type="submit'),
+        'card_number_label': (By.XPATH, '//label[@for="st-card-number-input"]'),
+        'expiration_date_label': (By.XPATH, '//label[@for="st-expiration-date-input"]'),
+        'security_code_label': (By.XPATH, '//label[@for="st-security-code-input"]'),
+        'pay_button_label': (By.XPATH, '//button[@type="submit"]'),
     })

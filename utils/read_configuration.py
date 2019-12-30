@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import json
 
 
 def get_from_env(key, default=None, project_name=None):

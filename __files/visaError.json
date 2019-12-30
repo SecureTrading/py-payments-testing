@@ -1,0 +1,32 @@
+{
+  "payment": {
+    "callid": "2752033779199245901",
+    "vInitRequest": {
+      "apikey": "SDUT1MEXJO10RARJF2S521ImTyKfn3_JmxePdXcydQIUb4kx4",
+      "paymentRequest": {
+        "currencyCode": "GBP",
+        "subtotal": "10.00"
+      },
+      "parentUrl": "http://localhost:8080/",
+      "settings": {
+        "widgetStyle": "OVERLAY",
+        "buttonPosition": "RELATIVE",
+        "shipping": {
+          "collectShipping": "true"
+        },
+        "payment": {}
+      },
+      "enableUserDataPrefill": false,
+      "browserLocale": "en_US",
+      "clientId": "aee84d45-9019-4c1b-5b27-13118197fc01",
+      "allowEnrollment": true,
+      "allowSRC": true,
+      "allowCustomBranding": false,
+      "guestCheckout": false,
+      "currencyFormat": "currencyCode ###,###,###.##",
+      "srcDisabledCountries": "IN",
+      "displayName": "Merchant"
+    }
+  },
+  "status": "ERROR"
+}

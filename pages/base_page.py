@@ -12,3 +12,6 @@ class BasePage:
 
     def open_self_page(self):
         self._executor.open_page(self._page_url)
+
+    def open_page(self, url):
+        self._executor.open_page(url)

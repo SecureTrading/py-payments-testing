@@ -3,7 +3,6 @@
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from utils.waits import Waits
-import ioc_config
 
 
 class WebElementsExtensions(Waits):
@@ -44,6 +43,10 @@ class WebElementsExtensions(Waits):
         element = self._browser.find_element(*locator)
         # * collects all the positional arguments in a tuple
         return element
+
+    def is_element_displayed(self, locator):
+        element = self._browser.find_element(*locator)
+        return element is not None
 
     def find_elements(self, locator):
         self.wait_for_ajax()
