@@ -13,6 +13,7 @@ Feature: Payment methods
     And THREEDQUERY mock response set to "ENROLLED_Y"
     And ACS mock response set to "OK"
     And User clicks Pay button - AUTH response set to "<action_code>"
+
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
     @smoke_test
@@ -131,18 +132,18 @@ Feature: Payment methods
 
   @base_config @full_test @fields_validation
   Scenario Outline: Filling payment form with empty fields -> cardNumber "<card_number>" expiration: "<expiration>", cvv: "<cvV>"
-    When User fills payment form with incorrect or missing data: card number "<card_number>", expiration date "<expiration>" and cvv "<cvV>"
+    When User fills payment form with incorrect or missing data: card number "<card_number>", expiration date "<expiration>" and cvv "<cvv>"
     And User clicks Pay button
     Then User will see "Field is required" message under field: "<field>"
     And User will see that "<field>" field is highlighted
     @smoke_test
     Examples:
-      | card_number | expiration | cvV | field       |
-      |             | 12/22      | 123 | CARD_NUMBER |
+      | card_number | expiration | cvv | field       |
+      | None        | 12/22      | 123 | CARD_NUMBER |
     Examples:
-      | card_number      | expiration | cvV | field         |
-      | 4000000000001000 |            | 123 | EXPIRY_DATE   |
-      | 4000000000001000 | 12/22      |     | SECURITY_CODE |
+      | card_number      | expiration | cvv  | field           |
+      | 4000000000001000 | None       | 123  | EXPIRATION_DATE |
+      | 4000000000001000 | 12/22      | None | SECURITY_CODE   |
 
   @base_config @full_test @fields_validation
   Scenario Outline: Filling payment form with incomplete data (frontend validation) -> cardNumber "<card_number>", expiration: "<expiration>", cvv: "<cvv>"
@@ -155,11 +156,11 @@ Feature: Payment methods
       | card_number      | expiration | cvv | field         |
       | 4000000000001000 | 12/22      | 12  | SECURITY_CODE |
     Examples:
-      | card_number      | expiration | cvv | field       |
-      | 40000000         | 12/22      | 123 | CARD_NUMBER |
-      | 4000000000001000 | 12         | 123 | EXPIRY_DATE |
-      | 4000000000009999 | 12/22      | 123 | CARD_NUMBER |
-      | 4000000000001000 | 44/22      | 123 | EXPIRY_DATE |
+      | card_number      | expiration | cvv | field           |
+      | 40000000         | 12/22      | 123 | CARD_NUMBER     |
+      | 4000000000001000 | 12         | 123 | EXPIRATION_DATE |
+      | 4000000000009999 | 12/22      | 123 | CARD_NUMBER     |
+      | 4000000000001000 | 44/22      | 123 | EXPIRATION_DATE |
 
   @base_config @full_test @fields_validation
   Scenario Outline: Filling payment form with incomplete data (backend validation) -> cardNumber "<card_number>", expiration: "<expiration>", cvv: "<cvv>"
@@ -175,8 +176,8 @@ Feature: Payment methods
       | card_number      | expiration | cvv | field       |
       | 4000000000001000 | 12/22      | 123 | CARD_NUMBER |
     Examples:
-      | card_number      | expiration | cvv | field         |
-      | 4000000000001000 | 12/15      | 123 | EXPIRY_DATE   |
+      | card_number      | expiration | cvv | field           |
+      | 4000000000001000 | 12/15      | 123 | EXPIRATION_DATE |
       | 4000000000001000 | 12/22      | 000 | SECURITY_CODE
 
   @base_config @full_test @fields_validation
@@ -264,7 +265,7 @@ Feature: Payment methods
   Scenario Outline: Checking animated card translation for <language>
     When User changes page language to "<language>"
     And User fills payment form with credit card number "340000000000611", expiration date "12/22" and cvv "123"
-    Then User will see that labels displayed on animated card are translated into <language>
+    Then User will see that labels displayed on animated card are translated into "<language>"
     Examples:
       | language |
       | de_DE    |

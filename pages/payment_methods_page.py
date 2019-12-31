@@ -160,39 +160,39 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
 
     def validate_payment_status_message(self, expected_message):
         actual_message = self.get_payment_status_message()
-        assert expected_message in actual_message, f'Payment status is not correct,' \
+        assert expected_message in actual_message, f'Payment status is not correct, ' \
                                                    f'should be: "{expected_message}" but is: "{actual_message}"'
 
     def validate_notification_frame_color(self, color):
         actual_color = self.get_payment_status_message()
-        assert color in actual_color, f'Notification frame color is not correct,' \
+        assert color in actual_color, f'Notification frame color is not correct, ' \
                                       f'should be: "{color}" but is: "{actual_color}"'
 
     def validate_if_field_is_highlighted(self, field_type):
         is_highlighted = self.is_field_highlighted(field_type)
-        assert is_highlighted in True, f'{FieldType[field_type].name} field is not highlighted but should be'
+        assert is_highlighted is True, f'{FieldType[field_type].name} field is not highlighted but should be'
 
     def validate_if_field_is_disabled(self, field_type):
         is_enabled = self.is_field_enabled(field_type)
-        assert is_enabled in False, f'{FieldType[field_type].name} field is not disabled but should be'
+        assert is_enabled is False, f'{FieldType[field_type].name} field is not disabled but should be'
 
     def validate_if_field_is_enabled(self, field_type):
         is_enabled = self.is_field_enabled(field_type)
-        assert is_enabled in True, f'{FieldType[field_type].name} field is not enabled but should be'
+        assert is_enabled is True, f'{FieldType[field_type].name} field is not enabled but should be'
 
     def validate_if_field_is_not_displayed(self, field_type):
         is_displayed = self.is_field_displayed(field_type)
-        assert is_displayed in False, f'{FieldType[field_type].name} field is displayed'
+        assert is_displayed is False, f'{FieldType[field_type].name} field is displayed but should not be'
 
     def validate_css_style(self, field_type, property, expected_style):
         actual_css_style = self.get_field_css_style(field_type, property)
-        assert actual_css_style in expected_style, f'{FieldType[field_type].name} style is not correct,' \
+        assert actual_css_style in expected_style, f'{FieldType[field_type].name} style is not correct, ' \
                                                    f'should be  "{expected_style}" but is "{expected_style}"'
 
     def validate_element_translation(self, field_type, element, language, key):
         actual_translation = self.get_element_translation(field_type, element)
         expected_translation = self.get_translation_from_json(language, key)
-        assert actual_translation in expected_translation, f"{FieldType[field_type].name} element translation is not correct:" \
+        assert actual_translation in expected_translation, f"{FieldType[field_type].name} element translation is not correct: " \
                                                            f" should be {expected_translation} but is {actual_translation}"
 
     def validate_labels_translation(self, language):
@@ -224,3 +224,8 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
         with open(f'resources/languages/{language}.json', 'r') as f:
             translation = json.load(f)
         return translation[key]
+
+    def validate_if_url_contains_info_about_payment(self, expected_url):
+        actual_url = self._executor.get_page_url()
+        assert expected_url in actual_url, f'Url is not correct, ' \
+                                           f'should be: "{expected_url}" but is: "{actual_url}"'

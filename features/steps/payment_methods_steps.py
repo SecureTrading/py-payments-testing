@@ -1,9 +1,6 @@
-import requests
 from behave import *
-import time
 
 from configuration import CONFIGURATION
-from utils.enums import request_type
 from utils.enums.config import Config
 from utils.enums.field_type import FieldType
 from utils.enums.payment_type import PaymentType
@@ -14,7 +11,6 @@ from utils.enums.responses.auth_response import AUTHresponse
 from utils.enums.responses.invalid_field_response import InvalidFieldResponse
 from utils.enums.responses.tdq_response import TDQresponse
 from utils.enums.responses.visa_response import VisaResponse
-from utils.logger import _get_logger
 from utils.mock_handler import stub_sample_json, stub_config, stub_st_request_type, MockUrl, stub_payment_status, \
     stub_st_request_type_request_error
 
@@ -23,23 +19,22 @@ use_step_matcher("re")
 
 @given("JavaScript configuration is set for scenario based on scenario's @config tag")
 def step_impl(context):
-    # ToDO
-    scenario_tags_list = print('TODO')
-    if '@config_submit_on_success_true' in scenario_tags_list:
+    scenario_tags_list = context.scenario.tags
+    if 'config_submit_on_success_true' in scenario_tags_list:
         stub_config(Config.SUBMIT_ON_SUCCESS_TRUE.value)
-    elif '@config_field_style' in scenario_tags_list:
+    elif 'config_field_style' in scenario_tags_list:
         stub_config(Config.FIELD_STYLE.value)
-    elif '@config_animated_card_true' in scenario_tags_list:
+    elif 'config_animated_card_true' in scenario_tags_list:
         stub_config(Config.ANIMATED_CARD.value)
-    elif '@config_immediate_payment' in scenario_tags_list:
+    elif 'config_immediate_payment' in scenario_tags_list:
         stub_config(Config.IMMEDIATE_PAYMENT.value)
-    elif '@config_update_jwt_true' in scenario_tags_list:
+    elif 'config_update_jwt_true' in scenario_tags_list:
         stub_config(Config.UPDATE_JWT.value)
-    elif '@config_skip_jsinit' in scenario_tags_list:
+    elif 'config_skip_jsinit' in scenario_tags_list:
         stub_config(Config.SKIP_JSINIT.value)
-    elif '@config_defer_init_and_start_on_load_true' in scenario_tags_list:
+    elif 'config_defer_init_and_start_on_load_true' in scenario_tags_list:
         stub_config(Config.DEFER_INIT_START_ON_LOAD.value)
-    elif '@config_submit_cvv_only' in scenario_tags_list:
+    elif 'config_submit_cvv_only' in scenario_tags_list:
         stub_config(Config.SUBMIT_CVV_ONLY.value)
     else:
         stub_config(Config.CONFIG.value)
@@ -119,7 +114,8 @@ def step_impl(context):
 
 
 @when(
-    'User fills payment form with incorrect or missing data: card number "(?P<card_number>.+)", expiration date "(?P<exp_date>.+)" and cvv "(?P<cvv>.+)"')
+    'User fills payment form with incorrect or missing data: card number "(?P<card_number>.+)",'
+    ' expiration date "(?P<exp_date>.+)" and cvv "(?P<cvv>.+)"')
 def step_impl(context, card_number, exp_date, cvv):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.fill_payment_form(card_number, exp_date, cvv)
@@ -252,3 +248,13 @@ def step_impl(context, key, language):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.open_page(CONFIGURATION.URL.BASE_URL)
+
+
+@then("User will see payment status information included in url")
+def step_impl(context):
+    scenario_name = context.scenario.name
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if scenario_name[0:4] in "Visa":
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_url)
+    elif scenario_name[0:4] in "Card":
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_url)

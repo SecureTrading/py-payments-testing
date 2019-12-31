@@ -34,6 +34,10 @@ def before_scenario(context, scenario):
     browser_name = ioc_config.CONFIG.resolve('driver').browser
     scenario.name = '%s_%s' % (scenario.name, browser_name.upper())
 
+    if "animated_card_repo_test" in scenario.tags:
+        context.is_field_in_iframe = False
+    else:
+        context.is_field_in_iframe = True
 
 def after_scenario(context, scenario):
     """Run after each scenario"""

@@ -10,7 +10,7 @@ class AnimatedCardLocators:
         'cvv_on_back_side_animated_card': (By.ID, 'st-animated-card-security-code'),
         'cvv_on_front_side_animated_card': (By.ID, 'st-animated-card-security-code-front-field'),
         'expiration_date_on_animated_card': (By.ID, 'st-animated-card-expiration-date'),
-        'card_type_logo_from_animated_card': (By.ID, 'st-payment-log'),
+        'card_type_logo_from_animated_card': (By.ID, 'st-payment-logo'),
 
         # labels
         'card_number_label': (By.ID, 'st-animated-card-card-number-label'),
@@ -19,7 +19,12 @@ class AnimatedCardLocators:
 
         # inputs without iframes
         'card_number_input_field': (By.ID, 'st-card-number-input'),
-        'cvv_input_field': (By.ID, 'st-security-code-input'),
+        'security_code_input_field': (By.ID, 'st-security-code-input'),
         'expiration_date_input_field': (By.ID, 'st-expiration-date-input'),
+
+        # Fields validation messages
+        'card_number_field_validation_message': (By.ID, 'st-card-number-message'),
+        'expiration_date_field_validation_message': (By.ID, 'st-expiration-date-message'),
+        'security_code_field_validation_message': (By.ID, 'st-security-code-message'),
 
     })
