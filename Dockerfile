@@ -20,7 +20,6 @@ WORKDIR /app
 RUN poetry install
 
 # Get framework into docker
-COPY . /app
-RUN chmod 755 /app/chromedriver
+#RUN chmod 755 /app/chromedriver
 ENV PATH "$PATH:/app"
 #CMD poetry run behave features
