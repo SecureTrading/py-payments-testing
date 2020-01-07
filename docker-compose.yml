@@ -15,6 +15,18 @@ services:
     networks:
       - securetrading
 
+  wiremock:
+    image: rodolpheche/wiremock
+    volumes:
+      - ./__files:/home/wiremock/__files
+      - ./mappings:/home/wiremock/mappings
+    ports:
+      - 8080:8080
+    networks:
+      securetrading:
+        aliases:
+          - webservices.securetrading.net
+
 networks:
   securetrading:
     driver: bridge
