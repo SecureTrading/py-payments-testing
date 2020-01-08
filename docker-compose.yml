@@ -2,8 +2,6 @@ version: "3.6"
 services:
   app:
     image: securetrading1/js-payments:${APP_BRANCH}
-    ports:
-      - 8443:8443
     networks:
       securetrading:
         aliases:
@@ -20,8 +18,7 @@ services:
     volumes:
       - ./__files:/home/wiremock/__files
       - ./mappings:/home/wiremock/mappings
-    ports:
-      - 8080:8080
+    command: --https-port 8443
     networks:
       securetrading:
         aliases:
