@@ -9,6 +9,7 @@ services:
 
   tests:
     build: .
+    image: securetrading1/py-payments-testing
     volumes:
       - .:/app
     networks:
