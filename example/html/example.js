@@ -1,7 +1,7 @@
 (function () {
     var ST = SecureTrading;
     window
-        .fetch('https://webservices.securetrading.net/config.json')
+        .fetch('https://webservices.securetrading.net:8443/config.json')
         .then(function (response) {
             if (response.status !== 200) {
                 return Promise.reject('Configuration has not been set !');
