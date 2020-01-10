@@ -2,13 +2,11 @@ version: "3.6"
 services:
   app:
     image: securetrading1/js-payments:${APP_BRANCH}
-    ports:
-      - 80:80
-      - 443:443
     networks:
       securetrading:
         aliases:
-          - merchant.example.com
+          - library.securetrading.net
+
   tests:
     build: .
     volumes:
@@ -23,11 +21,27 @@ services:
       - ./mappings:/home/wiremock/mappings
     command: --https-port 8443
     ports:
-      - 8080:8080
+      - 80:8080
+      - 443:8443
     networks:
       securetrading:
         aliases:
           - webservices.securetrading.net
+
+  example:
+    image: nginx:1.16.1
+    ports:
+      - 8080:8080
+      - 8443:8443
+    volumes:
+      - ./example/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./example/nginx/key.pem:/etc/ssl/st-cert/key.pem
+      - ./example/nginx/cert.pem:/etc/ssl/st-cert/cert.pem
+      - ./example/html:/usr/share/nginx/html
+    networks:
+      securetrading:
+        aliases:
+          - merchant.example.com
 
 networks:
   securetrading:
