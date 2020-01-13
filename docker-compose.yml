@@ -18,9 +18,10 @@ services:
   wiremock:
     image: rodolpheche/wiremock
     volumes:
-      - ./__files:/home/wiremock/__files
-      - ./mappings:/home/wiremock/mappings
-    command: --https-port 8443
+      - ./wiremock/__files:/home/wiremock/__files
+      - ./wiremock/mappings:/home/wiremock/mappings
+      - ./wiremock/keystore:/home/wiremock/keystore
+    command: --https-port 8443 --https-keystore /home/wiremock/keystore
     ports:
       - 8080:8080
       - 8443:8443
