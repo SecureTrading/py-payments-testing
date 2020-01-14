@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   app:
-    image: securetrading1/js-payments:${APP_BRANCH}
+    image: securetrading1/${APP_REPO}:${APP_BRANCH}
     networks:
       securetrading:
         aliases:
