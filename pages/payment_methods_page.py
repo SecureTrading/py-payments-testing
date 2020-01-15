@@ -106,7 +106,7 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
             class_name = self._action.get_element_attribute(FieldType.EMAIL.value,
                                                             self._locators.merchant_email,
                                                             "class")
-        if class_name.__contains__("error"):
+        if "error" in class_name:
             is_highlighted = True
         return is_highlighted
 
@@ -164,7 +164,7 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
                                                    f'should be: "{expected_message}" but is: "{actual_message}"'
 
     def validate_notification_frame_color(self, color):
-        actual_color = self.get_payment_status_message()
+        actual_color = self.get_color_of_notification_frame()
         assert color in actual_color, f'Notification frame color is not correct, ' \
                                       f'should be: "{color}" but is: "{actual_color}"'
 

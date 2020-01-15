@@ -75,7 +75,7 @@ class AnimatedCardPage(BasePage, AnimatedCardLocators):
             class_name = self._action.get_element_attribute(self._locators.expiration_date_input_field, "class")
         elif field_type == FieldType.SECURITY_CODE.name:
             class_name = self._action.get_element_attribute(self._locators.security_code_input_field, "class")
-        if class_name.__contains__("error"):
+        if "error" in class_name:
             is_highlighted = True
         return is_highlighted
 
