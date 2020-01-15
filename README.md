@@ -35,6 +35,10 @@ If you have multiple application images with different branches you can specify 
 
 `APP_BRANCH=master docker-compose up -d`
 
+#### To test a different application (eg. js-payments-card)
+
+`APP_REPO=js-payments-card docker-compose up -d`
+
 <!--- 
 #### To run with a remote browser via browserstack:
 # `docker run --env AUTOMATION_REMOTE="true" --env AUTOMATION_REMOTE_BROWSER="Firefox" --env AUTOMATION_REMOTE_BROWSER_VERSION=55.0
