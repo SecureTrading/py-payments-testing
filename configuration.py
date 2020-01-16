@@ -12,7 +12,7 @@ def load_config():
     Set config env variables
     """
     config = {
-        'URL': AttrDict({"BASE_URL": get_from_env("BASE_URL", "https://10.10.30.146:8443/")}),
+        'URL': AttrDict({"BASE_URL": get_from_env("BASE_URL", "https://merchant.example.com:8443")}),
         'REPORTS_PATH': get_path_from_env('AUTOMATION_REPORTS', 'reports'),
         'BROWSER': get_from_env('AUTOMATION_BROWSER', 'chrome'),
         'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 10),
