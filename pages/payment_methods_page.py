@@ -1,3 +1,5 @@
+import time
+
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
 from utils.enums.field_type import FieldType
@@ -232,6 +234,7 @@ class PaymentMethodsPage(BasePage):
         return translation[key]
 
     def validate_if_url_contains_info_about_payment(self, expected_url):
+        time.sleep(1)
         actual_url = self._executor.get_page_url()
         assert expected_url in actual_url, f'Url is not correct, ' \
                                            f'should be: "{expected_url}" but is: "{actual_url}"'

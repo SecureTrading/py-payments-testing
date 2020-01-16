@@ -1,3 +1,5 @@
+import time
+
 from behave import *
 
 from configuration import CONFIGURATION
@@ -11,8 +13,8 @@ from utils.enums.responses.auth_response import AUTHresponse
 from utils.enums.responses.invalid_field_response import InvalidFieldResponse
 from utils.enums.responses.tdq_response import TDQresponse
 from utils.enums.responses.visa_response import VisaResponse
-from utils.mock_handler import stub_sample_json, stub_config, stub_st_request_type, MockUrl, stub_payment_status, \
-    stub_st_request_type_request_error
+from utils.mock_handler import stub_config, stub_st_request_type, MockUrl, stub_payment_status, \
+    stub_st_request_type_server_error
 
 use_step_matcher("re")
 
@@ -37,7 +39,7 @@ def step_impl(context):
     elif 'config_submit_cvv_only' in scenario_tags_list:
         stub_config(Config.SUBMIT_CVV_ONLY.value)
     else:
-        stub_config(Config.CONFIG.value)
+        stub_config(Config.BASE_CONFIG.value)
 
 
 @step("User opens page with payment form")
@@ -161,7 +163,7 @@ def step_impl(context, action_code):
         stub_st_request_type(ApplePayResponse.APPLE_AUTH_SUCCESS.value, RequestType.AUTH.name)
     elif action_code == "ERROR":
         stub_payment_status(MockUrl.APPLEPAY_MOCK_URI.value, ApplePayResponse.SUCCESS.value)
-        stub_st_request_type_request_error(RequestType.AUTH.name)
+        stub_st_request_type_server_error(RequestType.AUTH.name)
     elif action_code == "DECLINE":
         stub_payment_status(MockUrl.APPLEPAY_MOCK_URI.value, ApplePayResponse.SUCCESS.value)
         stub_st_request_type(ApplePayResponse.ERROR.value, RequestType.AUTH.name)
@@ -173,6 +175,7 @@ def step_impl(context, action_code):
 @then("User will see that Submit button is enabled after payment")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    time.sleep(1)
     payment_page.validate_if_field_is_enabled(FieldType.SUBMIT_BUTTON.name)
 
 
@@ -242,6 +245,7 @@ def step_impl(context, key, field, language):
 @then('User will see "(?P<key>.+)" payment status translated into "(?P<language>.+)"')
 def step_impl(context, key, language):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_payment_status_translation(language, key)
 
 
 @step("User opens payment page")

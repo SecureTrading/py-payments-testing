@@ -97,7 +97,7 @@ class SeleniumDriver(Driver):
         kwargs = {}
         if self._browser_name == "chrome":
             kwargs['chrome_options'] = Options()
-            # kwargs['chrome_options'].headless = True
+            kwargs['chrome_options'].headless = True
             kwargs['chrome_options'].add_argument('--no-sandbox')
             kwargs['chrome_options'].add_argument('--disable-dev-shm-usage')
             kwargs['chrome_options'].add_argument('--ignore-certificate-errors')

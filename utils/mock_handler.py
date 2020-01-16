@@ -46,7 +46,7 @@ def stub_st_request_type(mock_json, request_type):
     # TO DO
     print("ToDo")
 
-def stub_st_request_type_request_error(request_type):
+def stub_st_request_type_server_error(request_type):
     # TO DO
     print("ToDo")
 

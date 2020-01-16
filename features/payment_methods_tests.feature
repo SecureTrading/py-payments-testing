@@ -275,7 +275,7 @@ Feature: Payment methods
     When User changes page language to "<language>"
     And User fills payment form with credit card number "4000000000000051 ", expiration date "12/22" and cvv "12"
     And User clicks Pay button
-    Then User will see validation message "Value mismatch pattern" under "SECURITY_CODE" field translated into "<language>"
+    Then User will see validation message "Value mismatch pattern" under "SECURITY_CODE" field translated into <language>
     Examples:
       | language |
       | fr_FR    |
@@ -312,7 +312,7 @@ Feature: Payment methods
   @base_config @full_test @translations
   Scenario Outline: Visa Checkout - check translation overwriting mechanism
     When User changes page language to "<language>"
-    And User chooses Visa Checkout as payment method - response set to ""ERROR"
+    And User chooses Visa Checkout as payment method - response set to "ERROR"
     Then User will see notification frame with message: "Wystąpił błąd"
     And User will see that notification frame has "red" color
     @smoke_test
@@ -332,7 +332,7 @@ Feature: Payment methods
 
   @config_immediate_payment @smoke_test @full_test
   Scenario Outline: Immediate payment (card enrolled Y) - checking payment status for <action_code> response code
-    When THREEDQUERY mock response set to ""ENROLLED_Y"
+    When THREEDQUERY mock response set to "ENROLLED_Y"
     And ACS mock response set to "OK"
     And AUTH response set to "<action_code>"
     And User opens payment page
@@ -356,9 +356,9 @@ Feature: Payment methods
     And User opens payment page
     Then User will see payment status information: "<payment_status_message>"
     Examples:
-      | action_code | paymentStatusMessage |
+      | action_code | payment_status_message |
 #      | ERROR      | Invalid response |
-      | FAILURE     | Merchant decline     |
+      | FAILURE     | Merchant decline       |
 
   @config_skip_jsinit @smoke_test @full_test @cardinal_commerce
   Scenario: Successful payment with skipped JSINIT process
