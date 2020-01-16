@@ -1,19 +1,21 @@
 from locators.animated_card_locators import AnimatedCardLocators
+from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
 from utils.enums.field_type import FieldType
 import json
 
 
-class AnimatedCardPage(BasePage, AnimatedCardLocators):
+class AnimatedCardPage(BasePage):
 
     def fill_payment_form_without_iframe(self, card_number, expiration, cvv):
-        self._action.send_keys(self._locators.card_number_input_field, card_number)
-        self._action.send_keys(self._locators.expiration_date_input_field, expiration)
+        self._action.send_keys(AnimatedCardLocators.card_number_input_field, card_number)
+        self._action.send_keys(AnimatedCardLocators.expiration_date_input_field, expiration)
         if cvv is not None:
-            self._action.send_keys(self._locators.security_code_input_field, cvv)
+            self._action.send_keys(AnimatedCardLocators.security_code_input_field, cvv)
 
     def get_card_type_icon_from_animated_card(self):
-        credit_card_icon = self._action.get_element_attribute(self._locators.card_type_logo_from_animated_card, "alt")
+        credit_card_icon = self._action.get_element_attribute(AnimatedCardLocators.card_type_logo_from_animated_card,
+                                                              "alt")
         credit_card_icon = credit_card_icon.upper()
         return credit_card_icon
 
@@ -27,14 +29,14 @@ class AnimatedCardPage(BasePage, AnimatedCardLocators):
     def get_data_from_animated_card(self, field_type, card_type):
         animated_card_data = ""
         if field_type == FieldType.CARD_NUMBER.name:
-            animated_card_data = self._action.get_text(self._locators.credit_card_number_on_animated_card)
+            animated_card_data = self._action.get_text(AnimatedCardLocators.credit_card_number_on_animated_card)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            animated_card_data = self._action.get_text(self._locators.expiration_date_on_animated_card)
+            animated_card_data = self._action.get_text(AnimatedCardLocators.expiration_date_on_animated_card)
         elif field_type == FieldType.SECURITY_CODE.name:
             if card_type == "AMEX":
-                animated_card_data = self._action.get_text(self._locators.cvv_on_front_side_animated_card)
+                animated_card_data = self._action.get_text(AnimatedCardLocators.cvv_on_front_side_animated_card)
             else:
-                animated_card_data = self._action.get_text(self._locators.cvv_on_back_side_animated_card)
+                animated_card_data = self._action.get_text(AnimatedCardLocators.cvv_on_back_side_animated_card)
         return animated_card_data
 
     def validate_data_on_animated_card(self, expected_data, field_type, card_type):
@@ -53,14 +55,14 @@ class AnimatedCardPage(BasePage, AnimatedCardLocators):
     def validate_if_animated_card_is_flipped(self, card_type, is_field_in_iframe):
         if is_field_in_iframe:
             self._action.switch_to_iframe(FieldType.ANIMATED_CARD.value)
-        animated_card_side = self._action.get_element_attribute(self._locators.animated_card, "class")
+        animated_card_side = self._action.get_element_attribute(AnimatedCardLocators.animated_card, "class")
         if card_type == "AMEX":
             assert "flip-card" not in animated_card_side, f'Animated card is flipped for AMEX but should not be'
         else:
             assert "flip-card" in animated_card_side, f'Animated card is not flipped but should be'
 
     def change_field_focus(self):
-        self._action.click(self._locators.card_number_input_field)
+        self._action.click(AnimatedCardLocators.card_number_input_field)
 
     def validate_if_no_iframe_field_is_highlighted(self, field_type):
         is_highlighted = self.is_field_highlighted(field_type)
@@ -70,11 +72,11 @@ class AnimatedCardPage(BasePage, AnimatedCardLocators):
         is_highlighted = False
         class_name = ""
         if field_type == FieldType.CARD_NUMBER.name:
-            class_name = self._action.get_element_attribute(self._locators.card_number_input_field, "class")
+            class_name = self._action.get_element_attribute(AnimatedCardLocators.card_number_input_field, "class")
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            class_name = self._action.get_element_attribute(self._locators.expiration_date_input_field, "class")
+            class_name = self._action.get_element_attribute(AnimatedCardLocators.expiration_date_input_field, "class")
         elif field_type == FieldType.SECURITY_CODE.name:
-            class_name = self._action.get_element_attribute(self._locators.security_code_input_field, "class")
+            class_name = self._action.get_element_attribute(AnimatedCardLocators.security_code_input_field, "class")
         if "error" in class_name:
             is_highlighted = True
         return is_highlighted
@@ -87,19 +89,19 @@ class AnimatedCardPage(BasePage, AnimatedCardLocators):
     def get_field_validation_message(self, field_type):
         validation_message = ""
         if field_type == FieldType.CARD_NUMBER.name:
-            validation_message = self._action.get_text(self._locators.card_number_field_validation_message)
+            validation_message = self._action.get_text(AnimatedCardLocators.card_number_field_validation_message)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            validation_message = self._action.get_text(self._locators.expiration_date_field_validation_message)
+            validation_message = self._action.get_text(AnimatedCardLocators.expiration_date_field_validation_message)
         elif field_type == FieldType.SECURITY_CODE.name:
-            validation_message = self._action.get_text(self._locators.security_code_field_validation_message)
+            validation_message = self._action.get_text(AnimatedCardLocators.security_code_field_validation_message)
         return validation_message
 
     def validate_animated_card_translation(self, language, is_field_in_iframe):
-        self.validate_animated_card_element_translation(self._locators.card_number_label,
+        self.validate_animated_card_element_translation(AnimatedCardLocators.card_number_label,
                                                         language, "Card number", is_field_in_iframe)
-        self.validate_animated_card_element_translation(self._locators.expiration_date_label,
+        self.validate_animated_card_element_translation(AnimatedCardLocators.expiration_date_label,
                                                         language, "Expiration date", is_field_in_iframe)
-        self.validate_animated_card_element_translation(self._locators.security_code_label,
+        self.validate_animated_card_element_translation(AnimatedCardLocators.security_code_label,
                                                         language, "Security code", is_field_in_iframe)
 
     def validate_animated_card_element_translation(self, element, language, key, is_field_in_iframe):
@@ -122,11 +124,11 @@ class AnimatedCardPage(BasePage, AnimatedCardLocators):
     def is_field_displayed(self, field_type):
         is_displayed = False
         if field_type == FieldType.CARD_NUMBER.name:
-            is_displayed = self._action.is_element_displayed(self._locators.card_number_input_field)
+            is_displayed = self._action.is_element_displayed(AnimatedCardLocators.card_number_input_field)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            is_displayed = self._action.is_element_displayed(self._locators.expiration_date_input_field)
+            is_displayed = self._action.is_element_displayed(AnimatedCardLocators.expiration_date_input_field)
         elif field_type == FieldType.SECURITY_CODE.name:
-            is_displayed = self._action.is_element_displayed(self._locators.security_code_input_field)
+            is_displayed = self._action.is_element_displayed(AnimatedCardLocators.security_code_input_field)
         elif field_type == FieldType.SUBMIT_BUTTON.name:
-            is_displayed = self._action.is_element_displayed(self._locators.pay_mock_button)
+            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.pay_mock_button)
         return is_displayed

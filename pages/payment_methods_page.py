@@ -5,7 +5,7 @@ from utils.enums.payment_type import PaymentType
 import json
 
 
-class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
+class PaymentMethodsPage(BasePage):
 
     def get_page_title(self):
         page_title = self._executor.get_page_title()
@@ -14,13 +14,13 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
     def fill_credit_card_field(self, field_type, value):
         if field_type == FieldType.CARD_NUMBER.name:
             self._action.switch_to_iframe_and_send_keys(FieldType.CARD_NUMBER.value,
-                                                        self._locators.card_number_input_field, value)
+                                                        PaymentMethodsLocators.card_number_input_field, value)
         elif field_type == FieldType.EXPIRATION_DATE.name:
             self._action.switch_to_iframe_and_send_keys(FieldType.EXPIRATION_DATE.value,
-                                                        self._locators.expiration_date_input_field, value)
+                                                        PaymentMethodsLocators.expiration_date_input_field, value)
         elif field_type == FieldType.SECURITY_CODE.name:
             self._action.switch_to_iframe_and_send_keys(FieldType.SECURITY_CODE.value,
-                                                        self._locators.security_code_input_field, value)
+                                                        PaymentMethodsLocators.security_code_input_field, value)
 
     def fill_payment_form(self, card_number, expiration_date, cvv):
         self.fill_credit_card_field(FieldType.CARD_NUMBER.name, card_number)
@@ -29,11 +29,11 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
 
     def fill_merchant_input_field(self, field_type, value):
         if field_type == FieldType.NAME.name:
-            self._action.send_keys(self._locators.merchant_name, value)
+            self._action.send_keys(PaymentMethodsLocators.merchant_name, value)
         elif field_type == FieldType.EMAIL.name:
-            self._action.send_keys(self._locators.merchant_email, value)
+            self._action.send_keys(PaymentMethodsLocators.merchant_email, value)
         elif field_type == FieldType.PHONE.name:
-            self._action.send_keys(self._locators.merchant_phone, value)
+            self._action.send_keys(PaymentMethodsLocators.merchant_phone, value)
 
     def fill_merchant_form(self, name, email, phone):
         self.fill_merchant_input_field(FieldType.NAME.name, name)
@@ -42,12 +42,12 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
 
     def get_payment_status_message(self):
         status_message = self._action.switch_to_iframe_and_get_text(FieldType.NOTIFICATION_FRAME.value,
-                                                                    self._locators.notification_frame)
+                                                                    PaymentMethodsLocators.notification_frame)
         return status_message
 
     def get_color_of_notification_frame(self):
         frame_color = self._action.switch_to_iframe_and_get_element_attribute(FieldType.NOTIFICATION_FRAME.value,
-                                                                              self._locators.notification_frame,
+                                                                              PaymentMethodsLocators.notification_frame,
                                                                               "data-notification-color")
         return frame_color
 
@@ -55,36 +55,36 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
         is_enabled = False
         if field_type == FieldType.CARD_NUMBER.name:
             is_enabled = self._action.switch_to_iframe_and_check_is_element_enabled(FieldType.CARD_NUMBER.value,
-                                                                                    self._locators.card_number_input_field)
+                                                                                    PaymentMethodsLocators.card_number_input_field)
         elif field_type == FieldType.EXPIRATION_DATE.name:
             is_enabled = self._action.switch_to_iframe_and_check_is_element_enabled(FieldType.EXPIRATION_DATE.value,
-                                                                                    self._locators.expiration_date_input_field)
+                                                                                    PaymentMethodsLocators.expiration_date_input_field)
         elif field_type == FieldType.SECURITY_CODE.name:
             is_enabled = self._action.switch_to_iframe_and_check_is_element_enabled(FieldType.SECURITY_CODE.value,
-                                                                                    self._locators.security_code_input_field)
+                                                                                    PaymentMethodsLocators.security_code_input_field)
         elif field_type == FieldType.SUBMIT_BUTTON.name:
-            is_enabled = self._action.is_element_enabled(self._locators.pay_mock_button)
+            is_enabled = self._action.is_element_enabled(PaymentMethodsLocators.pay_mock_button)
         return is_enabled
 
     def choose_payment_methods(self, payment_type):
         if payment_type == PaymentType.VISA_CHECKOUT.name:
-            self._action.click(self._locators.visa_checkout_mock_button)
+            self._action.click(PaymentMethodsLocators.visa_checkout_mock_button)
         elif payment_type == PaymentType.APPLE_PAY.name:
-            self._action.click(self._locators.apple_pay_mock_button)
+            self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
         elif payment_type == PaymentType.CARDINAL_COMMERCE.name:
-            self._action.click(self._locators.pay_mock_button)
+            self._action.click(PaymentMethodsLocators.pay_mock_button)
 
     def get_field_validation_message(self, field_type):
         validation_message = ""
         if field_type == FieldType.CARD_NUMBER.name:
             validation_message = self._action.switch_to_iframe_and_get_text(FieldType.CARD_NUMBER.value,
-                                                                            self._locators.card_number_field_validation_message)
+                                                                            PaymentMethodsLocators.card_number_field_validation_message)
         elif field_type == FieldType.EXPIRATION_DATE.name:
             validation_message = self._action.switch_to_iframe_and_get_text(FieldType.EXPIRATION_DATE.value,
-                                                                            self._locators.expiration_date_field_validation_message)
+                                                                            PaymentMethodsLocators.expiration_date_field_validation_message)
         elif field_type == FieldType.SECURITY_CODE.name:
             validation_message = self._action.switch_to_iframe_and_get_text(FieldType.SECURITY_CODE.value,
-                                                                            self._locators.security_code_field_validation_message)
+                                                                            PaymentMethodsLocators.security_code_field_validation_message)
         return validation_message
 
     def is_field_highlighted(self, field_type):
@@ -92,19 +92,19 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
         class_name = ""
         if field_type == FieldType.CARD_NUMBER.name:
             class_name = self._action.switch_to_iframe_and_get_element_attribute(FieldType.CARD_NUMBER.value,
-                                                                                 self._locators.card_number_input_field,
+                                                                                 PaymentMethodsLocators.card_number_input_field,
                                                                                  "class")
         elif field_type == FieldType.EXPIRATION_DATE.name:
             class_name = self._action.switch_to_iframe_and_get_element_attribute(FieldType.EXPIRATION_DATE.value,
-                                                                                 self._locators.expiration_date_input_field,
+                                                                                 PaymentMethodsLocators.expiration_date_input_field,
                                                                                  "class")
         elif field_type == FieldType.SECURITY_CODE.name:
             class_name = self._action.switch_to_iframe_and_get_element_attribute(FieldType.SECURITY_CODE.value,
-                                                                                 self._locators.security_code_input_field,
+                                                                                 PaymentMethodsLocators.security_code_input_field,
                                                                                  "class")
         elif field_type == FieldType.EMAIL.name:
             class_name = self._action.get_element_attribute(FieldType.EMAIL.value,
-                                                            self._locators.merchant_email,
+                                                            PaymentMethodsLocators.merchant_email,
                                                             "class")
         if "error" in class_name:
             is_highlighted = True
@@ -114,28 +114,28 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
         background_color = ""
         if field_type == FieldType.CARD_NUMBER.name:
             background_color = self._action.switch_to_iframe_and_get_css_value(FieldType.CARD_NUMBER.value,
-                                                                               self._locators.card_number_input_field,
+                                                                               PaymentMethodsLocators.card_number_input_field,
                                                                                property)
         elif field_type == FieldType.EXPIRATION_DATE.name:
             background_color = self._action.switch_to_iframe_and_get_css_value(FieldType.EXPIRATION_DATE.value,
-                                                                               self._locators.expiration_date_input_field,
+                                                                               PaymentMethodsLocators.expiration_date_input_field,
                                                                                property)
         elif field_type == FieldType.SECURITY_CODE.name:
             background_color = self._action.switch_to_iframe_and_get_css_value(FieldType.SECURITY_CODE.value,
-                                                                               self._locators.security_code_input_field,
+                                                                               PaymentMethodsLocators.security_code_input_field,
                                                                                property)
         return background_color
 
     def is_field_displayed(self, field_type):
         is_displayed = False
         if field_type == FieldType.CARD_NUMBER.name:
-            is_displayed = self._action.is_element_displayed(self._locators.card_number_input_field)
+            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.card_number_input_field)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            is_displayed = self._action.is_element_displayed(self._locators.expiration_date_input_field)
+            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.expiration_date_input_field)
         elif field_type == FieldType.SECURITY_CODE.name:
-            is_displayed = self._action.is_element_displayed(self._locators.security_code_input_field)
+            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.security_code_input_field)
         elif field_type == FieldType.SUBMIT_BUTTON.name:
-            is_displayed = self._action.is_element_displayed(self._locators.pay_mock_button)
+            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.pay_mock_button)
         return is_displayed
 
     def get_element_translation(self, field_type, locator):
@@ -196,29 +196,35 @@ class PaymentMethodsPage(BasePage, PaymentMethodsLocators):
                                                            f" should be {expected_translation} but is {actual_translation}"
 
     def validate_labels_translation(self, language):
-        self.validate_element_translation(FieldType.CARD_NUMBER.name, self._locators.card_number_label, language,
+        self.validate_element_translation(FieldType.CARD_NUMBER.name, PaymentMethodsLocators.card_number_label,
+                                          language,
                                           "Card number")
-        self.validate_element_translation(FieldType.EXPIRATION_DATE.name, self._locators.expiration_date_label,
+        self.validate_element_translation(FieldType.EXPIRATION_DATE.name, PaymentMethodsLocators.expiration_date_label,
                                           language, "Expiration date")
-        self.validate_element_translation(FieldType.SECURITY_CODE.name, self._locators.security_code_label, language,
+        self.validate_element_translation(FieldType.SECURITY_CODE.name, PaymentMethodsLocators.security_code_label,
+                                          language,
                                           "Security code")
-        self.validate_element_translation(FieldType.SUBMIT_BUTTON.name, self._locators.pay_button_label, language,
+        self.validate_element_translation(FieldType.SUBMIT_BUTTON.name, PaymentMethodsLocators.pay_button_label,
+                                          language,
                                           "Pay")
 
     def validate_message_translation_under_field(self, field_type, language, key):
         if field_type == FieldType.CARD_NUMBER.name:
             self.validate_element_translation(FieldType.CARD_NUMBER.name,
-                                              self._locators.card_number_field_validation_message, language, key)
+                                              PaymentMethodsLocators.card_number_field_validation_message, language,
+                                              key)
         elif field_type == FieldType.EXPIRATION_DATE.name:
             self.validate_element_translation(FieldType.EXPIRATION_DATE.name,
-                                              self._locators.expiration_date_field_validation_message, language, key)
+                                              PaymentMethodsLocators.expiration_date_field_validation_message, language,
+                                              key)
         elif field_type == FieldType.SECURITY_CODE.name:
             self.validate_element_translation(FieldType.SECURITY_CODE.name,
-                                              self._locators.security_code_field_validation_message, language, key)
+                                              PaymentMethodsLocators.security_code_field_validation_message, language,
+                                              key)
 
     def validate_payment_status_translation(self, language, key):
         self.validate_element_translation(FieldType.NOTIFICATION_FRAME.name,
-                                          self._locators.notification_frame, language, key)
+                                          PaymentMethodsLocators.notification_frame, language, key)
 
     def get_translation_from_json(self, language, key):
         with open(f'resources/languages/{language}.json', 'r') as f:
