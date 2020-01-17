@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 @dataclass
 class AnimatedCardLocators:
     # animated card data
-    animated_card: By = (By.ID, 'st-animated-card'),
+    animated_card: By = (By.ID, 'st-animated-card')
     credit_card_number_on_animated_card: By = (By.ID, 'st-animated-card-number')
     cvv_on_back_side_animated_card: By = (By.ID, 'st-animated-card-security-code')
     cvv_on_front_side_animated_card: By = (By.ID, 'st-animated-card-security-code-front-field')

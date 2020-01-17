@@ -151,7 +151,7 @@ def step_impl(context, action_code):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     stub_st_request_type(VisaResponse.VISA_AUTH_SUCCESS.value, RequestType.AUTH.name)
     stub_payment_status(MockUrl.VISA_MOCK_URI.value, VisaResponse[action_code].value)
-    payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
+    payment_page.choose_payment_methods(PaymentType.VISA_CHECKOUT.name)
 
 
 @when('User chooses ApplePay as payment method - response set to "(?P<action_code>.+)"')
@@ -169,7 +169,7 @@ def step_impl(context, action_code):
         stub_st_request_type(ApplePayResponse.ERROR.value, RequestType.AUTH.name)
     elif action_code == "CANCEL":
         stub_payment_status(MockUrl.APPLEPAY_MOCK_URI.value, ApplePayResponse[action_code].value)
-    payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
+    payment_page.choose_payment_methods(PaymentType.APPLE_PAY.name)
 
 
 @then("User will see that Submit button is enabled after payment")
