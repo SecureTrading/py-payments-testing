@@ -8,6 +8,6 @@ jobs:
   include:
     - name: Build docker image
       script:
-        - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
         - docker-compose build tests
+        - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
         - docker push "securetrading1/py-payments-testing"
