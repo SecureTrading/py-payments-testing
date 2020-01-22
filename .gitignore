@@ -1,2 +1,23 @@
-.idea
-geckodriver.log
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+venv/
+build/
+reports/
+eggs/
+.eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+
+.idea/
+tmp/*
+wheelhouse/
+*.log
+
