@@ -70,8 +70,10 @@ class PaymentMethodsPage(BasePage):
 
     def choose_payment_methods(self, payment_type):
         if payment_type == PaymentType.VISA_CHECKOUT.name:
+            time.sleep(1)
             self._action.click(PaymentMethodsLocators.visa_checkout_mock_button)
         elif payment_type == PaymentType.APPLE_PAY.name:
+            time.sleep(1)
             self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
         elif payment_type == PaymentType.CARDINAL_COMMERCE.name:
             self._action.click(PaymentMethodsLocators.pay_mock_button)
