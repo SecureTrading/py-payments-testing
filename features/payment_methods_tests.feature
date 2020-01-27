@@ -178,7 +178,7 @@ Feature: Payment methods
     Examples:
       | card_number      | expiration | cvv | field           |
       | 4000000000001000 | 12/15      | 123 | EXPIRATION_DATE |
-      | 4000000000001000 | 12/22      | 000 | SECURITY_CODE
+      | 4000000000001000 | 12/22      | 000 | SECURITY_CODE   |
 
   @base_config @full_test @fields_validation
   Scenario: Filling 3-number of cvc code for AMEX card
@@ -320,7 +320,7 @@ Feature: Payment methods
       | language |
       | fr_FR    |
 
-  @base_config @full_test @translations
+  @base_config @full_test @translations @apple_test
   Scenario Outline: ApplePay - checking translation for "Payment has been cancelled" status for <language>
     When User changes page language to "<language>"
     When User chooses ApplePay as payment method - response set to "CANCEL"

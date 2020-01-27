@@ -1,8 +1,10 @@
 """ Please configure you solution here
 """
 import pprint
+from datetime import date
 from distutils.util import strtobool
 from attrdict import AttrDict
+
 from utils.logger import _get_logger
 from utils.read_configuration import get_path_from_env, get_from_env
 
@@ -28,6 +30,10 @@ def load_config():
         'REMOTE_REAL_MOBILE': get_from_env('AUTOMATION_REMOTE_REAL_MOBILE', ''),
         'BROWSERSTACK_LOCAL': get_from_env('LOCAL', 'true'),
         'BROWSERSTACK_LOCAL_IDENTIFIER': get_from_env('BROWSERSTACK_LOCAL_IDENTIFIER'),
+        'ACCEPT_SSL_CERTS': get_from_env('ACCEPT_SSL_CERTS', 'true'),
+        'PROJECT_NAME': get_from_env('PROJECT_NAME', 'JS Payments Interface'),
+        'BUILD_NAME': get_from_env('BUILD_NAME', 'Behavioral test: ' + str(date.today())),
+        'BROWSERSTACK_DEBUG': get_from_env('BROWSERSTACK_DEBUG', 'true'),
     }
 
     return AttrDict(config)
@@ -83,6 +89,14 @@ class DriverConfig:
                          "browserstack.localIdentifier": config.BROWSERSTACK_LOCAL_IDENTIFIER,
                          "device": config.REMOTE_DEVICE,
                          "real_mobile": config.REMOTE_REAL_MOBILE,
+                         "acceptSslCerts": config.ACCEPT_SSL_CERTS,
+                         "project": config.PROJECT_NAME,
+                         "build": config.BUILD_NAME,
+                         "browserstack.debug": config.BROWSERSTACK_DEBUG,
+                         # "browserstack.networkLogs": "true",
+                         # "ie.ensureCleanSession": 'true',
+                         # "ie.forceCreateProcessApi": 'true',
+                         # "ignoreProtectedModeSettings": "true",
                          }
         capabilities = {}
         for key, value in possible_caps.items():

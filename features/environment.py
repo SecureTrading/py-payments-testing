@@ -8,6 +8,7 @@
 import ioc_config
 
 from page_factory import PageFactory
+from utils.enums.request_type import RequestType
 from utils.mock_handler import start_mock_server, stub_st_request_type
 
 BEHAVE_DEBUG_ON_ERROR = False
@@ -32,7 +33,10 @@ def before_scenario(context, scenario):
     context.page_factory = PageFactory()
     browser_name = ioc_config.CONFIG.resolve('driver').browser
     scenario.name = '%s_%s' % (scenario.name, browser_name.upper())
-    stub_st_request_type("jsinit.json", "test")
+    stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
+
+    if "apple_test" in scenario.tags and (browser_name not in "Safari"):
+        scenario.skip("SCENARIO SKIPPED as iOS system and Safari is required for ApplePay test")
 
     if "animated_card_repo_test" in scenario.tags:
         context.is_field_in_iframe = False

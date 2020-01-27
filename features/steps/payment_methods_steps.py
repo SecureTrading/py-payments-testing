@@ -45,7 +45,12 @@ def step_impl(context):
 @step("User opens page with payment form")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.open_page(CONFIGURATION.URL.BASE_URL)
+    if 'config_immediate_payment' not in context.scenario.tags:
+        if 'Safari' in context.browser_name:
+            payment_page.open_page('https://webservices.securetrading.net:8443')
+            payment_page.open_page('https://thirdparty.example.com:8443')
+        payment_page.open_page(CONFIGURATION.URL.BASE_URL)
+        time.sleep(1)
 
 
 @when(
@@ -84,6 +89,7 @@ def step_impl(context, action_code):
 @then('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    time.sleep(1)
     payment_page.validate_payment_status_message(payment_status_message)
 
 
