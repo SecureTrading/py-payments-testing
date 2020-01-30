@@ -44,8 +44,9 @@ def print_properties(config):
     Printing all configuration data before starting the tests
     """
     logger = _get_logger()
-    config.pop('COMMAND_EXECUTOR')
-    logger.info(f'CONFIGURATION: \n{pprint.pformat(config, indent=4)}')
+    config_to_print = config.copy()
+    config_to_print.pop('COMMAND_EXECUTOR')
+    logger.info(f'CONFIGURATION: \n{pprint.pformat(config_to_print, indent=4)}')
 
 
 CONFIGURATION = load_config()

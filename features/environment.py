@@ -32,6 +32,7 @@ def before_scenario(context, scenario):
     """Run before each scenario"""
     context.page_factory = PageFactory()
     browser_name = ioc_config.CONFIG.resolve('driver').browser
+    context.browser = browser_name
     scenario.name = '%s_%s' % (scenario.name, browser_name.upper())
     stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
 
