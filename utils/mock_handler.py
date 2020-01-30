@@ -10,6 +10,7 @@ from enum import Enum
 class MockUrl(Enum):
     BASE_URI = "https://merchant.example.com:8443"
     WEBSERVICES_DOMAIN = "https://webservices.securetrading.net:8443"
+    THIRDPARTY_URL = "https://thirdparty.example.com:8443"
     VISA_MOCK_URI = "/visaPaymentStatus"
     CC_MOCK_ACS_URI = "/cardinalAuthenticateCard"
     APPLEPAY_MOCK_URI = "/applePaymentStatus"

@@ -95,10 +95,11 @@ class DriverConfig:
                          "project": config.PROJECT_NAME,
                          "build": config.BUILD_NAME,
                          "browserstack.debug": config.BROWSERSTACK_DEBUG,
-                         # "browserstack.networkLogs": "true",
-                         # "ie.ensureCleanSession": 'true',
+                         "browserstack.networkLogs": 'true',
+                         "ie.ensureCleanSession": 'true',
+                         "ie.usePerProcessProxy": 'true'
                          # "ie.forceCreateProcessApi": 'true',
-                         # "ignoreProtectedModeSettings": "true",
+                         # "ignoreProtectedModeSettings": 'true',
                          }
         capabilities = {}
         for key, value in possible_caps.items():

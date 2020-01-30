@@ -46,9 +46,9 @@ def step_impl(context):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if 'config_immediate_payment' not in context.scenario.tags:
-        if 'Safari' in context.browser_name:
-            payment_page.open_page('https://webservices.securetrading.net:8443')
-            payment_page.open_page('https://thirdparty.example.com:8443')
+        if 'Safari' in context.browser or ('ie' in context.browser):
+            payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
+            payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
         payment_page.open_page(CONFIGURATION.URL.BASE_URL)
         time.sleep(1)
 
