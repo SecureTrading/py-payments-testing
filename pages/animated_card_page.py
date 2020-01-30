@@ -1,3 +1,6 @@
+import time
+
+import ioc_config
 from locators.animated_card_locators import AnimatedCardLocators
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
@@ -8,7 +11,11 @@ import json
 class AnimatedCardPage(BasePage):
 
     def fill_payment_form_without_iframe(self, card_number, expiration, cvv):
-        self._action.send_keys(AnimatedCardLocators.card_number_input_field, card_number)
+        if "ie" in ioc_config.CONFIG.resolve('driver').browser:
+            for digit in card_number:
+                self._action.send_keys(AnimatedCardLocators.card_number_input_field, digit)
+        else:
+            self._action.send_keys(AnimatedCardLocators.card_number_input_field, card_number)
         self._action.send_keys(AnimatedCardLocators.expiration_date_input_field, expiration)
         if cvv is not None:
             self._action.send_keys(AnimatedCardLocators.security_code_input_field, cvv)
@@ -106,7 +113,9 @@ class AnimatedCardPage(BasePage):
 
     def validate_animated_card_element_translation(self, element, language, key, is_field_in_iframe):
         actual_translation = self.get_animated_card_label_translation(element, is_field_in_iframe)
-        expected_translation = self.get_translation_from_json(language, key).upper()
+        expected_translation = self.get_translation_from_json(language, key)
+        if "safari" not in ioc_config.CONFIG.resolve('driver').browser:
+            expected_translation = expected_translation.upper()
         assert actual_translation in expected_translation, f"Translation is not correct: " \
                                                            f"should be {expected_translation} but is {actual_translation}"
 

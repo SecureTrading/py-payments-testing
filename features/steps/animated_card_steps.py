@@ -1,7 +1,10 @@
+import time
+
 from behave import *
 
 from configuration import CONFIGURATION
 from utils.enums.field_type import FieldType
+from utils.mock_handler import MockUrl
 
 use_step_matcher("re")
 
@@ -9,7 +12,10 @@ use_step_matcher("re")
 @step("User opens page with animated card")
 def step_impl(context):
     animated_card_page = context.page_factory.get_page(page_name='animated_card')
+    if 'safari' in context.browser:
+        animated_card_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
     animated_card_page.open_page(CONFIGURATION.URL.BASE_URL)
+    time.sleep(1)
 
 
 @when('User fills payment form with data: "(?P<card_number>.+)", "(?P<expiration_date>.+)" and "(?P<cvv>.+)"')

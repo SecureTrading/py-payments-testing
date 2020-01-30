@@ -1,6 +1,7 @@
 {
   "analytics": true,
   "animatedCard": false,
+  "byPassCards": ["PIBA"],
   "deferInit": false,
   "fieldsToSubmit": ["securitycode"],
   "buttonId": "merchant-submit-button",
