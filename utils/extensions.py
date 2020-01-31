@@ -2,6 +2,8 @@
 """
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
+
+import ioc_config
 from utils.waits import Waits
 
 
@@ -15,6 +17,12 @@ class WebElementsExtensions(Waits):
         self.switch_to_iframe(iframe_name)
         element = self.find_element(locator)
         element.send_keys(string)
+        self.switch_to_default_iframe()
+
+    def switch_to_iframe_and_send_keys_by_java_script(self, iframe_name, locator, string):
+        # self.switch_to_iframe(iframe_name)
+        # element = self.find_element(locator)
+        self._browser.execute_script("window.frames['st-card-number-iframe'].document.getElementById('st-card-number-input').value='123'")
         self.switch_to_default_iframe()
 
     def switch_to_iframe_and_click(self, iframe_name, locator):
