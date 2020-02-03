@@ -56,6 +56,13 @@ class WebElementsExtensions(Waits):
         element = self._browser.find_element(*locator)
         return element is not None
 
+    def is_iframe_displayed(self, iframe_name):
+        try:
+            self._browser.switch_to.frame(iframe_name)
+            return True
+        except:
+            return False
+
     def find_elements(self, locator):
         self.wait_for_ajax()
         elements = self._browser.find_elements(*locator)

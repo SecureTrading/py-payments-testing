@@ -40,7 +40,6 @@ class PaymentMethodsPage(BasePage):
                                                                        value)
 
     def fill_payment_form(self, card_number, expiration_date, cvv):
-        self.fill_credit_card_field_by_java_script(FieldType.CARD_NUMBER.name, card_number)
         if CONFIGURATION.REMOTE_DEVICE.startswith('i'):
             self.fill_credit_card_field_by_java_script(FieldType.CARD_NUMBER.name, card_number)
             self.fill_credit_card_field_by_java_script(FieldType.EXPIRATION_DATE.name, expiration_date)
@@ -154,13 +153,13 @@ class PaymentMethodsPage(BasePage):
     def is_field_displayed(self, field_type):
         is_displayed = False
         if field_type == FieldType.CARD_NUMBER.name:
-            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.card_number_input_field)
+            is_displayed = self._action.is_iframe_displayed(FieldType.CARD_NUMBER.value)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.expiration_date_input_field)
+            is_displayed = self._action.is_iframe_displayed(FieldType.EXPIRATION_DATE.value)
         elif field_type == FieldType.SECURITY_CODE.name:
-            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.security_code_input_field)
+            is_displayed = self._action.is_iframe_displayed(FieldType.SECURITY_CODE.value)
         elif field_type == FieldType.SUBMIT_BUTTON.name:
-            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.pay_mock_button)
+            is_displayed = self._action.is_iframe_displayed(FieldType.NOTIFICATION_FRAME.value)
         return is_displayed
 
     def get_element_translation(self, field_type, locator):

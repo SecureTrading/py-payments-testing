@@ -25,11 +25,18 @@ def get_mock_response_from_json(mock):
     return mock_json
 
 
-def start_mock_server():
-    wm = WireMockServer()
-    wm.port = MockUrl.PORT.value
-    wm.start()
-    configure_for_local_host()
+class MockServer():
+    wiremock_server = WireMockServer()
+
+    @classmethod
+    def start_mock_server(cls):
+        cls.wiremock_server.port = MockUrl.PORT.value
+        cls.wiremock_server.start()
+        configure_for_local_host()
+
+    @classmethod
+    def stop_mock_server(cls):
+        cls.wiremock_server.stop()
 
 
 def configure_for_local_host():

@@ -57,3 +57,6 @@ class Browser(Waits):
 
     def switch_to_default_content(self):
         return self._browser.current_url
+
+    def clear_storage(self):
+        self._browser.execute_script("window.localStorage.clear();")

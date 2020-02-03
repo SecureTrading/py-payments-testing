@@ -264,7 +264,10 @@ def step_impl(context):
 def step_impl(context):
     scenario_name = context.scenario.name
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    time.sleep(1)
     if scenario_name[0:4] in "Visa":
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_url)
+        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
+                                                                 context.test_data.step_payment_visa_url)
     elif scenario_name[0:4] in "Card":
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_url)
+        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
+                                                                 context.test_data.step_payment_cardinal_url)

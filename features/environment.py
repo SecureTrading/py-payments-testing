@@ -9,7 +9,7 @@ import ioc_config
 
 from page_factory import PageFactory
 from utils.enums.request_type import RequestType
-from utils.mock_handler import start_mock_server, stub_st_request_type
+from utils.mock_handler import stub_st_request_type, MockServer
 
 BEHAVE_DEBUG_ON_ERROR = False
 
@@ -25,7 +25,7 @@ def before_all(context):
     """Run before the whole shooting match"""
     context.config = ioc_config.CONFIG.resolve('test')
     context.test_data = ioc_config.TEST_DATA.resolve('test')
-    start_mock_server()
+    MockServer.start_mock_server()
 
 
 def before_scenario(context, scenario):
@@ -53,6 +53,8 @@ def after_scenario(context, scenario):
     browser_name = ioc_config.CONFIG.resolve('driver').browser
     scenario.name = '%s_%s' % (scenario.name, browser_name.upper())
     executor.clear_cookies()
+    executor.clear_storage()
+    MockServer.stop_mock_server()
 
 
 def after_all(context):

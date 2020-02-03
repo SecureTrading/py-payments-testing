@@ -13,7 +13,6 @@ Feature: Payment methods
     And THREEDQUERY mock response set to "ENROLLED_Y"
     And ACS mock response set to "OK"
     And User clicks Pay button - AUTH response set to "<action_code>"
-
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
     @smoke_test
