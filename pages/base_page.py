@@ -15,3 +15,9 @@ class BasePage:
 
     def open_page(self, url):
         self._executor.open_page(url)
+
+    def scroll_to_bottom(self):
+        self._executor.scroll_to_bottom()
+
+    def scroll_to_top(self):
+        self._executor.scroll_to_top()

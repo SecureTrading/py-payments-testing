@@ -27,6 +27,7 @@ def step_impl(context, card_number, expiration_date, cvv):
 @then("User will see card icon connected to card type (?P<card_type>.+)")
 def step_impl(context, card_type):
     animated_card_page = context.page_factory.get_page(page_name='animated_card')
+    animated_card_page.scroll_to_bottom()
     animated_card_page.validate_credit_card_icon(card_type, context.is_field_in_iframe)
     context.card_type = card_type
 
@@ -80,6 +81,7 @@ def step_impl(context, expected_message, field):
 @then('User will see that labels displayed on animated card are translated into "(?P<language>.+)"')
 def step_impl(context, language):
     animated_card_page = context.page_factory.get_page(page_name='animated_card')
+    animated_card_page.scroll_to_bottom()
     animated_card_page.validate_animated_card_translation(language, context.is_field_in_iframe)
 
 
