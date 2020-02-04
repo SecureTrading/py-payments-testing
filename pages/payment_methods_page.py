@@ -25,29 +25,10 @@ class PaymentMethodsPage(BasePage):
             self._action.switch_to_iframe_and_send_keys(FieldType.SECURITY_CODE.value,
                                                         PaymentMethodsLocators.security_code_input_field, value)
 
-    def fill_credit_card_field_by_java_script(self, field_type, value):
-        if field_type == FieldType.CARD_NUMBER.name:
-            self._action.switch_to_iframe_and_send_keys_by_java_script(FieldType.CARD_NUMBER.value,
-                                                                       PaymentMethodsLocators.card_number_input_field,
-                                                                       value)
-        elif field_type == FieldType.EXPIRATION_DATE.name:
-            self._action.switch_to_iframe_and_send_keys_by_java_script(FieldType.EXPIRATION_DATE.value,
-                                                                       PaymentMethodsLocators.expiration_date_input_field,
-                                                                       value)
-        elif field_type == FieldType.SECURITY_CODE.name:
-            self._action.switch_to_iframe_and_send_keys_by_java_script(FieldType.SECURITY_CODE.value,
-                                                                       PaymentMethodsLocators.security_code_input_field,
-                                                                       value)
-
     def fill_payment_form(self, card_number, expiration_date, cvv):
-        if CONFIGURATION.REMOTE_DEVICE.startswith('i'):
-            self.fill_credit_card_field_by_java_script(FieldType.CARD_NUMBER.name, card_number)
-            self.fill_credit_card_field_by_java_script(FieldType.EXPIRATION_DATE.name, expiration_date)
-            self.fill_credit_card_field_by_java_script(FieldType.SECURITY_CODE.name, cvv)
-        else:
-            self.fill_credit_card_field(FieldType.CARD_NUMBER.name, card_number)
-            self.fill_credit_card_field(FieldType.EXPIRATION_DATE.name, expiration_date)
-            self.fill_credit_card_field(FieldType.SECURITY_CODE.name, cvv)
+        self.fill_credit_card_field(FieldType.CARD_NUMBER.name, card_number)
+        self.fill_credit_card_field(FieldType.EXPIRATION_DATE.name, expiration_date)
+        self.fill_credit_card_field(FieldType.SECURITY_CODE.name, cvv)
 
     def fill_merchant_input_field(self, field_type, value):
         if field_type == FieldType.NAME.name:

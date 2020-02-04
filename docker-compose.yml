@@ -9,7 +9,7 @@ services:
       securetrading:
         aliases:
           - library.securetrading.net
-          - merchant.example.com
+          - merchant.securetrading.net
 
   tests:
     build: .
