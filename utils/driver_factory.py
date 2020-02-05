@@ -1,5 +1,5 @@
 """This module is essential for executing our test against real web browser.
-It provides 3 separated classes(SeleniumDriver, Driver and DriverFactory)
+It provides 3 separated classes(SeleniumDriver, Driver and self)
 containing several functions which allow to create, manage and distribute
 WebDriver instance which is responsible for direct connection and allows
 to manipulate browser window thanks to its functions.
@@ -46,12 +46,16 @@ class DriverFactory:
                                 remote_capabilities=self._remote_capabilities
                                 )
         browser = driver.get_driver()
-        DriverFactory._browser = browser
+        self._browser = browser
 
     def get_browser(self):
-        if not DriverFactory._browser:
+        if not self._browser:
             self._set_browser()
-        return DriverFactory._browser
+        return self._browser
+
+    def close_browser(self):
+        self._browser.quit()
+        self._browser = None
 
 
 class Driver:

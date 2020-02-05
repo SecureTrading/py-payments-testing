@@ -8,6 +8,7 @@ from selenium.common.exceptions import TimeoutException
 class Waits:
 
     def __init__(self, driver__browser, config__executor):
+        self._driver_browser = driver__browser
         self._browser = driver__browser.get_browser()
         self._timeout = config__executor.timeout
         self._wait = WebDriverWait(self._browser, self._timeout)
@@ -22,10 +23,11 @@ class Waits:
         return self._wait.until(ec.text_to_be_present_in_element(*locator, text_))
 
     def wait_for_ajax(self):
-        self._wait.until(lambda driver: self._browser.execute_script
-                         ('return jQuery.active') == 0)
-        self._wait.until(lambda driver: self._browser.execute_script
-                         ('return document.readyState') == 'complete')
+        # self._wait.until(lambda driver: self._browser.execute_script
+        #                  ('return jQuery.active') == 0)
+        # self._wait.until(lambda driver: self._browser.execute_script
+        #                  ('return document.readyState') == 'complete')
+        pass
 
     def wait_until_alert_is_presented(self):
         try:

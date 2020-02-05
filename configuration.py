@@ -14,7 +14,7 @@ def load_config():
     Set config env variables
     """
     config = {
-        'URL': AttrDict({"BASE_URL": get_from_env("BASE_URL", "https://merchant.securetrading.net:8443")}),
+        'URL': AttrDict({"BASE_URL": get_from_env("BASE_URL", "https://merchant.securetrading.net:8444")}),
         'REPORTS_PATH': get_path_from_env('AUTOMATION_REPORTS', 'reports'),
         'BROWSER': get_from_env('AUTOMATION_BROWSER', 'chrome'),
         'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 10),
@@ -29,7 +29,7 @@ def load_config():
         'REMOTE_DEVICE': get_from_env('DEVICE', ''),
         'REMOTE_REAL_MOBILE': get_from_env('REAL_MOBILE', ''),
         'BROWSERSTACK_LOCAL': get_from_env('LOCAL', 'true'),
-        'BROWSERSTACK_LOCAL_IDENTIFIER': get_from_env('BS_LOCAL_IDENTIFIER'),
+        'BROWSERSTACK_LOCAL_IDENTIFIER': get_from_env('BS_LOCAL_IDENTIFIER',''),
         'ACCEPT_SSL_CERTS': get_from_env('ACCEPT_SSL_CERTS', 'true'),
         'PROJECT_NAME': get_from_env('PROJECT_NAME', 'JS Payments Interface'),
         'BUILD_NAME': get_from_env('BUILD_NAME', 'Behavioral test: ' + str(date.today())),

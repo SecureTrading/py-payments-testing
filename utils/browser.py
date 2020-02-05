@@ -10,7 +10,7 @@ class Browser(Waits):
         self.fullscreen()
 
     def close_browser(self):
-        self._browser.quit()
+        self._driver_browser.close_browser()
 
     def clear_cookies(self):
         self._browser.delete_all_cookies()

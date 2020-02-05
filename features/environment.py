@@ -31,6 +31,7 @@ def before_all(context):
 def before_scenario(context, scenario):
     """Run before each scenario"""
     context.page_factory = PageFactory()
+    context.executor = ioc_config.EXECUTOR.resolve('test')
     browser_name = ioc_config.CONFIG.resolve('driver').browser
     context.browser = browser_name
     scenario.name = '%s_%s' % (scenario.name, browser_name.upper())
@@ -49,20 +50,19 @@ def after_scenario(context, scenario):
     """Run after each scenario"""
     context.page_factory = PageFactory()
 
-    executor = ioc_config.EXECUTOR.resolve('test')
     browser_name = ioc_config.CONFIG.resolve('driver').browser
     scenario.name = '%s_%s' % (scenario.name, browser_name.upper())
-    executor.clear_cookies()
-    executor.clear_storage()
+    context.executor.close_browser()
     MockServer.stop_mock_server()
 
 
 def after_all(context):
     """Run after the whole shooting match"""
-    context.page_factory = PageFactory()
-
-    executor = ioc_config.EXECUTOR.resolve('test')
-    executor.close_browser()
+    # context.page_factory = PageFactory()
+    #
+    # executor = ioc_config.EXECUTOR.resolve('test')
+    # executor.close_browser()
+    pass
 
 
 def after_step(context, step):
