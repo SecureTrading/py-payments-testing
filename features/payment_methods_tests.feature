@@ -117,11 +117,11 @@ Feature: Payment methods
 #      | 1801000000000901    | 1801 0000 0000 0901    | 12/23          | 123 | ASTROPAYCARD |
 #      | 3000000000000111    | 3000 000000 000111     | 12/23          | 123 | DINERS       |
 
-    #ToDo Uncomment when changes on js-payments will be ready
-#  @base_config @full_test
-#  Scenario: Disabled CVC field for PIBA card type
-#    When User fills payment form with credit card number "3089500000000000021", expiration date "12/23"
-#    Then User will see that CVC field is disabled
+
+  @base_config @full_test
+  Scenario: Disabled CVC field for PIBA card type
+    When User fills payment form with credit card number "3089500000000000021", expiration date "12/23"
+    Then User will see that "SECURITY_CODE" field is disabled
 
   @base_config @smoke_test @full_test
   Scenario: Submit payment form without data - fields validation
@@ -228,15 +228,15 @@ Feature: Payment methods
     When User fills payment form with credit card number "4000000000001000", expiration date "12/22" and cvv "123"
     And THREEDQUERY mock response set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response set to "<action_code>"
-    Then User will see that Submit button is enabled after payment
-    And User will see that all input fields are enabled
+    Then User will see that Submit button is "<form_status>" after payment
+    And User will see that all input fields are "<form_status>"
     @smoke_test
     Examples:
-      | action_code |
-      | OK          |
+      | action_code | form_status |
+      | OK          | disabled    |
     Examples:
-      | action_code |
-      | DECLINE     |
+      | action_code | form_status |
+      | DECLINE     | enabled     |
 
   @base_config @full_test @translations
   Scenario Outline: Checking translations of labels and fields error for <language>
@@ -388,6 +388,7 @@ Feature: Payment methods
   @config_update_jwt_true @smoke_test @full_test
   Scenario: Successful payment with updated JWT
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And User fills amount field
     And THREEDQUERY mock response set to "ENROLLED_Y"
     And ACS mock response set to "OK"
     And User clicks Pay button - AUTH response set to "OK"
@@ -401,10 +402,17 @@ Feature: Payment methods
     And User opens payment page
     Then User will see payment status information: "Payment has been successfully processed"
 
-  @config_submit_cvv_only @smoke_test
+  @config_submit_cvv_only @smoke_test @full_test
   Scenario: Successful payment when cvv field is selected to submit
     When User fills "SECURITY_CODE" field "123"
     And THREEDQUERY mock response set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will not see card number and expiration date fields
+
+  @base_config @bypass_cards @smoke_test @full_test
+  Scenario: Successful payment using non-3d "PIBA" card type
+    When User fills payment form with credit card number "3089500000000000021", expiration date "12/23"
+    And User clicks Pay button - AUTH response set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color

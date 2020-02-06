@@ -141,3 +141,17 @@ class AnimatedCardPage(BasePage):
         elif field_type == FieldType.SUBMIT_BUTTON.name:
             is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.pay_mock_button)
         return is_displayed
+
+    def is_field_enabled(self, field_type):
+        is_enabled = False
+        if field_type == FieldType.CARD_NUMBER.name:
+            is_enabled = self._action.is_element_enabled(AnimatedCardLocators.card_number_input_field)
+        elif field_type == FieldType.EXPIRATION_DATE.name:
+            is_enabled = self._action.is_element_enabled(AnimatedCardLocators.expiration_date_input_field)
+        elif field_type == FieldType.SECURITY_CODE.name:
+            is_enabled = self._action.is_element_enabled(AnimatedCardLocators.security_code_input_field)
+        return is_enabled
+
+    def validate_if_field_is_disabled(self, field_type):
+        is_enabled = self.is_field_enabled(field_type)
+        assert is_enabled is False, f'{FieldType[field_type].name} field is not disabled but should be'
