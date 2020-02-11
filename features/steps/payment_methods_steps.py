@@ -215,9 +215,9 @@ def step_impl(context):
 def step_impl(context, field):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if field == FieldType.CARD_NUMBER.name:
-        payment_page.validate_css_style(FieldType.CARD_NUMBER.name, "background-color", "rgba(240, 248, 255, 1)")
+        payment_page.validate_css_style(FieldType.CARD_NUMBER.name, "background-color", '240, 248, 255')
     elif field == FieldType.SECURITY_CODE.name:
-        payment_page.validate_css_style(FieldType.SECURITY_CODE.name, "background-color", "rgba(255, 243, 51, 1)")
+        payment_page.validate_css_style(FieldType.SECURITY_CODE.name, "background-color", '255, 243, 51')
 
 
 @when('User changes page language to "(?P<language>.+)"')

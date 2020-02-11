@@ -194,8 +194,8 @@ class PaymentMethodsPage(BasePage):
 
     def validate_css_style(self, field_type, property, expected_style):
         actual_css_style = self.get_field_css_style(field_type, property)
-        assert actual_css_style in expected_style, f'{FieldType[field_type].name} style is not correct, ' \
-                                                   f'should be  "{expected_style}" but is "{expected_style}"'
+        assert expected_style in actual_css_style, f'{FieldType[field_type].name} style is not correct, ' \
+                                                   f'should be  "{expected_style}" but is "{actual_css_style}"'
 
     def validate_element_translation(self, field_type, element, language, key):
         actual_translation = self.get_element_translation(field_type, element)
