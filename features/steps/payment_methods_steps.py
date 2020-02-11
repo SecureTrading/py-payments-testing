@@ -178,19 +178,19 @@ def step_impl(context, action_code):
     payment_page.choose_payment_methods(PaymentType.APPLE_PAY.name)
 
 
-@then("User will see that Submit button is enabled after payment")
-def step_impl(context):
+@then('User will see that Submit button is "(?P<form_status>.+)" after payment')
+def step_impl(context, form_status):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     time.sleep(1)
-    payment_page.validate_if_field_is_enabled(FieldType.SUBMIT_BUTTON.name)
+    payment_page.validate_form_status(FieldType.SUBMIT_BUTTON.name, form_status)
 
 
-@step("User will see that all input fields are enabled")
-def step_impl(context):
+@step('User will see that all input fields are "(?P<form_status>.+)"')
+def step_impl(context, form_status):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_if_field_is_enabled(FieldType.CARD_NUMBER.name)
-    payment_page.validate_if_field_is_enabled(FieldType.EXPIRATION_DATE.name)
-    payment_page.validate_if_field_is_enabled(FieldType.SECURITY_CODE.name)
+    payment_page.validate_form_status(FieldType.CARD_NUMBER.name, form_status)
+    payment_page.validate_form_status(FieldType.EXPIRATION_DATE.name, form_status)
+    payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
 
 
 @step('AUTH response set to "(?P<action_code>.+)"')
@@ -215,9 +215,9 @@ def step_impl(context):
 def step_impl(context, field):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if field == FieldType.CARD_NUMBER.name:
-        payment_page.validate_css_style(FieldType.CARD_NUMBER.name, "background-color", "rgba(240, 248, 255, 1)")
+        payment_page.validate_css_style(FieldType.CARD_NUMBER.name, "background-color", '240, 248, 255')
     elif field == FieldType.SECURITY_CODE.name:
-        payment_page.validate_css_style(FieldType.SECURITY_CODE.name, "background-color", "rgba(255, 243, 51, 1)")
+        payment_page.validate_css_style(FieldType.SECURITY_CODE.name, "background-color", '255, 243, 51')
 
 
 @when('User changes page language to "(?P<language>.+)"')
@@ -271,3 +271,22 @@ def step_impl(context):
     elif scenario_name[0:4] in "Card":
         payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
                                                                  context.test_data.step_payment_cardinal_url)
+
+
+@when('User fills payment form with credit card number "(?P<card_number>.+)", expiration date "(?P<exp_date>.+)"')
+def step_impl(context, card_number, exp_date):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.fill_credit_card_field(FieldType.CARD_NUMBER.name, card_number)
+    payment_page.fill_credit_card_field(FieldType.EXPIRATION_DATE.name, exp_date)
+
+
+@step("User fills amount field")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.fill_amount_field('1')
+
+
+@then('User will see that "(?P<field_type>.+)" field is disabled')
+def step_impl(context, field_type):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_if_field_is_disabled(field_type)

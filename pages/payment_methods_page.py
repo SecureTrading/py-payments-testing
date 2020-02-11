@@ -43,6 +43,9 @@ class PaymentMethodsPage(BasePage):
         self.fill_merchant_input_field(FieldType.EMAIL.name, email)
         self.fill_merchant_input_field(FieldType.PHONE.name, phone)
 
+    def fill_amount_field(self, value):
+        self._action.send_keys(PaymentMethodsLocators.amount_field, value)
+
     def get_payment_status_message(self):
         status_message = self._action.switch_to_iframe_and_get_text(FieldType.NOTIFICATION_FRAME.value,
                                                                     PaymentMethodsLocators.notification_frame)
@@ -191,8 +194,8 @@ class PaymentMethodsPage(BasePage):
 
     def validate_css_style(self, field_type, property, expected_style):
         actual_css_style = self.get_field_css_style(field_type, property)
-        assert actual_css_style in expected_style, f'{FieldType[field_type].name} style is not correct, ' \
-                                                   f'should be  "{expected_style}" but is "{expected_style}"'
+        assert expected_style in actual_css_style, f'{FieldType[field_type].name} style is not correct, ' \
+                                                   f'should be  "{expected_style}" but is "{actual_css_style}"'
 
     def validate_element_translation(self, field_type, element, language, key):
         actual_translation = self.get_element_translation(field_type, element)
@@ -241,3 +244,11 @@ class PaymentMethodsPage(BasePage):
         actual_url = self._executor.get_page_url()
         assert expected_url in actual_url, f'Url is not correct, ' \
                                            f'should be: "{expected_url}" but is: "{actual_url}"'
+
+    def validate_form_status(self, field_type, form_status):
+        if 'enabled' in form_status:
+            self.validate_if_field_is_enabled(field_type)
+        else:
+            self.validate_if_field_is_disabled(field_type)
+
+

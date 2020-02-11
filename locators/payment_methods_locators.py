@@ -8,6 +8,7 @@ class PaymentMethodsLocators:
     merchant_name: By = (By.ID, 'example-form-name')
     merchant_email: By = (By.ID, 'example-form-email')
     merchant_phone: By = (By.ID, 'example-form-phone')
+    amount_field: By = (By.ID, 'example-form-amount')
 
     # Credit card form
     card_number_input_field: By = (By.ID, 'st-card-number-input')

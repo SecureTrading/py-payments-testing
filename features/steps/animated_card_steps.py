@@ -85,7 +85,7 @@ def step_impl(context, language):
     animated_card_page.validate_animated_card_translation(language, context.is_field_in_iframe)
 
 
-@then('User will see that "(?P<field>.+)" field is disabled')
+@then('User will see "(?P<field>.+)" field is disabled')
 def step_impl(context, field):
     animated_card_page = context.page_factory.get_page(page_name='animated_card')
     animated_card_page.is_field_displayed(FieldType[field].name)
