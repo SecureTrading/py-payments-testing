@@ -66,3 +66,6 @@ class Browser(Waits):
 
     def clear_storage(self):
         self._browser.execute_script("window.localStorage.clear();")
+
+    def get_session_id(self):
+        return self._browser.session_id
