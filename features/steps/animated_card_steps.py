@@ -1,5 +1,3 @@
-import time
-
 from behave import *
 
 from configuration import CONFIGURATION
@@ -15,7 +13,7 @@ def step_impl(context):
     if 'safari' in context.browser:
         animated_card_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
     animated_card_page.open_page(CONFIGURATION.URL.BASE_URL)
-    time.sleep(1)
+    context.executor.wait_for_javascript()
 
 
 @when('User fills payment form with data: "(?P<card_number>.+)", "(?P<expiration_date>.+)" and "(?P<cvv>.+)"')

@@ -1,5 +1,7 @@
 """ This class consist all methods related with different waits
 """
+import time
+
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
@@ -43,3 +45,7 @@ class Waits:
 
     def switch_to_default_content(self):
         self._browser.switch_to.default_content()
+
+    def wait_for_javascript(self):
+        time.sleep(1)
+        self._wait.until(lambda driver: self._browser.execute_script('return document.readyState') == 'complete')

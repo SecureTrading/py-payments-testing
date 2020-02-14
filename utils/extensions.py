@@ -13,10 +13,19 @@ class WebElementsExtensions(Waits):
         element = self.find_element(locator)
         element.send_keys(string)
 
+    def send_key_one_by_one(self, locator, string):
+        for x in string:
+            self.send_keys(locator, x)
+
     def switch_to_iframe_and_send_keys(self, iframe_name, locator, string):
         self.switch_to_iframe(iframe_name)
         element = self.find_element(locator)
         element.send_keys(string)
+        self.switch_to_default_iframe()
+
+    def switch_to_iframe_and_send_keys_one_by_one(self, iframe_name, locator, string):
+        self.switch_to_iframe(iframe_name)
+        self.send_key_one_by_one(locator, string)
         self.switch_to_default_iframe()
 
     def switch_to_iframe_and_send_keys_by_java_script(self, iframe_name, locator, string):

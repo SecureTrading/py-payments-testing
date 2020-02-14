@@ -1,5 +1,3 @@
-import time
-
 import ioc_config
 from locators.animated_card_locators import AnimatedCardLocators
 from locators.payment_methods_locators import PaymentMethodsLocators
@@ -12,8 +10,7 @@ class AnimatedCardPage(BasePage):
 
     def fill_payment_form_without_iframe(self, card_number, expiration, cvv):
         if "ie" in ioc_config.CONFIG.resolve('driver').browser:
-            for digit in card_number:
-                self._action.send_keys(AnimatedCardLocators.card_number_input_field, digit)
+            self._action.send_key_one_by_one(AnimatedCardLocators.card_number_input_field, card_number)
         else:
             self._action.send_keys(AnimatedCardLocators.card_number_input_field, card_number)
         self._action.send_keys(AnimatedCardLocators.expiration_date_input_field, expiration)

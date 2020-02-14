@@ -49,8 +49,9 @@ def step_impl(context):
         if 'safari' in context.browser or ('ie' in context.browser):
             payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
             payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
+            context.executor.wait_for_javascript()
         payment_page.open_page(CONFIGURATION.URL.BASE_URL)
-        time.sleep(1)
+        context.executor.wait_for_javascript()
 
 
 @when(
@@ -89,7 +90,7 @@ def step_impl(context, action_code):
 @then('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    time.sleep(1)
+    context.executor.wait_for_javascript()
     payment_page.validate_payment_status_message(payment_status_message)
 
 
@@ -257,7 +258,12 @@ def step_impl(context, key, language):
 @step("User opens payment page")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if 'safari' in context.browser or ('ie' in context.browser):
+        payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
+        payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
+        context.executor.wait_for_javascript()
     payment_page.open_page(CONFIGURATION.URL.BASE_URL)
+    context.executor.wait_for_javascript()
 
 
 @then("User will see payment status information included in url")

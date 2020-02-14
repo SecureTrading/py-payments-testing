@@ -1,6 +1,4 @@
-import time
-
-from configuration import CONFIGURATION
+import ioc_config
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
 from utils.enums.field_type import FieldType
@@ -16,7 +14,11 @@ class PaymentMethodsPage(BasePage):
 
     def fill_credit_card_field(self, field_type, value):
         if field_type == FieldType.CARD_NUMBER.name:
-            self._action.switch_to_iframe_and_send_keys(FieldType.CARD_NUMBER.value,
+            if "ie" in ioc_config.CONFIG.resolve('driver').browser:
+                self._action.switch_to_iframe_and_send_keys_one_by_one(FieldType.CARD_NUMBER.value,
+                                                        PaymentMethodsLocators.card_number_input_field, value)
+            else:
+                self._action.switch_to_iframe_and_send_keys(FieldType.CARD_NUMBER.value,
                                                         PaymentMethodsLocators.card_number_input_field, value)
         elif field_type == FieldType.EXPIRATION_DATE.name:
             self._action.switch_to_iframe_and_send_keys(FieldType.EXPIRATION_DATE.value,
@@ -74,10 +76,12 @@ class PaymentMethodsPage(BasePage):
 
     def choose_payment_methods(self, payment_type):
         if payment_type == PaymentType.VISA_CHECKOUT.name:
-            time.sleep(1)
+            self._executor.wait_for_javascript()
+            self.scroll_to_bottom()
             self._action.click(PaymentMethodsLocators.visa_checkout_mock_button)
         elif payment_type == PaymentType.APPLE_PAY.name:
-            time.sleep(1)
+            self._executor.wait_for_javascript()
+            self.scroll_to_bottom()
             self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
         elif payment_type == PaymentType.CARDINAL_COMMERCE.name:
             self._action.click(PaymentMethodsLocators.pay_mock_button)
@@ -240,7 +244,7 @@ class PaymentMethodsPage(BasePage):
         return translation[key]
 
     def validate_if_url_contains_info_about_payment(self, expected_url):
-        time.sleep(1)
+        self._executor.wait_for_javascript()
         actual_url = self._executor.get_page_url()
         assert expected_url in actual_url, f'Url is not correct, ' \
                                            f'should be: "{expected_url}" but is: "{actual_url}"'

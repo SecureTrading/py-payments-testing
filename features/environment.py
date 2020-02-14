@@ -15,7 +15,6 @@ from utils.mock_handler import stub_st_request_type, MockServer
 
 BEHAVE_DEBUG_ON_ERROR = False
 
-
 def setup_debug_on_error(userdata):
     """Debug-on-Error(in case of step failures) providing, by using after_step() hook.
     The debugger starts when step definition fails"""
@@ -56,8 +55,8 @@ def after_scenario(context, scenario):
     scenario.name = '%s_%s' % (scenario.name, browser_name.upper())
     if scenario.status == 'failed':
         mark_test_as_failed(context.session_id)
-    context.executor.clear_cookies()
-    context.executor.clear_storage()
+    # context.executor.clear_cookies()
+    # context.executor.clear_storage()
     MockServer.stop_mock_server()
     context.executor.close_browser()
 

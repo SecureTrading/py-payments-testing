@@ -4,7 +4,6 @@ import pprint
 from datetime import date
 from distutils.util import strtobool
 from attrdict import AttrDict
-
 from utils.logger import _get_logger
 from utils.read_configuration import get_path_from_env, get_from_env
 
@@ -99,7 +98,7 @@ class DriverConfig:
                          "ie.ensureCleanSession": 'true',
                          "ie.usePerProcessProxy": 'true',
                          # "ie.forceCreateProcessApi": 'true',
-                         "ignoreProtectedModeSettings": 'true',
+                         # "ignoreProtectedModeSettings": 'true',
                          }
         capabilities = {}
         for key, value in possible_caps.items():
