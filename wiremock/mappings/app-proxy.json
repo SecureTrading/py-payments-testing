@@ -5,7 +5,7 @@
         "urlPattern": ".*"
     },
     "response": {
-        "proxyBaseUrl" : "https://library.securetrading.net",
+        "proxyBaseUrl" : "https://library.securetrading.net:8443",
         "headers": {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": "content-type",

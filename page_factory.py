@@ -21,9 +21,9 @@ PAGES.add_sub_container(MODULES)
 
 # Register pages here
 PAGES.register_callable_with_deps('payment_methods_page', PaymentMethodsPage,
-                                  lifetime=InstanceLifetime.Singleton)
+                                  lifetime=InstanceLifetime.NewInstancePerCall)
 PAGES.register_callable_with_deps('animated_card_page', AnimatedCardPage,
-                                  lifetime=InstanceLifetime.Singleton)
+                                  lifetime=InstanceLifetime.NewInstancePerCall)
 
 
 class PageFactory:

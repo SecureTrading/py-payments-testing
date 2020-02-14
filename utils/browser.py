@@ -1,4 +1,5 @@
 """ This class consist all methods related with browser activities"""
+from configuration import CONFIGURATION
 from utils.waits import Waits
 
 
@@ -9,7 +10,7 @@ class Browser(Waits):
         self.fullscreen()
 
     def close_browser(self):
-        self._browser.quit()
+        self._driver_browser.close_browser()
 
     def clear_cookies(self):
         self._browser.delete_all_cookies()
@@ -48,12 +49,23 @@ class Browser(Waits):
         self._browser.execute_script("window.scrollBy(100,0)")  # Scroll 100px to the right
 
     def fullscreen(self):
-        # maximize_window isn't implemented for the iOS driver
-        if not(self._browser.name == 'safari' and self._browser.mobile):
+        if CONFIGURATION.REMOTE_DEVICE is None:
             self._browser.maximize_window()
 
     def scroll_into_view(self, element):
         self._browser.execute_script("arguments[0].scrollIntoView();", element)
 
+    def scroll_to_bottom(self):
+        self._browser.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+
+    def scroll_to_top(self):
+        self._browser.execute_script("window.scrollTo(0, -document.body.scrollHeight)")
+
     def switch_to_default_content(self):
         return self._browser.current_url
+
+    def clear_storage(self):
+        self._browser.execute_script("window.localStorage.clear();")
+
+    def get_session_id(self):
+        return self._browser.session_id

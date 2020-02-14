@@ -1,3 +1,4 @@
+import ioc_config
 from locators.animated_card_locators import AnimatedCardLocators
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
@@ -8,7 +9,10 @@ import json
 class AnimatedCardPage(BasePage):
 
     def fill_payment_form_without_iframe(self, card_number, expiration, cvv):
-        self._action.send_keys(AnimatedCardLocators.card_number_input_field, card_number)
+        if "ie" in ioc_config.CONFIG.resolve('driver').browser:
+            self._action.send_key_one_by_one(AnimatedCardLocators.card_number_input_field, card_number)
+        else:
+            self._action.send_keys(AnimatedCardLocators.card_number_input_field, card_number)
         self._action.send_keys(AnimatedCardLocators.expiration_date_input_field, expiration)
         if cvv is not None:
             self._action.send_keys(AnimatedCardLocators.security_code_input_field, cvv)
@@ -106,7 +110,9 @@ class AnimatedCardPage(BasePage):
 
     def validate_animated_card_element_translation(self, element, language, key, is_field_in_iframe):
         actual_translation = self.get_animated_card_label_translation(element, is_field_in_iframe)
-        expected_translation = self.get_translation_from_json(language, key).upper()
+        expected_translation = self.get_translation_from_json(language, key)
+        if "safari" not in ioc_config.CONFIG.resolve('driver').browser:
+            expected_translation = expected_translation.upper()
         assert actual_translation in expected_translation, f"Translation is not correct: " \
                                                            f"should be {expected_translation} but is {actual_translation}"
 
@@ -132,3 +138,17 @@ class AnimatedCardPage(BasePage):
         elif field_type == FieldType.SUBMIT_BUTTON.name:
             is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.pay_mock_button)
         return is_displayed
+
+    def is_field_enabled(self, field_type):
+        is_enabled = False
+        if field_type == FieldType.CARD_NUMBER.name:
+            is_enabled = self._action.is_element_enabled(AnimatedCardLocators.card_number_input_field)
+        elif field_type == FieldType.EXPIRATION_DATE.name:
+            is_enabled = self._action.is_element_enabled(AnimatedCardLocators.expiration_date_input_field)
+        elif field_type == FieldType.SECURITY_CODE.name:
+            is_enabled = self._action.is_element_enabled(AnimatedCardLocators.security_code_input_field)
+        return is_enabled
+
+    def validate_if_field_is_disabled(self, field_type):
+        is_enabled = self.is_field_enabled(field_type)
+        assert is_enabled is False, f'{FieldType[field_type].name} field is not disabled but should be'

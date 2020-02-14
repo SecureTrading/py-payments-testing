@@ -2,6 +2,7 @@ from behave import *
 
 from configuration import CONFIGURATION
 from utils.enums.field_type import FieldType
+from utils.mock_handler import MockUrl
 
 use_step_matcher("re")
 
@@ -9,7 +10,10 @@ use_step_matcher("re")
 @step("User opens page with animated card")
 def step_impl(context):
     animated_card_page = context.page_factory.get_page(page_name='animated_card')
+    if 'safari' in context.browser:
+        animated_card_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
     animated_card_page.open_page(CONFIGURATION.URL.BASE_URL)
+    context.executor.wait_for_javascript()
 
 
 @when('User fills payment form with data: "(?P<card_number>.+)", "(?P<expiration_date>.+)" and "(?P<cvv>.+)"')
@@ -21,6 +25,7 @@ def step_impl(context, card_number, expiration_date, cvv):
 @then("User will see card icon connected to card type (?P<card_type>.+)")
 def step_impl(context, card_type):
     animated_card_page = context.page_factory.get_page(page_name='animated_card')
+    animated_card_page.scroll_to_bottom()
     animated_card_page.validate_credit_card_icon(card_type, context.is_field_in_iframe)
     context.card_type = card_type
 
@@ -74,10 +79,11 @@ def step_impl(context, expected_message, field):
 @then('User will see that labels displayed on animated card are translated into "(?P<language>.+)"')
 def step_impl(context, language):
     animated_card_page = context.page_factory.get_page(page_name='animated_card')
+    animated_card_page.scroll_to_bottom()
     animated_card_page.validate_animated_card_translation(language, context.is_field_in_iframe)
 
 
-@then('User will see that "(?P<field>.+)" field is disabled')
+@then('User will see "(?P<field>.+)" field is disabled')
 def step_impl(context, field):
     animated_card_page = context.page_factory.get_page(page_name='animated_card')
     animated_card_page.is_field_displayed(FieldType[field].name)

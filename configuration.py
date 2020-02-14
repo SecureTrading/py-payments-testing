@@ -1,6 +1,7 @@
 """ Please configure you solution here
 """
 import pprint
+from datetime import date
 from distutils.util import strtobool
 from attrdict import AttrDict
 from utils.logger import _get_logger
@@ -12,22 +13,26 @@ def load_config():
     Set config env variables
     """
     config = {
-        'URL': AttrDict({"BASE_URL": get_from_env("BASE_URL", "https://merchant.example.com:8443")}),
+        'URL': AttrDict({"BASE_URL": get_from_env("BASE_URL", "https://merchant.securetrading.net")}),
         'REPORTS_PATH': get_path_from_env('AUTOMATION_REPORTS', 'reports'),
         'BROWSER': get_from_env('AUTOMATION_BROWSER', 'chrome'),
         'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 10),
-        'REMOTE': strtobool(get_from_env('AUTOMATION_REMOTE', 'false')),
+        'REMOTE': strtobool(get_from_env('REMOTE', 'false')),
         'COMMAND_EXECUTOR': get_from_env('AUTOMATION_COMMAND_EXECUTOR',
-                                "https://"+str(get_from_env('BROWSERSTACK_USERNAME'))+":"+
-                                 str(get_from_env('BROWSERSTACK_ACCESS_KEY'))+"@hub.browserstack.com/wd/hub"),
-        'REMOTE_OS': get_from_env('AUTOMATION_REMOTE_OS', ''),
-        'REMOTE_OS_VERSION': get_from_env('AUTOMATION_REMOTE_OS_VERSION', ''),
-        'REMOTE_BROWSER': get_from_env('AUTOMATION_REMOTE_BROWSER', ''),
-        'REMOTE_BROWSER_VERSION': get_from_env('AUTOMATION_REMOTE_BROWSER_VERSION', ''),
-        'REMOTE_DEVICE': get_from_env('AUTOMATION_REMOTE_DEVICE', ''),
-        'REMOTE_REAL_MOBILE': get_from_env('AUTOMATION_REMOTE_REAL_MOBILE', ''),
+                                "https://"+str(get_from_env('BS_USERNAME'))+":"+
+                                 str(get_from_env('BS_ACCESS_KEY'))+"@hub.browserstack.com/wd/hub"),
+        'REMOTE_OS': get_from_env('OS', ''),
+        'REMOTE_OS_VERSION': get_from_env('OS_VERSION', ''),
+        'REMOTE_BROWSER': get_from_env('BROWSER', ''),
+        'REMOTE_BROWSER_VERSION': get_from_env('BROWSER_VERSION', ''),
+        'REMOTE_DEVICE': get_from_env('DEVICE', ''),
+        'REMOTE_REAL_MOBILE': get_from_env('REAL_MOBILE', ''),
         'BROWSERSTACK_LOCAL': get_from_env('LOCAL', 'true'),
-        'BROWSERSTACK_LOCAL_IDENTIFIER': get_from_env('BROWSERSTACK_LOCAL_IDENTIFIER'),
+        'BROWSERSTACK_LOCAL_IDENTIFIER': get_from_env('BS_LOCAL_IDENTIFIER', 'local_id'),
+        'ACCEPT_SSL_CERTS': get_from_env('ACCEPT_SSL_CERTS', 'true'),
+        'PROJECT_NAME': get_from_env('PROJECT_NAME', 'JS Payments Interface'),
+        'BUILD_NAME': get_from_env('BUILD_NAME', 'Behavioral test: ' + str(date.today())),
+        'BROWSERSTACK_DEBUG': get_from_env('BROWSERSTACK_DEBUG', 'true'),
     }
 
     return AttrDict(config)
@@ -38,7 +43,9 @@ def print_properties(config):
     Printing all configuration data before starting the tests
     """
     logger = _get_logger()
-    logger.info(f'CONFIGURATION: \n{pprint.pformat(config, indent=4)}')
+    config_to_print = config.copy()
+    config_to_print.pop('COMMAND_EXECUTOR')
+    logger.info(f'CONFIGURATION: \n{pprint.pformat(config_to_print, indent=4)}')
 
 
 CONFIGURATION = load_config()
@@ -83,6 +90,15 @@ class DriverConfig:
                          "browserstack.localIdentifier": config.BROWSERSTACK_LOCAL_IDENTIFIER,
                          "device": config.REMOTE_DEVICE,
                          "real_mobile": config.REMOTE_REAL_MOBILE,
+                         "acceptSslCerts": config.ACCEPT_SSL_CERTS,
+                         "project": config.PROJECT_NAME,
+                         "build": config.BUILD_NAME,
+                         "browserstack.debug": config.BROWSERSTACK_DEBUG,
+                         "browserstack.networkLogs": 'true',
+                         "ie.ensureCleanSession": 'true',
+                         "ie.usePerProcessProxy": 'true',
+                         # "ie.forceCreateProcessApi": 'true',
+                         # "ignoreProtectedModeSettings": 'true',
                          }
         capabilities = {}
         for key, value in possible_caps.items():

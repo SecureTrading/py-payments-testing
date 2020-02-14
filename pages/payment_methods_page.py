@@ -1,5 +1,4 @@
-import time
-
+import ioc_config
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
 from utils.enums.field_type import FieldType
@@ -15,7 +14,11 @@ class PaymentMethodsPage(BasePage):
 
     def fill_credit_card_field(self, field_type, value):
         if field_type == FieldType.CARD_NUMBER.name:
-            self._action.switch_to_iframe_and_send_keys(FieldType.CARD_NUMBER.value,
+            if "ie" in ioc_config.CONFIG.resolve('driver').browser:
+                self._action.switch_to_iframe_and_send_keys_one_by_one(FieldType.CARD_NUMBER.value,
+                                                        PaymentMethodsLocators.card_number_input_field, value)
+            else:
+                self._action.switch_to_iframe_and_send_keys(FieldType.CARD_NUMBER.value,
                                                         PaymentMethodsLocators.card_number_input_field, value)
         elif field_type == FieldType.EXPIRATION_DATE.name:
             self._action.switch_to_iframe_and_send_keys(FieldType.EXPIRATION_DATE.value,
@@ -41,6 +44,9 @@ class PaymentMethodsPage(BasePage):
         self.fill_merchant_input_field(FieldType.NAME.name, name)
         self.fill_merchant_input_field(FieldType.EMAIL.name, email)
         self.fill_merchant_input_field(FieldType.PHONE.name, phone)
+
+    def fill_amount_field(self, value):
+        self._action.send_keys(PaymentMethodsLocators.amount_field, value)
 
     def get_payment_status_message(self):
         status_message = self._action.switch_to_iframe_and_get_text(FieldType.NOTIFICATION_FRAME.value,
@@ -70,10 +76,12 @@ class PaymentMethodsPage(BasePage):
 
     def choose_payment_methods(self, payment_type):
         if payment_type == PaymentType.VISA_CHECKOUT.name:
-            time.sleep(1)
+            self._executor.wait_for_javascript()
+            self.scroll_to_bottom()
             self._action.click(PaymentMethodsLocators.visa_checkout_mock_button)
         elif payment_type == PaymentType.APPLE_PAY.name:
-            time.sleep(1)
+            self._executor.wait_for_javascript()
+            self.scroll_to_bottom()
             self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
         elif payment_type == PaymentType.CARDINAL_COMMERCE.name:
             self._action.click(PaymentMethodsLocators.pay_mock_button)
@@ -133,13 +141,13 @@ class PaymentMethodsPage(BasePage):
     def is_field_displayed(self, field_type):
         is_displayed = False
         if field_type == FieldType.CARD_NUMBER.name:
-            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.card_number_input_field)
+            is_displayed = self._action.is_iframe_displayed(FieldType.CARD_NUMBER.value)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.expiration_date_input_field)
+            is_displayed = self._action.is_iframe_displayed(FieldType.EXPIRATION_DATE.value)
         elif field_type == FieldType.SECURITY_CODE.name:
-            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.security_code_input_field)
+            is_displayed = self._action.is_iframe_displayed(FieldType.SECURITY_CODE.value)
         elif field_type == FieldType.SUBMIT_BUTTON.name:
-            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.pay_mock_button)
+            is_displayed = self._action.is_iframe_displayed(FieldType.NOTIFICATION_FRAME.value)
         return is_displayed
 
     def get_element_translation(self, field_type, locator):
@@ -190,8 +198,8 @@ class PaymentMethodsPage(BasePage):
 
     def validate_css_style(self, field_type, property, expected_style):
         actual_css_style = self.get_field_css_style(field_type, property)
-        assert actual_css_style in expected_style, f'{FieldType[field_type].name} style is not correct, ' \
-                                                   f'should be  "{expected_style}" but is "{expected_style}"'
+        assert expected_style in actual_css_style, f'{FieldType[field_type].name} style is not correct, ' \
+                                                   f'should be  "{expected_style}" but is "{actual_css_style}"'
 
     def validate_element_translation(self, field_type, element, language, key):
         actual_translation = self.get_element_translation(field_type, element)
@@ -236,7 +244,15 @@ class PaymentMethodsPage(BasePage):
         return translation[key]
 
     def validate_if_url_contains_info_about_payment(self, expected_url):
-        time.sleep(1)
+        self._executor.wait_for_javascript()
         actual_url = self._executor.get_page_url()
         assert expected_url in actual_url, f'Url is not correct, ' \
                                            f'should be: "{expected_url}" but is: "{actual_url}"'
+
+    def validate_form_status(self, field_type, form_status):
+        if 'enabled' in form_status:
+            self.validate_if_field_is_enabled(field_type)
+        else:
+            self.validate_if_field_is_disabled(field_type)
+
+

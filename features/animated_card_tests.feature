@@ -28,7 +28,7 @@ Feature: Animated Card tests
     When User fills payment form with data: "3089500000000000021", "12/23"
     Then User will see card icon connected to card type PIBA
     And User will see the same provided data on animated credit card "3089 5000 0000 0000021", "12/23"
-    Then User will see that "SECURITY_CODE" field is disabled
+    Then User will see "SECURITY_CODE" field is disabled
 
   @animated_card_repo_test
   Scenario Outline: Checking animated card translation for <language>

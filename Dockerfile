@@ -4,8 +4,8 @@ FROM python:latest
 RUN apt-get update
 
 # Install Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
+RUN wget --quiet https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN apt-get install -qq ./google-chrome-stable_current_amd64.deb
 
 # Make JAVA_HOME available in docker
 RUN apt-get install -y openjdk-11-jdk-headless && \
@@ -20,6 +20,4 @@ WORKDIR /app
 RUN poetry install
 
 # Get framework into docker
-#RUN chmod 755 /app/chromedriver
 ENV PATH "$PATH:/app"
-#CMD poetry run behave features

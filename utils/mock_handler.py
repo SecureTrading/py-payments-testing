@@ -10,6 +10,7 @@ from enum import Enum
 class MockUrl(Enum):
     BASE_URI = "https://merchant.example.com:8443"
     WEBSERVICES_DOMAIN = "https://webservices.securetrading.net:8443"
+    THIRDPARTY_URL = "https://thirdparty.example.com:8443"
     VISA_MOCK_URI = "/visaPaymentStatus"
     CC_MOCK_ACS_URI = "/cardinalAuthenticateCard"
     APPLEPAY_MOCK_URI = "/applePaymentStatus"
@@ -24,11 +25,18 @@ def get_mock_response_from_json(mock):
     return mock_json
 
 
-def start_mock_server():
-    wm = WireMockServer()
-    wm.port = MockUrl.PORT.value
-    wm.start()
-    configure_for_local_host()
+class MockServer():
+    wiremock_server = WireMockServer()
+
+    @classmethod
+    def start_mock_server(cls):
+        cls.wiremock_server.port = MockUrl.PORT.value
+        cls.wiremock_server.start()
+        configure_for_local_host()
+
+    @classmethod
+    def stop_mock_server(cls):
+        cls.wiremock_server.stop()
 
 
 def configure_for_local_host():

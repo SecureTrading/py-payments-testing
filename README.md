@@ -19,7 +19,7 @@ You can change the default tag `:develop` to any other just to create images wit
 
 `docker-compose up -d`
 
-The example page is available under address `https://merchant.example.com/`. You should add this domain to your `hosts` file
+The example page is available under address `https://merchant.securetrading.net/`. You should add this domain to your `hosts` file
 and point to address `127.0.0.1` (here you can find how to do it https://support.rackspace.com/how-to/modify-your-hosts-file/).
 
 The Wiremock is available under `https://webservices.securetrading.net:8443/` so to access it you should also add this address
