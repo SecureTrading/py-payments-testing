@@ -7,7 +7,7 @@ from utils.enums.field_type import FieldType
 from utils.enums.payment_type import PaymentType
 import json
 
-from utils.helpers.request_executor import add_to_shared_disc
+from utils.helpers.request_executor import add_to_shared_dict
 
 
 class PaymentMethodsPage(BasePage):
@@ -192,7 +192,7 @@ class PaymentMethodsPage(BasePage):
         actual_message = self.get_field_validation_message(field_type)
         assertion_message = f'{FieldType[field_type].name} field validation message is not correct, ' \
                             f'should be: "{expected_message}" but is: "{actual_message}"'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert expected_message in actual_message, assertion_message
 
     def validate_payment_status_message(self, expected_message):
@@ -201,44 +201,44 @@ class PaymentMethodsPage(BasePage):
             time.sleep(2)
             actual_message = self.get_payment_status_message()
         assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert expected_message in actual_message, assertion_message
 
     def validate_notification_frame_color(self, color):
         actual_color = self.get_color_of_notification_frame()
         assertion_message = f'Notification frame color is not correct, should be: "{color}" but is: "{actual_color}"'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert color in actual_color, assertion_message
 
     def validate_if_field_is_highlighted(self, field_type):
         is_highlighted = self.is_field_highlighted(field_type)
         assertion_message = f'{FieldType[field_type].name} field is not highlighted but should be'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert is_highlighted is True, assertion_message
 
     def validate_if_field_is_disabled(self, field_type):
         is_enabled = self.is_field_enabled(field_type)
         assertion_message = f'{FieldType[field_type].name} field is not disabled but should be'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert is_enabled is False, assertion_message
 
     def validate_if_field_is_enabled(self, field_type):
         is_enabled = self.is_field_enabled(field_type)
         assertion_message = f'{FieldType[field_type].name} field is not enabled but should be'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert is_enabled is True, assertion_message
 
     def validate_if_field_is_not_displayed(self, field_type):
         is_displayed = self.is_field_displayed(field_type)
         assertion_message = f'{FieldType[field_type].name} field is displayed but should not be'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert is_displayed is False, assertion_message
 
     def validate_css_style(self, field_type, property, expected_style):
         actual_css_style = self.get_field_css_style(field_type, property)
         assertion_message = f'{FieldType[field_type].name} style is not correct, ' \
                             f'should be  "{expected_style}" but is "{actual_css_style}"'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert expected_style in actual_css_style, assertion_message
 
     def validate_element_translation(self, field_type, element, language, key):
@@ -246,7 +246,7 @@ class PaymentMethodsPage(BasePage):
         expected_translation = self.get_translation_from_json(language, key)
         assertion_message = f"{FieldType[field_type].name} element translation is not correct: " \
                             f" should be {expected_translation} but is {actual_translation}"
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert actual_translation in expected_translation, assertion_message
 
     def validate_labels_translation(self, language):
@@ -289,7 +289,7 @@ class PaymentMethodsPage(BasePage):
         self._executor.wait_for_javascript()
         actual_url = self._executor.get_page_url()
         assertion_message = f'Url is not correct, should be: "{expected_url}" but is: "{actual_url}"'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert expected_url in actual_url, assertion_message
 
     def validate_form_status(self, field_type, form_status):

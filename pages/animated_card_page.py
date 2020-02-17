@@ -5,7 +5,7 @@ from pages.base_page import BasePage
 from utils.enums.field_type import FieldType
 import json
 
-from utils.helpers.request_executor import add_to_shared_disc
+from utils.helpers.request_executor import add_to_shared_dict
 
 
 class AnimatedCardPage(BasePage):
@@ -31,7 +31,7 @@ class AnimatedCardPage(BasePage):
         actual_credit_card_icon = self.get_card_type_icon_from_animated_card()
         assertion_message = f'Credit card icon is not correct, ' \
                             f'should be: "{expected_card_icon}" but is: "{actual_credit_card_icon}"'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert expected_card_icon in actual_credit_card_icon, assertion_message
 
     def get_data_from_animated_card(self, field_type, card_type):
@@ -51,7 +51,7 @@ class AnimatedCardPage(BasePage):
         actual_data_on_animated_card = self.get_data_from_animated_card(field_type, card_type)
         assertion_message = f'Data on animated card is not correct, should be: ' \
                             f'"{expected_data}" but is: "{actual_data_on_animated_card}"'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert expected_data in actual_data_on_animated_card, assertion_message
 
     def validate_all_data_on_animated_card(self, card_number, exp_date, cvv, card_type, is_field_in_iframe):
@@ -68,11 +68,11 @@ class AnimatedCardPage(BasePage):
         animated_card_side = self._action.get_element_attribute(AnimatedCardLocators.animated_card, "class")
         if card_type == "AMEX":
             assertion_message = f'Animated card is flipped for AMEX but should not be'
-            add_to_shared_disc("assertion_message", assertion_message)
+            add_to_shared_dict("assertion_message", assertion_message)
             assert "flip-card" not in animated_card_side, assertion_message
         else:
             assertion_message = f'Animated card is not flipped but should be'
-            add_to_shared_disc("assertion_message", assertion_message)
+            add_to_shared_dict("assertion_message", assertion_message)
             assert "flip-card" in animated_card_side, assertion_message
 
     def change_field_focus(self):
@@ -81,7 +81,7 @@ class AnimatedCardPage(BasePage):
     def validate_if_no_iframe_field_is_highlighted(self, field_type):
         is_highlighted = self.is_field_highlighted(field_type)
         assertion_message = f'{FieldType[field_type].name} field is not highlighted but should be'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert is_highlighted is True, assertion_message
 
     def is_field_highlighted(self, field_type):
@@ -101,7 +101,7 @@ class AnimatedCardPage(BasePage):
         actual_message = self.get_field_validation_message(field_type)
         assertion_message = f'{FieldType[field_type].name} field validation message is not correct, ' \
                             f'should be: "{expected_message}" but is: "{actual_message}"'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert expected_message in actual_message, assertion_message
 
     def get_field_validation_message(self, field_type):
@@ -128,7 +128,7 @@ class AnimatedCardPage(BasePage):
         if "safari" not in ioc_config.CONFIG.resolve('driver').browser:
             expected_translation = expected_translation.upper()
         assertion_message = f"Translation is not correct: should be {expected_translation} but is {actual_translation}"
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert actual_translation in expected_translation, assertion_message
 
     def get_animated_card_label_translation(self, locator, is_field_in_iframe):
@@ -167,5 +167,5 @@ class AnimatedCardPage(BasePage):
     def validate_if_field_is_disabled(self, field_type):
         is_enabled = self.is_field_enabled(field_type)
         assertion_message = f'{FieldType[field_type].name} field is not disabled but should be'
-        add_to_shared_disc("assertion_message", assertion_message)
+        add_to_shared_dict("assertion_message", assertion_message)
         assert is_enabled is False, assertion_message

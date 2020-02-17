@@ -6,7 +6,7 @@ browserstack_username = CONFIGURATION.COMMAND_EXECUTOR[8:25]
 browserstack_access_key = CONFIGURATION.COMMAND_EXECUTOR[26:-28]
 
 shared_dict = {}
-def add_to_shared_disc(key, value):
+def add_to_shared_dict(key, value):
     shared_dict[key] = value
 
 
