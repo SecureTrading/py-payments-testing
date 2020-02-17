@@ -11,3 +11,4 @@ class Config(Enum):
     SKIP_JSINIT = "configSkipJSinit.json"
     DEFER_INIT_START_ON_LOAD = "configStartOnLoadAndDeferInitTrue.json"
     SUBMIT_CVV_ONLY = "configSubmitCvvOnly.json"
+    BYPASS_CARDS = "configBypassCards.json"

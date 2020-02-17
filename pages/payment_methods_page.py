@@ -1,9 +1,13 @@
+import time
+
 import ioc_config
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
 from utils.enums.field_type import FieldType
 from utils.enums.payment_type import PaymentType
 import json
+
+from utils.helpers.request_executor import add_to_shared_disc
 
 
 class PaymentMethodsPage(BasePage):
@@ -16,10 +20,11 @@ class PaymentMethodsPage(BasePage):
         if field_type == FieldType.CARD_NUMBER.name:
             if "ie" in ioc_config.CONFIG.resolve('driver').browser:
                 self._action.switch_to_iframe_and_send_keys_one_by_one(FieldType.CARD_NUMBER.value,
-                                                        PaymentMethodsLocators.card_number_input_field, value)
+                                                                       PaymentMethodsLocators.card_number_input_field,
+                                                                       value)
             else:
                 self._action.switch_to_iframe_and_send_keys(FieldType.CARD_NUMBER.value,
-                                                        PaymentMethodsLocators.card_number_input_field, value)
+                                                            PaymentMethodsLocators.card_number_input_field, value)
         elif field_type == FieldType.EXPIRATION_DATE.name:
             self._action.switch_to_iframe_and_send_keys(FieldType.EXPIRATION_DATE.value,
                                                         PaymentMethodsLocators.expiration_date_input_field, value)
@@ -27,10 +32,29 @@ class PaymentMethodsPage(BasePage):
             self._action.switch_to_iframe_and_send_keys(FieldType.SECURITY_CODE.value,
                                                         PaymentMethodsLocators.security_code_input_field, value)
 
+    def fill_credit_card_field_ie_browser(self, field_type, value):
+        if field_type == FieldType.CARD_NUMBER.name:
+            self._action.switch_to_iframe_and_send_keys_one_by_one(FieldType.CARD_NUMBER.value,
+                                                                   PaymentMethodsLocators.card_number_input_field,
+                                                                   value)
+        elif field_type == FieldType.EXPIRATION_DATE.name:
+            self._action.switch_to_iframe_and_send_keys_one_by_one(FieldType.EXPIRATION_DATE.value,
+                                                                   PaymentMethodsLocators.expiration_date_input_field,
+                                                                   value)
+        elif field_type == FieldType.SECURITY_CODE.name:
+            self._action.switch_to_iframe_and_send_keys_one_by_one(FieldType.SECURITY_CODE.value,
+                                                                   PaymentMethodsLocators.security_code_input_field,
+                                                                   value)
+
     def fill_payment_form(self, card_number, expiration_date, cvv):
-        self.fill_credit_card_field(FieldType.CARD_NUMBER.name, card_number)
-        self.fill_credit_card_field(FieldType.EXPIRATION_DATE.name, expiration_date)
-        self.fill_credit_card_field(FieldType.SECURITY_CODE.name, cvv)
+        if "ie" in ioc_config.CONFIG.resolve('driver').browser:
+            self.fill_credit_card_field_ie_browser(FieldType.CARD_NUMBER.name, card_number)
+            self.fill_credit_card_field_ie_browser(FieldType.EXPIRATION_DATE.name, expiration_date)
+            self.fill_credit_card_field_ie_browser(FieldType.SECURITY_CODE.name, cvv)
+        else:
+            self.fill_credit_card_field(FieldType.CARD_NUMBER.name, card_number)
+            self.fill_credit_card_field(FieldType.EXPIRATION_DATE.name, expiration_date)
+            self.fill_credit_card_field(FieldType.SECURITY_CODE.name, cvv)
 
     def fill_merchant_input_field(self, field_type, value):
         if field_type == FieldType.NAME.name:
@@ -116,8 +140,7 @@ class PaymentMethodsPage(BasePage):
                                                                                  "class")
         elif field_type == FieldType.EMAIL.name:
             class_name = self._action.get_element_attribute(FieldType.EMAIL.value,
-                                                            PaymentMethodsLocators.merchant_email,
-                                                            "class")
+                                                            PaymentMethodsLocators.merchant_email, "class")
         if "error" in class_name:
             is_highlighted = True
         return is_highlighted
@@ -167,45 +190,64 @@ class PaymentMethodsPage(BasePage):
 
     def validate_field_validation_message(self, field_type, expected_message):
         actual_message = self.get_field_validation_message(field_type)
-        assert expected_message in actual_message, f'{FieldType[field_type].name} field validation message is not correct, ' \
-                                                   f'should be: "{expected_message}" but is: "{actual_message}"'
+        assertion_message = f'{FieldType[field_type].name} field validation message is not correct, ' \
+                            f'should be: "{expected_message}" but is: "{actual_message}"'
+        add_to_shared_disc("assertion_message", assertion_message)
+        assert expected_message in actual_message, assertion_message
 
     def validate_payment_status_message(self, expected_message):
         actual_message = self.get_payment_status_message()
-        assert expected_message in actual_message, f'Payment status is not correct, ' \
-                                                   f'should be: "{expected_message}" but is: "{actual_message}"'
+        if actual_message is None:
+            time.sleep(2)
+            actual_message = self.get_payment_status_message()
+        assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
+        add_to_shared_disc("assertion_message", assertion_message)
+        assert expected_message in actual_message, assertion_message
 
     def validate_notification_frame_color(self, color):
         actual_color = self.get_color_of_notification_frame()
-        assert color in actual_color, f'Notification frame color is not correct, ' \
-                                      f'should be: "{color}" but is: "{actual_color}"'
+        assertion_message = f'Notification frame color is not correct, should be: "{color}" but is: "{actual_color}"'
+        add_to_shared_disc("assertion_message", assertion_message)
+        assert color in actual_color, assertion_message
 
     def validate_if_field_is_highlighted(self, field_type):
         is_highlighted = self.is_field_highlighted(field_type)
-        assert is_highlighted is True, f'{FieldType[field_type].name} field is not highlighted but should be'
+        assertion_message = f'{FieldType[field_type].name} field is not highlighted but should be'
+        add_to_shared_disc("assertion_message", assertion_message)
+        assert is_highlighted is True, assertion_message
 
     def validate_if_field_is_disabled(self, field_type):
         is_enabled = self.is_field_enabled(field_type)
-        assert is_enabled is False, f'{FieldType[field_type].name} field is not disabled but should be'
+        assertion_message = f'{FieldType[field_type].name} field is not disabled but should be'
+        add_to_shared_disc("assertion_message", assertion_message)
+        assert is_enabled is False, assertion_message
 
     def validate_if_field_is_enabled(self, field_type):
         is_enabled = self.is_field_enabled(field_type)
-        assert is_enabled is True, f'{FieldType[field_type].name} field is not enabled but should be'
+        assertion_message = f'{FieldType[field_type].name} field is not enabled but should be'
+        add_to_shared_disc("assertion_message", assertion_message)
+        assert is_enabled is True, assertion_message
 
     def validate_if_field_is_not_displayed(self, field_type):
         is_displayed = self.is_field_displayed(field_type)
-        assert is_displayed is False, f'{FieldType[field_type].name} field is displayed but should not be'
+        assertion_message = f'{FieldType[field_type].name} field is displayed but should not be'
+        add_to_shared_disc("assertion_message", assertion_message)
+        assert is_displayed is False, assertion_message
 
     def validate_css_style(self, field_type, property, expected_style):
         actual_css_style = self.get_field_css_style(field_type, property)
-        assert expected_style in actual_css_style, f'{FieldType[field_type].name} style is not correct, ' \
-                                                   f'should be  "{expected_style}" but is "{actual_css_style}"'
+        assertion_message = f'{FieldType[field_type].name} style is not correct, ' \
+                            f'should be  "{expected_style}" but is "{actual_css_style}"'
+        add_to_shared_disc("assertion_message", assertion_message)
+        assert expected_style in actual_css_style, assertion_message
 
     def validate_element_translation(self, field_type, element, language, key):
         actual_translation = self.get_element_translation(field_type, element)
         expected_translation = self.get_translation_from_json(language, key)
-        assert actual_translation in expected_translation, f"{FieldType[field_type].name} element translation is not correct: " \
-                                                           f" should be {expected_translation} but is {actual_translation}"
+        assertion_message = f"{FieldType[field_type].name} element translation is not correct: " \
+                            f" should be {expected_translation} but is {actual_translation}"
+        add_to_shared_disc("assertion_message", assertion_message)
+        assert actual_translation in expected_translation, assertion_message
 
     def validate_labels_translation(self, language):
         self.validate_element_translation(FieldType.CARD_NUMBER.name, PaymentMethodsLocators.card_number_label,
@@ -246,13 +288,12 @@ class PaymentMethodsPage(BasePage):
     def validate_if_url_contains_info_about_payment(self, expected_url):
         self._executor.wait_for_javascript()
         actual_url = self._executor.get_page_url()
-        assert expected_url in actual_url, f'Url is not correct, ' \
-                                           f'should be: "{expected_url}" but is: "{actual_url}"'
+        assertion_message = f'Url is not correct, should be: "{expected_url}" but is: "{actual_url}"'
+        add_to_shared_disc("assertion_message", assertion_message)
+        assert expected_url in actual_url, assertion_message
 
     def validate_form_status(self, field_type, form_status):
         if 'enabled' in form_status:
             self.validate_if_field_is_enabled(field_type)
         else:
             self.validate_if_field_is_disabled(field_type)
-
-
