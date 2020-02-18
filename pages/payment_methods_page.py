@@ -102,6 +102,7 @@ class PaymentMethodsPage(BasePage):
         if payment_type == PaymentType.VISA_CHECKOUT.name:
             self._executor.wait_for_javascript()
             self.scroll_to_bottom()
+            self._executor.wait_for_element_visibility(PaymentMethodsLocators.visa_checkout_mock_button)
             self._action.click(PaymentMethodsLocators.visa_checkout_mock_button)
         elif payment_type == PaymentType.APPLE_PAY.name:
             self._executor.wait_for_javascript()
@@ -288,6 +289,9 @@ class PaymentMethodsPage(BasePage):
     def validate_if_url_contains_info_about_payment(self, expected_url):
         self._executor.wait_for_javascript()
         actual_url = self._executor.get_page_url()
+        if expected_url not in actual_url:
+            time.sleep(2)
+            actual_url = self._executor.get_page_url()
         assertion_message = f'Url is not correct, should be: "{expected_url}" but is: "{actual_url}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_url in actual_url, assertion_message

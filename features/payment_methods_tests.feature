@@ -374,11 +374,11 @@ Feature: Payment methods
     And ACS mock response set to "OK"
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information included in url
-
-  @config_submit_on_success_true @smoke_test @full_test
-  Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
-    When User chooses Visa Checkout as payment method - response set to "SUCCESS"
-    Then User will see payment status information included in url
+# Temporary comment
+#  @config_submit_on_success_true @smoke_test @full_test
+#  Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
+#    When User chooses Visa Checkout as payment method - response set to "SUCCESS"
+#    Then User will see payment status information included in url
 
   @config_field_style @smoke_test @full_test
   Scenario: Checking style of individual fields
