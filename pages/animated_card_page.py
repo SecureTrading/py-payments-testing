@@ -13,11 +13,14 @@ class AnimatedCardPage(BasePage):
     def fill_payment_form_without_iframe(self, card_number, expiration, cvv):
         if "ie" in ioc_config.CONFIG.resolve('driver').browser:
             self._action.send_key_one_by_one(AnimatedCardLocators.card_number_input_field, card_number)
+            self._action.send_key_one_by_one(AnimatedCardLocators.expiration_date_input_field, expiration)
+            if cvv is not None:
+                self._action.send_key_one_by_one(AnimatedCardLocators.security_code_input_field, cvv)
         else:
             self._action.send_keys(AnimatedCardLocators.card_number_input_field, card_number)
-        self._action.send_keys(AnimatedCardLocators.expiration_date_input_field, expiration)
-        if cvv is not None:
-            self._action.send_keys(AnimatedCardLocators.security_code_input_field, cvv)
+            self._action.send_keys(AnimatedCardLocators.expiration_date_input_field, expiration)
+            if cvv is not None:
+                self._action.send_keys(AnimatedCardLocators.security_code_input_field, cvv)
 
     def get_card_type_icon_from_animated_card(self):
         credit_card_icon = self._action.get_element_attribute(AnimatedCardLocators.card_type_logo_from_animated_card,
