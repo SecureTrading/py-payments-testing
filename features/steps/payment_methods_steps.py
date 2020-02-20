@@ -38,6 +38,8 @@ def step_impl(context):
         stub_config(Config.DEFER_INIT_START_ON_LOAD.value)
     elif 'config_submit_cvv_only' in scenario_tags_list:
         stub_config(Config.SUBMIT_CVV_ONLY.value)
+    elif 'config_bypass_cards' in scenario_tags_list:
+        stub_config(Config.BYPASS_CARDS.value)
     else:
         stub_config(Config.BASE_CONFIG.value)
 
@@ -46,10 +48,10 @@ def step_impl(context):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if 'config_immediate_payment' not in context.scenario.tags:
-        if 'safari' in context.browser or ('ie' in context.browser):
+        if 'safari' in context.browser or ('iP' in CONFIGURATION.REMOTE_DEVICE):
             payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
-            payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
-            context.executor.wait_for_javascript()
+            if 'visa_test' in context.scenario.tags:
+                payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
         payment_page.open_page(CONFIGURATION.URL.BASE_URL)
         context.executor.wait_for_javascript()
 
@@ -191,7 +193,9 @@ def step_impl(context, form_status):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_form_status(FieldType.CARD_NUMBER.name, form_status)
     payment_page.validate_form_status(FieldType.EXPIRATION_DATE.name, form_status)
-    payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
+    # ToDo -Temporary if
+    if 'safari' not in context.browser:
+        payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
 
 
 @step('AUTH response set to "(?P<action_code>.+)"')

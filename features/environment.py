@@ -10,7 +10,7 @@ import ioc_config
 
 from page_factory import PageFactory
 from utils.enums.request_type import RequestType
-from utils.helpers.request_executor import mark_test_as_failed
+from utils.helpers.request_executor import mark_test_as_failed, set_scenario_name
 from utils.mock_handler import stub_st_request_type, MockServer
 
 BEHAVE_DEBUG_ON_ERROR = False
@@ -35,16 +35,16 @@ def before_scenario(context, scenario):
     context.executor = ioc_config.EXECUTOR.resolve('test')
     context.browser = ioc_config.CONFIG.resolve('driver').browser
     context.session_id = context.executor.get_session_id()
-    scenario.name = '%s_%s' % (scenario.name, context.browser.upper())
+    # scenario.name = '%s_%s' % (scenario.name, context.browser.upper())
 
-    if 'config_skip_jsinit' not in scenario.tags:
-        stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
     if "apple_test" in scenario.tags and (context.browser not in "Safari"):
         scenario.skip("SCENARIO SKIPPED as iOS system and Safari is required for ApplePay test")
     if "animated_card_repo_test" in scenario.tags:
         context.is_field_in_iframe = False
     else:
         context.is_field_in_iframe = True
+    if 'config_skip_jsinit' not in scenario.tags:
+        stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
 
 
 def after_scenario(context, scenario):
@@ -52,10 +52,11 @@ def after_scenario(context, scenario):
     context.page_factory = PageFactory()
 
     browser_name = ioc_config.CONFIG.resolve('driver').browser
+    set_scenario_name(context.session_id, scenario.name)
     scenario.name = '%s_%s' % (scenario.name, browser_name.upper())
     if scenario.status == 'failed':
         mark_test_as_failed(context.session_id)
-    # context.executor.clear_cookies()
+    context.executor.clear_cookies()
     # context.executor.clear_storage()
     MockServer.stop_mock_server()
     context.executor.close_browser()

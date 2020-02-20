@@ -5,7 +5,7 @@
   },
   "analytics": true,
   "animatedCard": false,
-  "byPassCards": ["PIBA"],
+  "bypassCards": ["PIBA"],
   "deferInit": false,
   "fieldsToSubmit": ["pan", "expirydate", "securitycode"],
   "buttonId": "merchant-submit-button",

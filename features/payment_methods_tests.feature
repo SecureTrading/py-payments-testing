@@ -57,7 +57,7 @@ Feature: Payment methods
     Examples:
       | action_code     | payment_status_message | color |
       | UNAUTHENTICATED | Unauthenticated        | red   |
-#      | DECLINE         | Decline            | red   |
+#      | DECLINE         | Decline                | red   |
 
   @base_config @smoke_test @full_test
   Scenario: Cardinal Commerce - check THREEDQUERY response for code: "INVALID_ACQUIRER"
@@ -308,7 +308,7 @@ Feature: Payment methods
 #      | language |
 #      | de_DE    |
 
-  @base_config @full_test @translations
+  @base_config @full_test @visa_test @translations
   Scenario Outline: Visa Checkout - check translation overwriting mechanism
     When User changes page language to "<language>"
     And User chooses Visa Checkout as payment method - response set to "ERROR"
@@ -374,11 +374,11 @@ Feature: Payment methods
     And ACS mock response set to "OK"
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information included in url
-
-  @config_submit_on_success_true @smoke_test @full_test
-  Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
-    When User chooses Visa Checkout as payment method - response set to "SUCCESS"
-    Then User will see payment status information included in url
+# ToDo -Temporary comment
+#  @config_submit_on_success_true @smoke_test @full_test @visa_test
+#  Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
+#    When User chooses Visa Checkout as payment method - response set to "SUCCESS"
+#    Then User will see payment status information included in url
 
   @config_field_style @smoke_test @full_test
   Scenario: Checking style of individual fields
@@ -410,9 +410,9 @@ Feature: Payment methods
     Then User will see payment status information: "Payment has been successfully processed"
     And User will not see card number and expiration date fields
 
-  @base_config @bypass_cards @smoke_test @full_test
-  Scenario: Successful payment using non-3d "PIBA" card type
-    When User fills payment form with credit card number "3089500000000000021", expiration date "12/23"
+  @config_bypass_cards @bypass_cards @smoke_test @full_test
+  Scenario: Successful payment using non-3d "JCB" card type
+    When User fills payment form with credit card number "3528000000000411", expiration date "12/30" and cvv "123"
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color

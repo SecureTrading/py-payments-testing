@@ -96,8 +96,7 @@ class DriverConfig:
                          "browserstack.debug": config.BROWSERSTACK_DEBUG,
                          "browserstack.networkLogs": 'true',
                          "ie.ensureCleanSession": 'true',
-                         "ie.usePerProcessProxy": 'true',
-                         # "ie.forceCreateProcessApi": 'true',
+                         "ie.forceCreateProcessApi": 'true',
                          # "ignoreProtectedModeSettings": 'true',
                          }
         capabilities = {}
