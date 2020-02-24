@@ -416,3 +416,19 @@ Feature: Payment methods
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
+
+  @base_config @smoke_test @full_test
+  Scenario Outline: Checking callback function functionality
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response set to "NOT_ENROLLED_N"
+    And User clicks Pay button - AUTH response set to "<action_code>"
+    And User will see "<callback_popup>" popup
+    Examples:
+      | action_code | callback_popup |
+      | OK          | success        |
+      | DECLINE     | error          |
+
+  @base_config @full_test
+  Scenario: Checking callback function for in-browser validation
+    When User clicks Pay button
+    And User will see "error" popup

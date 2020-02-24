@@ -262,9 +262,8 @@ def step_impl(context, key, language):
 @step("User opens payment page")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'safari' in context.browser or ('ie' in context.browser):
+    if 'safari' in context.browser or ('iP' in CONFIGURATION.REMOTE_DEVICE):
         payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
-        payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
         context.executor.wait_for_javascript()
     payment_page.open_page(CONFIGURATION.URL.BASE_URL)
     context.executor.wait_for_javascript()
@@ -300,3 +299,9 @@ def step_impl(context):
 def step_impl(context, field_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_if_field_is_disabled(field_type)
+
+
+@step('User will see "(?P<callback_popup>.+)" popup')
+def step_impl(context, callback_popup):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_if_callback_popup_is_displayed(callback_popup)

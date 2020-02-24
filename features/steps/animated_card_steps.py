@@ -10,7 +10,7 @@ use_step_matcher("re")
 @step("User opens page with animated card")
 def step_impl(context):
     animated_card_page = context.page_factory.get_page(page_name='animated_card')
-    if 'safari' in context.browser or ('i' in CONFIGURATION.REMOTE_DEVICE):
+    if 'safari' in context.browser or ('iP' in CONFIGURATION.REMOTE_DEVICE):
         animated_card_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
     animated_card_page.open_page(CONFIGURATION.URL.BASE_URL)
     context.executor.wait_for_javascript()
