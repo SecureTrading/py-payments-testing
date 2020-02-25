@@ -39,8 +39,7 @@ If you have multiple application images with different branches you can specify 
 
 `APP_REPO=js-payments-card docker-compose up -d`
 
-<!--- 
+
 #### To run with a remote browser via browserstack:
-# `docker run --env AUTOMATION_REMOTE="true" --env AUTOMATION_REMOTE_BROWSER="Firefox" --env AUTOMATION_REMOTE_BROWSER_VERSION=55.0
-#  --env AUTOMATION_COMMAND_EXECUTOR="https://<USERNAME>:<PASSWORD>@hub.browserstack.com/wd/hub" -t py-payments-testing`
---->
+ `docker-compose run -e LOCAL=true -e REMOTE=true -e BROWSER="Chrome" -e BROWSER_VERSION=80.0 -e OS="Windows" -e OS_VERSION=10
+ -e BS_USERNAME=<BROWSERSTACK_USERNAME> -e BS_ACCESS_KEY=<BROWSERSTACK_ACCESS_KEY> tests poetry run behave features`
