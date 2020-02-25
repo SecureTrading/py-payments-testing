@@ -198,11 +198,10 @@ class PaymentMethodsPage(BasePage):
         assert expected_message in actual_message, assertion_message
 
     def validate_payment_status_message(self, expected_message):
-        try:
-            actual_message = self.get_payment_status_message()
-        except:
+        actual_message = self.get_payment_status_message()
+        if len(actual_message) == 0:
             #ToDo Remove print
-            print("In except block")
+            print("From notification additional try")
             time.sleep(2)
             actual_message = self.get_payment_status_message()
         assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
