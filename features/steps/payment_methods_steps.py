@@ -193,9 +193,7 @@ def step_impl(context, form_status):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_form_status(FieldType.CARD_NUMBER.name, form_status)
     payment_page.validate_form_status(FieldType.EXPIRATION_DATE.name, form_status)
-    # ToDo -Temporary if
-    if 'safari' not in context.browser:
-        payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
+    payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
 
 
 @step('AUTH response set to "(?P<action_code>.+)"')
@@ -230,6 +228,7 @@ def step_impl(context, language):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     jwt = payment_page.get_translation_from_json(language, "jwt")
     payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}?jwt={jwt}")
+    context.executor.wait_for_javascript()
 
 
 @then('User will see all labels displayed on page translated into "(?P<language>.+)"')

@@ -55,7 +55,7 @@ def after_scenario(context, scenario):
     browser_name = ioc_config.CONFIG.resolve('driver').browser
     set_scenario_name(context.session_id, scenario.name)
     scenario.name = '%s_%s' % (scenario.name, browser_name.upper())
-    if scenario.status == 'failed' and (CONFIGURATION.REMOTE is 1):
+    if scenario.status == 'failed' and (CONFIGURATION.REMOTE == 1):
         mark_test_as_failed(context.session_id)
     context.executor.clear_cookies()
     # context.executor.clear_storage()
