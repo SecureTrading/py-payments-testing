@@ -1,9 +1,9 @@
 import requests
 from requests.auth import HTTPBasicAuth
-from configuration import CONFIGURATION
+from utils.read_configuration import get_from_env
 
-browserstack_username = CONFIGURATION.COMMAND_EXECUTOR[8:25]
-browserstack_access_key = CONFIGURATION.COMMAND_EXECUTOR[26:-28]
+browserstack_username = get_from_env('BS_USERNAME')
+browserstack_access_key = get_from_env('BS_ACCESS_KEY')
 
 shared_dict = {}
 def add_to_shared_dict(key, value):

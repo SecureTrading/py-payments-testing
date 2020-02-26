@@ -199,7 +199,9 @@ class PaymentMethodsPage(BasePage):
 
     def validate_payment_status_message(self, expected_message):
         actual_message = self.get_payment_status_message()
-        if actual_message is None:
+        if len(actual_message) == 0:
+            #ToDo Remove print
+            print("From notification additional try")
             time.sleep(2)
             actual_message = self.get_payment_status_message()
         assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
@@ -302,3 +304,13 @@ class PaymentMethodsPage(BasePage):
             self.validate_if_field_is_enabled(field_type)
         else:
             self.validate_if_field_is_disabled(field_type)
+
+    def validate_if_callback_popup_is_displayed(self, callback_popup):
+        is_displayed = False
+        if 'success' in callback_popup:
+            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.callback_success_popup)
+        elif 'error' in callback_popup:
+            is_displayed = self._action.is_element_displayed(PaymentMethodsLocators.callback_error_popup)
+        assertion_message = f'{callback_popup} callback popup is not displayed but should be'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert is_displayed is True, assertion_message

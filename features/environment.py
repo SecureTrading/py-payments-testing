@@ -7,6 +7,7 @@
 # USE: behave -D BEHAVE_DEBUG_ON_ERROR=no      (to disable debug-on-error)
 
 import ioc_config
+from configuration import CONFIGURATION
 
 from page_factory import PageFactory
 from utils.enums.request_type import RequestType
@@ -54,7 +55,7 @@ def after_scenario(context, scenario):
     browser_name = ioc_config.CONFIG.resolve('driver').browser
     set_scenario_name(context.session_id, scenario.name)
     scenario.name = '%s_%s' % (scenario.name, browser_name.upper())
-    if scenario.status == 'failed':
+    if scenario.status == 'failed' and (CONFIGURATION.REMOTE == 1):
         mark_test_as_failed(context.session_id)
     context.executor.clear_cookies()
     # context.executor.clear_storage()
