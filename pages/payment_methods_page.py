@@ -1,6 +1,7 @@
 import time
 
 import ioc_config
+from configuration import CONFIGURATION
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
 from utils.enums.field_type import FieldType
@@ -198,10 +199,10 @@ class PaymentMethodsPage(BasePage):
         assert expected_message in actual_message, assertion_message
 
     def validate_payment_status_message(self, expected_message):
+        if CONFIGURATION.REMOTE_DEVICE is not None:
+            self.scroll_to_top()
         actual_message = self.get_payment_status_message()
         if len(actual_message) == 0:
-            #ToDo Remove print
-            print("From notification additional try")
             time.sleep(2)
             actual_message = self.get_payment_status_message()
         assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
