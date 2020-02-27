@@ -82,9 +82,9 @@ class DriverConfig:
 
     @staticmethod
     def get_remote_capabilities(config):
-        network_logs = 'false'
-        if 'IE' in config.REMOTE_BROWSER:
-            network_logs = 'true'
+        network_logs = 'true'
+        if 'Safari' in config.REMOTE_BROWSER:
+            network_logs = 'false'
         possible_caps = {"os": config.REMOTE_OS,
                          "os_version": config.REMOTE_OS_VERSION,
                          "browserName": config.REMOTE_BROWSER,
