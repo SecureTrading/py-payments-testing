@@ -1,5 +1,7 @@
 """BasePage is a parent class for each page class then this way of implementation allow us
 to use his self attributes inside typical page."""
+from configuration import CONFIGURATION
+from locators.payment_methods_locators import PaymentMethodsLocators
 
 
 class BasePage:
@@ -21,3 +23,8 @@ class BasePage:
 
     def scroll_to_top(self):
         self._executor.scroll_to_top()
+
+    def is_connection_not_private_dispayed(self, url):
+        if 'Safari' in CONFIGURATION.REMOTE_BROWSER and  \
+                (len(self._action.find_elements(PaymentMethodsLocators.not_private_connection_text)) > 0):
+            self.open_page(url)

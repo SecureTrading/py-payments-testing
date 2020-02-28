@@ -36,3 +36,5 @@ class PaymentMethodsLocators:
 
     callback_success_popup: By = (By.ID, 'success-popup')
     callback_error_popup: By = (By.ID, 'error-popup')
+
+    not_private_connection_text: By = (By.XPATH, "//*[contains(text(),'This Connection Is Not Private')]")

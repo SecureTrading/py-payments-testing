@@ -13,6 +13,7 @@ def step_impl(context):
     if 'safari' in context.browser or ('iP' in CONFIGURATION.REMOTE_DEVICE):
         animated_card_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
     animated_card_page.open_page(CONFIGURATION.URL.BASE_URL)
+    animated_card_page.is_connection_not_private_dispayed(CONFIGURATION.URL.BASE_URL)
     context.executor.wait_for_javascript()
 
 

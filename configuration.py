@@ -82,6 +82,9 @@ class DriverConfig:
 
     @staticmethod
     def get_remote_capabilities(config):
+        network_logs = 'true'
+        if 'Safari' in config.REMOTE_BROWSER:
+            network_logs = 'false'
         possible_caps = {"os": config.REMOTE_OS,
                          "os_version": config.REMOTE_OS_VERSION,
                          "browserName": config.REMOTE_BROWSER,
@@ -94,7 +97,7 @@ class DriverConfig:
                          "project": config.PROJECT_NAME,
                          "build": config.BUILD_NAME,
                          "browserstack.debug": config.BROWSERSTACK_DEBUG,
-                         "browserstack.networkLogs": 'true',
+                         "browserstack.networkLogs": network_logs,
                          "ie.ensureCleanSession": 'true',
                          "ie.forceCreateProcessApi": 'true',
                          # "ignoreProtectedModeSettings": 'true',

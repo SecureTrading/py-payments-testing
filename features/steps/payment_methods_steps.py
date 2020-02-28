@@ -40,6 +40,8 @@ def step_impl(context):
         stub_config(Config.SUBMIT_CVV_ONLY.value)
     elif 'config_bypass_cards' in scenario_tags_list:
         stub_config(Config.BYPASS_CARDS.value)
+    elif 'config_incorrect_request_type' in scenario_tags_list:
+        stub_config(Config.INCORRECT_REQUEST_TYPE.value)
     else:
         stub_config(Config.BASE_CONFIG.value)
 
@@ -53,6 +55,7 @@ def step_impl(context):
             if 'visa_test' in context.scenario.tags:
                 payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
         payment_page.open_page(CONFIGURATION.URL.BASE_URL)
+        payment_page.is_connection_not_private_dispayed(CONFIGURATION.URL.BASE_URL)
         context.executor.wait_for_javascript()
 
 
@@ -92,7 +95,7 @@ def step_impl(context, action_code):
 @then('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    context.executor.wait_for_javascript()
+    # context.executor.wait_for_javascript()
     payment_page.validate_payment_status_message(payment_status_message)
 
 
@@ -265,7 +268,6 @@ def step_impl(context):
         payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
         context.executor.wait_for_javascript()
     payment_page.open_page(CONFIGURATION.URL.BASE_URL)
-    context.executor.wait_for_javascript()
 
 
 @then("User will see payment status information included in url")
@@ -304,3 +306,17 @@ def step_impl(context, field_type):
 def step_impl(context, callback_popup):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_if_callback_popup_is_displayed(callback_popup)
+
+
+@when("User sets incorrect request type in config file")
+def step_impl(context):
+    # Placeholder for step definition - step is implemented in
+    # @given("JavaScript configuration is set for scenario based on scenario's @config tag")
+    pass
+
+
+@then("User will see that application is not fully loaded")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_if_field_is_not_displayed(FieldType.CARD_NUMBER.name)
+    payment_page.validate_if_field_is_not_displayed(FieldType.EXPIRATION_DATE.name)

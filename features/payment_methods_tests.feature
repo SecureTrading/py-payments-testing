@@ -435,3 +435,8 @@ Feature: Payment methods
   Scenario: Checking callback function for in-browser validation
     When User clicks Pay button
     And User will see "error" popup
+
+  @config_incorrect_request_type @full_test
+  Scenario: Checking request types validation
+    When User sets incorrect request type in config file
+    Then User will see that application is not fully loaded
