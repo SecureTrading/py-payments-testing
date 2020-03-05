@@ -330,3 +330,9 @@ def step_impl(context):
     payment_page.validate_placeholder(FieldType.CARD_NUMBER.name, 'Card number')
     payment_page.validate_placeholder(FieldType.EXPIRATION_DATE.name, 'MM/YY')
     payment_page.validate_placeholder(FieldType.SECURITY_CODE.name, 'CVV')
+
+
+@then('User will see "(?P<card_type>.+)" icon in card number input field')
+def step_impl(context, card_type):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_credit_card_icon_in_input_field(card_type)

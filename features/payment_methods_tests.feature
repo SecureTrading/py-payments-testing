@@ -107,11 +107,11 @@ Feature: Payment methods
     And User will see that animated card is flipped, except for "AMEX"
     @smoke_test
     Examples:
-      | card_number      | formatted_card_number | expiration_date | cvv  | card_type |
-      | 4111110000000211 | 4111 1100 0000 0211   | 12/22           | 123  | VISA      |
+      | card_number      | formatted_card_number | expiration_date | cvv | card_type |
+      | 4111110000000211 | 4111 1100 0000 0211   | 12/22           | 123 | VISA      |
     Examples:
-      | card_number      | formatted_card_number | expiration_date | cvv  | card_type |
-      | 340000000000611  | 3400 000000 00611     | 12/23           | 1234 | AMEX      |
+      | card_number     | formatted_card_number | expiration_date | cvv  | card_type |
+      | 340000000000611 | 3400 000000 00611     | 12/23           | 1234 | AMEX      |
 #      | 6011000000000301 | 6011 0000 0000 0301 | 12/23          | 123  | DISCOVER   |
 #      | 3528000000000411 | 3528 0000 0000 0411 | 12/23          | 123  | JCB        |
 #      | 5000000000000611 | 5000 0000 0000 0611 | 12/23          | 123  | MAESTRO    |
@@ -421,7 +421,7 @@ Feature: Payment methods
     And User will see that notification frame has "green" color
 
   @base_config @smoke_test @full_test
-  Scenario Outline: Checking callback function functionality
+  Scenario Outline: Checking <action_code> callback functionality
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response set to "<action_code>"
@@ -444,3 +444,16 @@ Feature: Payment methods
   @config_placeholders @full_test
   Scenario: Checking placeholders in input fields
     Then User will see specific placeholders in input fields
+
+  @base_config @full_test
+  Scenario Outline: Checking <card_type> card icon displayed in input field0
+    When User fills payment form with credit card number "<card_number>", expiration date "<expiration_date>"
+    Then User will see "<card_type>" icon in card number input field
+    @smoke_test
+    Examples:
+      | card_number      | expiration_date | card_type |
+      | 4111110000000211 | 12/22           | VISA      |
+    Examples:
+      | card_number         | expiration_date | card_type |
+      | 340000000000611     | 12/23           | AMEX      |
+      | 3089500000000000021 | 12/23           | PIBA      |
