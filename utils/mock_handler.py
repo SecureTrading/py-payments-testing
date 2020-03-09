@@ -53,7 +53,7 @@ def stub_config(config_json):
         ),
         response=MappingResponse(
             status=200,
-            headers={'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type',
+            headers={'Access-Control-Allow-Headers': 'Content-Type',
                      'Access-Control-Allow-Methods': "GET, POST"},
             json_body=get_mock_response_from_json(config_json)
         ),
@@ -72,7 +72,7 @@ def stub_st_request_type(mock_json, request_type):
         ),
         response=MappingResponse(
             status=200,
-            headers={'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type',
+            headers={'Access-Control-Allow-Headers': 'Content-Type',
                      'Access-Control-Allow-Methods': "GET, POST"},
             json_body=get_mock_response_from_json(mock_json)
         ),
@@ -91,7 +91,7 @@ def stub_st_request_type_server_error(mock_json, request_type):
         ),
         response=MappingResponse(
             status=500,
-            headers={'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type',
+            headers={'Access-Control-Allow-Headers': 'Content-Type',
                      'Access-Control-Allow-Methods': "GET, POST"},
             json_body=get_mock_response_from_json(mock_json)
         ),
@@ -108,7 +108,7 @@ def stub_payment_status(mock_url, mock_json):
         ),
         response=MappingResponse(
             status=200,
-            headers={'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type',
+            headers={'Access-Control-Allow-Headers': 'Content-Type',
                      'Access-Control-Allow-Methods': "GET, POST"},
             json_body=get_mock_response_from_json(mock_json)
         ),
@@ -125,7 +125,7 @@ def stub_url_options_for_cors(mock_url):
         ),
         response=MappingResponse(
             status=200,
-            headers={'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type',
+            headers={'Access-Control-Allow-Headers': 'Content-Type',
                      'Access-Control-Allow-Methods': "GET, POST"},
             body=''
         ),
