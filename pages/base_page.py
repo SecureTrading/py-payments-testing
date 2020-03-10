@@ -2,6 +2,7 @@
 to use his self attributes inside typical page."""
 from configuration import CONFIGURATION
 from locators.payment_methods_locators import PaymentMethodsLocators
+from utils.enums.field_type import FieldType
 
 
 class BasePage:
@@ -28,3 +29,7 @@ class BasePage:
         if 'Safari' in CONFIGURATION.REMOTE_BROWSER and  \
                 (len(self._action.find_elements(PaymentMethodsLocators.not_private_connection_text)) > 0):
             self.open_page(url)
+
+    def wait_for_iframe(self):
+        self._waits.wait_until_iframe_is_presented_and_switch_to_it(FieldType.SECURITY_CODE.value)
+        self._waits.switch_to_default_content()
