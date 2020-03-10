@@ -191,6 +191,9 @@ class PaymentMethodsPage(BasePage):
             element_translation = self._action.get_text(locator)
         return element_translation
 
+    def switch_to_parent_iframe(self):
+        self._action.switch_to_iframe(FieldType.PARENT_IFRAME.value)
+
     def validate_field_validation_message(self, field_type, expected_message):
         actual_message = self.get_field_validation_message(field_type)
         assertion_message = f'{FieldType[field_type].name} field validation message is not correct, ' \
