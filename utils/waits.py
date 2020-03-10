@@ -49,7 +49,3 @@ class Waits:
     def wait_for_javascript(self):
         time.sleep(1)
         self._wait.until(lambda driver: self._browser.execute_script('return document.readyState') == 'complete')
-
-    def wait_for_iframe(self):
-        time.sleep(1)
-        self._wait.until(lambda driver: self._browser.execute_script("return window.frames['st-security-code-iframe'].readyState") == 'complete')
