@@ -42,6 +42,8 @@ def step_impl(context):
         stub_config(Config.BYPASS_CARDS.value)
     elif 'config_incorrect_request_type' in scenario_tags_list:
         stub_config(Config.INCORRECT_REQUEST_TYPE.value)
+    elif 'config_placeholders' in scenario_tags_list:
+        stub_config(Config.PLACEHOLDERS.value)
     else:
         stub_config(Config.BASE_CONFIG.value)
 
@@ -320,3 +322,11 @@ def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_if_field_is_not_displayed(FieldType.CARD_NUMBER.name)
     payment_page.validate_if_field_is_not_displayed(FieldType.EXPIRATION_DATE.name)
+
+
+@then("User will see specific placeholders in input fields")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_placeholder(FieldType.CARD_NUMBER.name, 'Card number')
+    payment_page.validate_placeholder(FieldType.EXPIRATION_DATE.name, 'MM/YY')
+    payment_page.validate_placeholder(FieldType.SECURITY_CODE.name, 'CVV')

@@ -440,3 +440,7 @@ Feature: Payment methods
   Scenario: Checking request types validation
     When User sets incorrect request type in config file
     Then User will see that application is not fully loaded
+
+  @config_placeholders @full_test
+  Scenario: Checking placeholders in input fields
+    Then User will see specific placeholders in input fields

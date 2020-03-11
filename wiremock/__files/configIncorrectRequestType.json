@@ -8,7 +8,14 @@
   "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU3MTY0NzEyMC4xNzQzNDk1LCJwYXlsb2FkIjp7ImJhc2VhbW91bnQiOiIxMDAwIiwiYWNjb3VudHR5cGVkZXNjcmlwdGlvbiI6IkVDT00iLCJjdXJyZW5jeWlzbzNhIjoiR0JQIiwic2l0ZXJlZmVyZW5jZSI6InRlc3RfamFtZXMzODY0MSIsImxvY2FsZSI6ImVuX0dCIiwicGFuIjoiNDExMTExMTExMTExMTExMSIsImV4cGlyeWRhdGUiOiIwMS8yMiIsInNlY3VyaXR5Y29kZSI6IjEyMyJ9fQ.co7gERZCdbONB5D4JlwjybCItXKYEPKanBl37bRAw4w",
   "styles": {
     "defaultStyles": {
-      "background-color-input": "AliceBlue"
+      "background-color-input": "red"
+    },
+    "expirationDate": {
+      "background-color-input": "red",
+      "background-color-input-error": "#f8d7da",
+      "color-input-error": "#55FF33",
+      "font-size-input": "12px",
+      "line-height-input": "12px"
     },
     "notificationFrame": {
       "color-error": "#FFF333"

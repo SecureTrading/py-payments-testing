@@ -12,4 +12,5 @@ class Config(Enum):
     DEFER_INIT_START_ON_LOAD = "configStartOnLoadAndDeferInitTrue.json"
     SUBMIT_CVV_ONLY = "configSubmitCvvOnly.json"
     BYPASS_CARDS = "configBypassCards.json"
-    INCORRECT_REQUEST_TYPE = 'config_incorrect_request_type.json'
+    INCORRECT_REQUEST_TYPE = "configIncorrectRequestType.json"
+    PLACEHOLDERS = "configPlaceholders.json"
