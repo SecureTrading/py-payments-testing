@@ -173,6 +173,13 @@ class PaymentMethodsPage(BasePage):
             is_displayed = self._action.is_iframe_displayed(FieldType.NOTIFICATION_FRAME.value)
         return is_displayed
 
+    def get_card_type_icon_from_input_field(self):
+        credit_card_icon = self._action.switch_to_iframe_and_get_element_attribute(FieldType.CARD_NUMBER.value,
+                                                                                   PaymentMethodsLocators.card_icon_in_input_field,
+                                                                                   'alt')
+        credit_card_icon = credit_card_icon.upper()
+        return credit_card_icon
+
     def get_element_translation(self, field_type, locator):
         element_translation = ""
         if field_type == FieldType.CARD_NUMBER.name:
@@ -319,3 +326,10 @@ class PaymentMethodsPage(BasePage):
                             f'but is {actual_placeholder}'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_placeholder in actual_placeholder, assertion_message
+
+    def validate_credit_card_icon_in_input_field(self, expected_card_icon):
+        actual_credit_card_icon = self.get_card_type_icon_from_input_field()
+        assertion_message = f'Credit card icon is not correct, ' \
+                            f'should be: "{expected_card_icon}" but is: "{actual_credit_card_icon}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_card_icon in actual_credit_card_icon, assertion_message
