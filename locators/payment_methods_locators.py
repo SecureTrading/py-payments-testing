@@ -39,3 +39,4 @@ class PaymentMethodsLocators:
     card_icon_in_input_field: By = (By.ID, 'card-icon')
 
     not_private_connection_text: By = (By.XPATH, "//*[contains(text(),'This Connection Is Not Private')]")
+    not_private_connection_android: By = (By.ID, 'proceed-link')

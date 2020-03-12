@@ -123,6 +123,10 @@ class WebElementsExtensions(Waits):
         element = self.find_element(locator)
         self._browser.execute_script("arguments[0].scrollIntoView();", element)
 
+    def click_by_javascript(self, locator):
+        element = self.find_element(locator)
+        self._browser.execute_script("arguments[0].click();", element)
+
     def enter(self, locator):
         element = self.find_element(locator)
         element.send_keys(Keys.RETURN)
