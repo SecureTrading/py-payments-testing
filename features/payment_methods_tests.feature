@@ -441,6 +441,41 @@ Feature: Payment methods
     When User sets incorrect request type in config file
     Then User will see that application is not fully loaded
 
+  @base_config @parent_iframe @full_test @cardinal_commerce
+  Scenario Outline: App is embedded in another iframe - Cardinal Commerce test
+    When User opens payment page
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response set to "ENROLLED_Y"
+    And ACS mock response set to "OK"
+    And User clicks Pay button - AUTH response set to "<action_code>"
+    Then User will see payment status information: "<payment_status_message>"
+    And User will see that notification frame has "<color>" color
+    @smoke_test
+    Examples:
+      | action_code | payment_status_message                  | color |
+      | OK          | Payment has been successfully processed | green |
+    Examples:
+      | action_code     | payment_status_message | color |
+      | UNAUTHENTICATED | Unauthenticated        | red   |
+
+  @config_animated_card_true @parent_iframe @full_test @animated_card
+  Scenario Outline: App is embedded in another iframe - animated card test
+    When User opens payment page
+    And User fills payment form with credit card number "<card_number>", expiration date "<expiration_date>" and cvv "<cvv>"
+    Then User will see card icon connected to card type <card_type>
+    And User will see the same provided data on animated credit card "<formatted_card_number>", "<expiration_date>" and "<cvv>"
+    And User will see that animated card is flipped, except for "AMEX"
+    Examples:
+      | card_number      | formatted_card_number | expiration_date | cvv  | card_type |
+      | 4111110000000211 | 4111 1100 0000 0211   | 12/22           | 123  | VISA      |
+
+  @base_config @parent_iframe @full_test
+  Scenario: App is embedded in another iframe - fields validation test
+    When User opens payment page
+    And User clicks Pay button
+    Then User will see validation message "Field is required" under all fields
+    And User will see that all fields are highlighted
+
   @config_placeholders @full_test
   Scenario: Checking placeholders in input fields
     Then User will see specific placeholders in input fields

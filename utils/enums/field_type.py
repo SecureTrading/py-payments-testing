@@ -7,6 +7,7 @@ class FieldType(Enum):
     SECURITY_CODE = "st-security-code-iframe"
     ANIMATED_CARD = "st-animated-card-iframe"
     NOTIFICATION_FRAME = "st-notification-frame-iframe"
+    PARENT_IFRAME = "st-parent-frame"
     SUBMIT_BUTTON = 1
     NAME = 2
     EMAIL = 3

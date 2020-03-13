@@ -1,9 +1,11 @@
 """ This class consist all necessary web elements extensions methods
 """
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 
 import ioc_config
+from utils.enums.field_type import FieldType
 from utils.waits import Waits
 
 
@@ -140,3 +142,8 @@ class WebElementsExtensions(Waits):
 
     def switch_to_default_iframe(self):
         self.switch_to_default_content()
+        if len(self._browser.find_elements(By.ID, 'st-parent-frame')) > 0:
+            self.switch_to_iframe(FieldType.PARENT_IFRAME.value)
+
+    def switch_to_parent_iframe(self):
+        self.switch_to_parent_frame()

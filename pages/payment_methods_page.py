@@ -111,6 +111,7 @@ class PaymentMethodsPage(BasePage):
             self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
         elif payment_type == PaymentType.CARDINAL_COMMERCE.name:
             self._action.click(PaymentMethodsLocators.pay_mock_button)
+        self.scroll_to_top()
         self._executor.wait_for_javascript()
 
     def get_field_validation_message(self, field_type):
@@ -194,6 +195,9 @@ class PaymentMethodsPage(BasePage):
         elif field_type == FieldType.SUBMIT_BUTTON.name:
             element_translation = self._action.get_text(locator)
         return element_translation
+
+    def switch_to_parent_iframe(self):
+        self._action.switch_to_iframe(FieldType.PARENT_IFRAME.value)
 
     def validate_field_validation_message(self, field_type, expected_message):
         actual_message = self.get_field_validation_message(field_type)
