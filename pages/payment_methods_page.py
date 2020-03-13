@@ -127,27 +127,24 @@ class PaymentMethodsPage(BasePage):
                                                                             PaymentMethodsLocators.security_code_field_validation_message)
         return validation_message
 
-    def is_field_highlighted(self, field_type):
-        is_highlighted = False
-        class_name = ""
+    def get_element_attribute(self, field_type, attribute):
+        attribute_value = ""
         if field_type == FieldType.CARD_NUMBER.name:
-            class_name = self._action.switch_to_iframe_and_get_element_attribute(FieldType.CARD_NUMBER.value,
-                                                                                 PaymentMethodsLocators.card_number_input_field,
-                                                                                 "class")
+            attribute_value = self._action.switch_to_iframe_and_get_element_attribute(FieldType.CARD_NUMBER.value,
+                                                                                      PaymentMethodsLocators.card_number_input_field,
+                                                                                      attribute)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            class_name = self._action.switch_to_iframe_and_get_element_attribute(FieldType.EXPIRATION_DATE.value,
-                                                                                 PaymentMethodsLocators.expiration_date_input_field,
-                                                                                 "class")
+            attribute_value = self._action.switch_to_iframe_and_get_element_attribute(FieldType.EXPIRATION_DATE.value,
+                                                                                      PaymentMethodsLocators.expiration_date_input_field,
+                                                                                      attribute)
         elif field_type == FieldType.SECURITY_CODE.name:
-            class_name = self._action.switch_to_iframe_and_get_element_attribute(FieldType.SECURITY_CODE.value,
-                                                                                 PaymentMethodsLocators.security_code_input_field,
-                                                                                 "class")
+            attribute_value = self._action.switch_to_iframe_and_get_element_attribute(FieldType.SECURITY_CODE.value,
+                                                                                      PaymentMethodsLocators.security_code_input_field,
+                                                                                      attribute)
         elif field_type == FieldType.EMAIL.name:
-            class_name = self._action.get_element_attribute(FieldType.EMAIL.value,
-                                                            PaymentMethodsLocators.merchant_email, "class")
-        if "error" in class_name:
-            is_highlighted = True
-        return is_highlighted
+            attribute_value = self._action.get_element_attribute(FieldType.EMAIL.value,
+                                                                 PaymentMethodsLocators.merchant_email, attribute)
+        return attribute_value
 
     def get_field_css_style(self, field_type, property):
         background_color = ""
@@ -176,6 +173,13 @@ class PaymentMethodsPage(BasePage):
         elif field_type == FieldType.SUBMIT_BUTTON.name:
             is_displayed = self._action.is_iframe_displayed(FieldType.NOTIFICATION_FRAME.value)
         return is_displayed
+
+    def get_card_type_icon_from_input_field(self):
+        credit_card_icon = self._action.switch_to_iframe_and_get_element_attribute(FieldType.CARD_NUMBER.value,
+                                                                                   PaymentMethodsLocators.card_icon_in_input_field,
+                                                                                   'alt')
+        credit_card_icon = credit_card_icon.upper()
+        return credit_card_icon
 
     def get_element_translation(self, field_type, locator):
         element_translation = ""
@@ -220,10 +224,10 @@ class PaymentMethodsPage(BasePage):
         assert color in actual_color, assertion_message
 
     def validate_if_field_is_highlighted(self, field_type):
-        is_highlighted = self.is_field_highlighted(field_type)
+        attribute_value = self.get_element_attribute(field_type, "class")
         assertion_message = f'{FieldType[field_type].name} field is not highlighted but should be'
         add_to_shared_dict("assertion_message", assertion_message)
-        assert is_highlighted is True, assertion_message
+        assert "error" in attribute_value, assertion_message
 
     def validate_if_field_is_disabled(self, field_type):
         is_enabled = self.is_field_enabled(field_type)
@@ -319,3 +323,17 @@ class PaymentMethodsPage(BasePage):
         assertion_message = f'{callback_popup} callback popup is not displayed but should be'
         add_to_shared_dict("assertion_message", assertion_message)
         assert is_displayed is True, assertion_message
+
+    def validate_placeholder(self, field_type, expected_placeholder):
+        actual_placeholder = self.get_element_attribute(field_type, "placeholder")
+        assertion_message = f'Placeholder for {FieldType[field_type].name} field is not correct, should be {expected_placeholder}' \
+                            f'but is {actual_placeholder}'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_placeholder in actual_placeholder, assertion_message
+
+    def validate_credit_card_icon_in_input_field(self, expected_card_icon):
+        actual_credit_card_icon = self.get_card_type_icon_from_input_field()
+        assertion_message = f'Credit card icon is not correct, ' \
+                            f'should be: "{expected_card_icon}" but is: "{actual_credit_card_icon}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_card_icon in actual_credit_card_icon, assertion_message

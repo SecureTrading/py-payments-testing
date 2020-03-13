@@ -42,6 +42,8 @@ def step_impl(context):
         stub_config(Config.BYPASS_CARDS.value)
     elif 'config_incorrect_request_type' in scenario_tags_list:
         stub_config(Config.INCORRECT_REQUEST_TYPE.value)
+    elif 'config_placeholders' in scenario_tags_list:
+        stub_config(Config.PLACEHOLDERS.value)
     else:
         stub_config(Config.BASE_CONFIG.value)
 
@@ -56,7 +58,7 @@ def step_impl(context):
                 payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
         payment_page.open_page(CONFIGURATION.URL.BASE_URL)
         payment_page.is_connection_not_private_dispayed(CONFIGURATION.URL.BASE_URL)
-        context.executor.wait_for_javascript()
+        payment_page.wait_for_iframe()
 
 
 @when(
@@ -324,3 +326,17 @@ def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_if_field_is_not_displayed(FieldType.CARD_NUMBER.name)
     payment_page.validate_if_field_is_not_displayed(FieldType.EXPIRATION_DATE.name)
+
+
+@then("User will see specific placeholders in input fields")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_placeholder(FieldType.CARD_NUMBER.name, 'Card number')
+    payment_page.validate_placeholder(FieldType.EXPIRATION_DATE.name, 'MM/YY')
+    payment_page.validate_placeholder(FieldType.SECURITY_CODE.name, 'CVV')
+
+
+@then('User will see "(?P<card_type>.+)" icon in card number input field')
+def step_impl(context, card_type):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_credit_card_icon_in_input_field(card_type)
