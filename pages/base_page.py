@@ -29,8 +29,6 @@ class BasePage:
         if 'Safari' in CONFIGURATION.REMOTE_BROWSER and  \
                 (len(self._action.find_elements(PaymentMethodsLocators.not_private_connection_text)) > 0):
             self.open_page(url)
-        if 'Samsung' in CONFIGURATION.REMOTE_DEVICE or ('Google' in CONFIGURATION.REMOTE_DEVICE):
-            self._action.click_by_javascript(PaymentMethodsLocators.not_private_connection_android)
 
     def wait_for_iframe(self):
         self._waits.wait_until_iframe_is_presented_and_switch_to_it(FieldType.SECURITY_CODE.value)
