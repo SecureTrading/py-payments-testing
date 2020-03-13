@@ -111,6 +111,7 @@ class PaymentMethodsPage(BasePage):
             self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
         elif payment_type == PaymentType.CARDINAL_COMMERCE.name:
             self._action.click(PaymentMethodsLocators.pay_mock_button)
+        self.scroll_to_top()
         self._executor.wait_for_javascript()
 
     def get_field_validation_message(self, field_type):

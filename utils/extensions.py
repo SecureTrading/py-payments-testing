@@ -1,9 +1,11 @@
 """ This class consist all necessary web elements extensions methods
 """
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 
 import ioc_config
+from utils.enums.field_type import FieldType
 from utils.waits import Waits
 
 
@@ -21,29 +23,29 @@ class WebElementsExtensions(Waits):
         self.switch_to_iframe(iframe_name)
         element = self.find_element(locator)
         element.send_keys(string)
-        self.switch_to_parent_iframe()
+        self.switch_to_default_iframe()
 
     def switch_to_iframe_and_send_keys_one_by_one(self, iframe_name, locator, string):
         self.switch_to_iframe(iframe_name)
         self.send_key_one_by_one(locator, string)
-        self.switch_to_parent_iframe()
+        self.switch_to_default_iframe()
 
     def switch_to_iframe_and_send_keys_by_java_script(self, iframe_name, locator, string):
         # self.switch_to_iframe(iframe_name)
         # element = self.find_element(locator)
         self._browser.execute_script("window.frames['st-card-number-iframe'].document.getElementById('st-card-number-input').value='123'")
-        self.switch_to_parent_iframe()
+        self.switch_to_default_iframe()
 
     def switch_to_iframe_and_click(self, iframe_name, locator):
         self.switch_to_iframe(iframe_name)
         element = self.find_element(locator)
         element.click()
-        self.switch_to_parent_iframe()
+        self.switch_to_default_iframe()
 
     def switch_to_iframe_and_get_text(self, iframe_name, locator):
         self.switch_to_iframe(iframe_name)
         element = self.get_text(locator)
-        self.switch_to_parent_iframe()
+        self.switch_to_default_iframe()
         return element
 
     def click(self, locator):
@@ -102,21 +104,21 @@ class WebElementsExtensions(Waits):
         self.switch_to_iframe(iframe_name)
         element = self.find_element(locator)
         attribute = element.get_attribute(attribute_name)
-        self.switch_to_parent_iframe()
+        self.switch_to_default_iframe()
         return attribute
 
     def switch_to_iframe_and_check_is_element_enabled(self, iframe_name, locator):
         self.switch_to_iframe(iframe_name)
         element = self.find_element(locator)
         is_enabled = element.is_enabled()
-        self.switch_to_parent_iframe()
+        self.switch_to_default_iframe()
         return is_enabled
 
     def switch_to_iframe_and_get_css_value(self, iframe_name, locator, property):
         self.switch_to_iframe(iframe_name)
         element = self.find_element(locator)
         css_value = element.value_of_css_property(property)
-        self.switch_to_parent_iframe()
+        self.switch_to_default_iframe()
         return css_value
 
     def scroll_directly_to_element(self, locator):
@@ -136,6 +138,8 @@ class WebElementsExtensions(Waits):
 
     def switch_to_default_iframe(self):
         self.switch_to_default_content()
+        if len(self._browser.find_elements(By.ID, 'st-parent-frame')) > 0:
+            self.switch_to_iframe(FieldType.PARENT_IFRAME.value)
 
     def switch_to_parent_iframe(self):
         self.switch_to_parent_frame()
