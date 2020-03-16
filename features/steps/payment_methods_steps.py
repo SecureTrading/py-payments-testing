@@ -272,6 +272,7 @@ def step_impl(context):
     if 'parent_iframe' in context.scenario.tags:
         payment_page.open_page(CONFIGURATION.URL.BASE_URL+'/iframe.html')
         payment_page.switch_to_parent_iframe()
+        context.executor.wait_for_javascript()
     else:
         payment_page.open_page(CONFIGURATION.URL.BASE_URL)
 
