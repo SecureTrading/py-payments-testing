@@ -51,14 +51,17 @@ def step_impl(context):
 @step("User opens page with payment form")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if ('config_immediate_payment' not in context.scenario.tags) or ('parent_iframe' not in context.scenario.tags):
-        if ('safari' in context.browser) or ('iP' in CONFIGURATION.REMOTE_DEVICE):
-            payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
-            if 'visa_test' in context.scenario.tags:
-                payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
-        payment_page.open_page(CONFIGURATION.URL.BASE_URL)
-        payment_page.is_connection_not_private_dispayed(CONFIGURATION.URL.BASE_URL)
-        payment_page.wait_for_iframe()
+    if 'config_immediate_payment' not in context.scenario.tags:
+        if 'parent_iframe' not in context.scenario.tags:
+            print("test")
+            print(context.scenario.tags)
+            if ('safari' in context.browser) or ('iP' in CONFIGURATION.REMOTE_DEVICE):
+                payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
+                if 'visa_test' in context.scenario.tags:
+                    payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
+            payment_page.open_page(CONFIGURATION.URL.BASE_URL)
+            payment_page.is_connection_not_private_dispayed(CONFIGURATION.URL.BASE_URL)
+            payment_page.wait_for_iframe()
 
 
 @when(
