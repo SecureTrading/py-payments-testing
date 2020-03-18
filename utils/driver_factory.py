@@ -105,4 +105,6 @@ class SeleniumDriver(Driver):
             kwargs['chrome_options'].add_argument('--no-sandbox')
             kwargs['chrome_options'].add_argument('--disable-dev-shm-usage')
             kwargs['chrome_options'].add_argument('--ignore-certificate-errors')
+            kwargs['chrome_options'].add_argument('--remote-debugging-address=0.0.0.0')
+            kwargs['chrome_options'].add_argument('--remote-debugging-port=9222')
         return driver.value(**kwargs)
