@@ -38,8 +38,9 @@ def before_scenario(context, scenario):
     context.session_id = context.executor.get_session_id()
     # scenario.name = '%s_%s' % (scenario.name, context.browser.upper())
 
-    if "apple_test" in scenario.tags and (context.browser not in "Safari"):
-        scenario.skip("SCENARIO SKIPPED as iOS system and Safari is required for ApplePay test")
+    if "apple_test" in scenario.tags and (context.browser not in "safari"):
+        if 'iP' not in CONFIGURATION.REMOTE_DEVICE:
+            scenario.skip("SCENARIO SKIPPED as iOS system and Safari is required for ApplePay test")
     if "animated_card_repo_test" in scenario.tags:
         context.is_field_in_iframe = False
     else:

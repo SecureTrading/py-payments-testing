@@ -68,7 +68,8 @@ def stub_st_request_type(mock_json, request_type):
         priority=100,
         request=MappingRequest(
             method=HttpMethods.POST,
-            url=MockUrl.GATEWAY_MOCK_URI.value
+            url=MockUrl.GATEWAY_MOCK_URI.value,
+            body_patterns=[{"contains": request_type}]
         ),
         response=MappingResponse(
             status=200,
@@ -87,8 +88,9 @@ def stub_st_request_type_server_error(mock_json, request_type):
         priority=100,
         request=MappingRequest(
             method=HttpMethods.POST,
-            url=MockUrl.GATEWAY_MOCK_URI.value
-        ),
+            url=MockUrl.GATEWAY_MOCK_URI.value,
+            body_patterns = [{"contains": request_type}]
+    ),
         response=MappingResponse(
             status=500,
             headers={'Access-Control-Allow-Headers': 'Content-Type',
