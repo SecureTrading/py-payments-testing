@@ -529,16 +529,16 @@ Feature: Payment methods
     And User clicks Pay button - AUTH response set to "OK"
     Then User will not see notification frame
 
-#  @config_submit_on_success_and_error_true  @full_test
-#  Scenario Outline: Notification frame is not displayed after payment with submitOn<submitOn>
-#    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
-#    And THREEDQUERY mock response set to "NOT_ENROLLED_N"
-#    And User clicks Pay button - AUTH response set to "<action_code>"
-#    Then User will not see notification frame
-#    @smoke_test
-#    Examples:
-#      | submitOn | action_code |
-#      | Success  | OK          |
-#    Examples:
-#      | submitOn | action_code |
-#      | Error    | DECLINE     |
+  @config_submit_on_success_and_error_true  @full_test
+  Scenario Outline: Notification frame is not displayed after payment with submitOn<submitOn>
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response set to "NOT_ENROLLED_N"
+    And User clicks Pay button - AUTH response set to "<action_code>"
+    Then User will not see notification frame
+    @smoke_test
+    Examples:
+      | submitOn | action_code |
+      | Success  | OK          |
+    Examples:
+      | submitOn | action_code |
+      | Error    | DECLINE     |

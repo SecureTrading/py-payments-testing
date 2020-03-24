@@ -360,6 +360,8 @@ def step_impl(context, card_type):
 @then("User will not see notification frame")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if 'config_submit_on_success_and_error_true' in context.scenario.tags:
+        payment_page.stop_page()
     payment_page.validate_if_field_is_not_displayed(FieldType.NOTIFICATION_FRAME.name)
 
     

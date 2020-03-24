@@ -12,6 +12,9 @@ class Browser(Waits):
     def close_browser(self):
         self._driver_browser.close_browser()
 
+    def stop_browser(self):
+        self._browser.execute_script("window.stop();")
+
     def clear_cookies(self):
         self._browser.delete_all_cookies()
 

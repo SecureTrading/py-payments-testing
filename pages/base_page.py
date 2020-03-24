@@ -19,6 +19,9 @@ class BasePage:
     def open_page(self, url):
         self._executor.open_page(url)
 
+    def stop_page(self):
+        self._executor.stop_browser()
+
     def scroll_to_bottom(self):
         self._executor.scroll_to_bottom()
 
