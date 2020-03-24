@@ -83,6 +83,11 @@ class WebElementsExtensions(Waits):
         element = self.find_element(locator)
         return element.text
 
+    def get_text_with_wait(self, locator):
+        self.wait_for_element(locator)
+        element = self.find_element(locator)
+        return element.text
+
     def clear_input(self, locator):
         element = self.find_element(locator)
         element.clear()
