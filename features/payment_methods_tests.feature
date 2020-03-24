@@ -15,6 +15,7 @@ Feature: Payment methods
     And User clicks Pay button - AUTH response set to "<action_code>"
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
+    And AUTH and THREEDQUERY requests were sent only once with correct data
     @smoke_test
     Examples:
       | action_code | payment_status_message                  | color |
@@ -34,6 +35,7 @@ Feature: Payment methods
     And User clicks Pay button - AUTH response set to "<action_code>"
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
+    And AUTH and THREEDQUERY requests were sent only once with correct data
     @smoke_test
     Examples:
       | action_code     | payment_status_message | color |
@@ -50,6 +52,7 @@ Feature: Payment methods
     And User clicks Pay button - AUTH response set to "<action_code>"
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
+    And AUTH and THREEDQUERY requests were sent only once with correct data
     @smoke_test
     Examples:
       | action_code | payment_status_message                  | color |
@@ -66,6 +69,7 @@ Feature: Payment methods
     And User clicks Pay button
     Then User will see payment status information: "Invalid acquirer for 3-D Secure"
     And User will see that notification frame has "red" color
+    And THREEDQUERY request was sent only once with correct data
 
   @base_config @full_test @cardinal_commerce
   Scenario Outline: Cardinal Commerce (card enrolled Y) - check ACS response for code: <action_code>
@@ -75,6 +79,7 @@ Feature: Payment methods
     And User clicks Pay button
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
+    And AUTH and THREEDQUERY requests were sent only once with correct data
     @smoke_test
     Examples:
       | action_code | payment_status_message | color |
@@ -90,6 +95,7 @@ Feature: Payment methods
     And THREEDQUERY mock response set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
+    And AUTH and THREEDQUERY requests were sent only once with correct data
     @smoke_test
     Examples:
       | card_number      | expiration_date | cvv  | card_type |
@@ -120,7 +126,6 @@ Feature: Payment methods
 #      | 1801000000000901    | 1801 0000 0000 0901    | 12/23          | 123 | ASTROPAYCARD |
 #      | 3000000000000111    | 3000 000000 000111     | 12/23          | 123 | DINERS       |
 
-
   @base_config @full_test
   Scenario: Disabled CVC field for PIBA card type
     When User fills payment form with credit card number "3089500000000000021", expiration date "12/23"
@@ -131,6 +136,7 @@ Feature: Payment methods
     When User clicks Pay button
     Then User will see validation message "Field is required" under all fields
     And User will see that all fields are highlighted
+    And AUTH and THREEDQUERY requests were not sent
 
   @base_config @full_test @fields_validation
   Scenario Outline: Filling payment form with empty fields -> cardNumber "<card_number>" expiration: "<expiration>", cvv: "<cvV>"
@@ -138,6 +144,7 @@ Feature: Payment methods
     And User clicks Pay button
     Then User will see "Field is required" message under field: "<field>"
     And User will see that "<field>" field is highlighted
+    And AUTH and THREEDQUERY requests were not sent
     @smoke_test
     Examples:
       | card_number | expiration | cvv | field       |
@@ -153,6 +160,7 @@ Feature: Payment methods
     And User clicks Pay button
     And User will see "Value mismatch pattern" message under field: "<field>"
     And User will see that "<field>" field is highlighted
+    And AUTH and THREEDQUERY requests were not sent
     @smoke_test
     Examples:
       | card_number      | expiration | cvv | field         |
@@ -173,6 +181,7 @@ Feature: Payment methods
     And User will see that notification frame has "red" color
     And User will see "Invalid field" message under field: "<field>"
     And User will see that "<field>" field is highlighted
+    And THREEDQUERY request was sent only once with correct data
     @smoke_test
     Examples:
       | card_number      | expiration | cvv | field       |
@@ -187,6 +196,7 @@ Feature: Payment methods
     When User fills payment form with credit card number "340000000000611", expiration date "12/22" and cvv "123"
     And User clicks Pay button
     And User will see "Value mismatch pattern" message under field: "SECURITY_CODE"
+    And AUTH and THREEDQUERY requests were not sent
 
     #  @full_test @fields_validation
 #  Scenario: Checking merchant field validation - invalid email
@@ -203,6 +213,7 @@ Feature: Payment methods
     When User chooses Visa Checkout as payment method - response set to "<action_code>"
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
+    And VISA_CHECKOUT or AUTH requests were sent only once with correct data
     @smoke_test
     Examples:
       | action_code | payment_status_message                  | color |
@@ -216,6 +227,7 @@ Feature: Payment methods
     When User chooses ApplePay as payment method - response set to "<action_code>"
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
+    And APPLE_PAY or AUTH requests were sent only once with correct data
     @smoke_test
     Examples:
       | action_code | payment_status_message                  | color |
@@ -303,6 +315,7 @@ Feature: Payment methods
     And THREEDQUERY mock response set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see "Payment has been successfully processed" payment status translated into "<language>"
+    And AUTH and THREEDQUERY requests were sent only once with correct data
     @smoke_test
     Examples:
       | language |
@@ -339,6 +352,7 @@ Feature: Payment methods
     And AUTH response set to "<action_code>"
     And User opens payment page
     Then User will see payment status information: "<payment_status_message>"
+    And AUTH and THREEDQUERY requests were sent only once with correct data
     Examples:
       | action_code | payment_status_message                  |
       | OK          | Payment has been successfully processed |
@@ -350,6 +364,7 @@ Feature: Payment methods
     And AUTH response set to "OK"
     And User opens payment page
     Then User will see payment status information: "Payment has been successfully processed"
+    And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_immediate_payment @full_test
   Scenario Outline: Immediate payment (card enrolled Y) - check ACS response for code: <action_code>
@@ -357,6 +372,7 @@ Feature: Payment methods
     And ACS mock response set to "<action_code>"
     And User opens payment page
     Then User will see payment status information: "<payment_status_message>"
+    And AUTH and THREEDQUERY requests were sent only once with correct data
     Examples:
       | action_code | payment_status_message |
 #      | ERROR      | Invalid response |
@@ -369,6 +385,7 @@ Feature: Payment methods
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
+    And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_submit_on_success_and_error_true @smoke_test @full_test
   Scenario: Cardinal Commerce - successful payment with enabled 'submit on success' process
@@ -377,6 +394,8 @@ Feature: Payment methods
     And ACS mock response set to "OK"
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information included in url
+    And AUTH and THREEDQUERY requests were sent only once with correct data
+
 # ToDo -Temporary comment
 #  @config_submit_on_success_and_error_true @smoke_test @full_test @visa_test
 #  Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
@@ -397,6 +416,7 @@ Feature: Payment methods
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
+    And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_defer_init_and_start_on_load_true @full_test
   Scenario: Successful payment with updated JWT and StartOnLoad
@@ -404,6 +424,7 @@ Feature: Payment methods
     And AUTH response set to "OK"
     And User opens payment page
     Then User will see payment status information: "Payment has been successfully processed"
+    And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_submit_cvv_only @smoke_test @full_test
   Scenario: Successful payment when cvv field is selected to submit
@@ -412,6 +433,7 @@ Feature: Payment methods
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will not see card number and expiration date fields
+    And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_bypass_cards @bypass_cards @smoke_test @full_test
   Scenario: Successful payment using non-3d "JCB" card type
@@ -419,6 +441,7 @@ Feature: Payment methods
     And User clicks Pay button - AUTH response set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
+    And AUTH request was sent only once with correct data
 
   @base_config @smoke_test @full_test
   Scenario Outline: Checking <action_code> callback functionality
@@ -450,6 +473,7 @@ Feature: Payment methods
     And User clicks Pay button - AUTH response set to "<action_code>"
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
+    And AUTH and THREEDQUERY requests were sent only once with correct data
     @smoke_test
     Examples:
       | action_code | payment_status_message                  | color |
@@ -466,8 +490,8 @@ Feature: Payment methods
     And User will see the same provided data on animated credit card "<formatted_card_number>", "<expiration_date>" and "<cvv>"
     And User will see that animated card is flipped, except for "AMEX"
     Examples:
-      | card_number      | formatted_card_number | expiration_date | cvv  | card_type |
-      | 4111110000000211 | 4111 1100 0000 0211   | 12/22           | 123  | VISA      |
+      | card_number      | formatted_card_number | expiration_date | cvv | card_type |
+      | 4111110000000211 | 4111 1100 0000 0211   | 12/22           | 123 | VISA      |
 
   @base_config @parent_iframe @full_test
   Scenario: App is embedded in another iframe - fields validation test
@@ -475,6 +499,7 @@ Feature: Payment methods
     And User clicks Pay button
     Then User will see validation message "Field is required" under all fields
     And User will see that all fields are highlighted
+    And AUTH and THREEDQUERY requests were not sent
 
   @config_placeholders @full_test
   Scenario: Checking placeholders in input fields
@@ -492,6 +517,10 @@ Feature: Payment methods
       | card_number         | expiration_date | card_type |
       | 340000000000611     | 12/23           | AMEX      |
       | 3089500000000000021 | 12/23           | PIBA      |
+      
+  @base_config @full_test
+  Scenario: Verify number on JSINIT requests
+    Then JSINIT request was sent only once
 
   @config_notifications_false @smoke_test @full_test
   Scenario: Notification frame is not displayed after payment

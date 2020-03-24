@@ -8,7 +8,8 @@ from utils.enums.field_type import FieldType
 from utils.enums.payment_type import PaymentType
 import json
 
-from utils.helpers.request_executor import add_to_shared_dict
+from utils.helpers.request_executor import add_to_shared_dict, get_number_of_requests_with_data, \
+    get_number_of_thirdparty_requests, get_number_of_AUTH_thirdparty_requests, get_number_of_requests_without_data
 
 
 class PaymentMethodsPage(BasePage):
@@ -335,3 +336,31 @@ class PaymentMethodsPage(BasePage):
                             f'should be: "{expected_card_icon}" but is: "{actual_credit_card_icon}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_card_icon in actual_credit_card_icon, assertion_message
+
+    def validate_number_of_requests_with_data(self, request_type, pan, expiry_date, cvv, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests_with_data(request_type, pan, expiry_date, cvv)
+        assertion_message = f'Number of {request_type} requests or request data are not correct, ' \
+                            f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_number_of_requests == actual_number_of_requests, assertion_message
+
+    def validate_number_of_requests_without_data(self, request_type, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests_without_data(request_type)
+        assertion_message = f'Number of {request_type} requests is not correct, ' \
+                            f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_number_of_requests == actual_number_of_requests, assertion_message
+
+    def validate_number_of_thirdparty_requests(self, url, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_thirdparty_requests(url)
+        assertion_message = f'Number of {url} requests is not correct, ' \
+                            f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_number_of_requests == actual_number_of_requests, assertion_message
+
+    def validate_number_of_AUTH_thirdparty_requests(self, url, walletsource, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_AUTH_thirdparty_requests(url, walletsource)
+        assertion_message = f'Number of {url} requests or request data are not correct, ' \
+                            f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_number_of_requests == actual_number_of_requests, assertion_message

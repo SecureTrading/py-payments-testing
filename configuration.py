@@ -100,7 +100,7 @@ class DriverConfig:
                          "browserstack.networkLogs": network_logs,
                          "ie.ensureCleanSession": 'true',
                          "ie.forceCreateProcessApi": 'true',
-                         # "ignoreProtectedModeSettings": 'true',
+                         # "browserstack.idleTimeout": 300
                          }
         capabilities = {}
         for key, value in possible_caps.items():

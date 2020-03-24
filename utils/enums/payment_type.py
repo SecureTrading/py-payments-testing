@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class PaymentType(Enum):
-    VISA_CHECKOUT = 1
-    APPLE_PAY = 2
+    VISA_CHECKOUT = 'VISACHECKOUT'
+    APPLE_PAY = 'APPLEPAY'
     CARDINAL_COMMERCE = 3
