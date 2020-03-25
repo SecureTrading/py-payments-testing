@@ -3,7 +3,7 @@ from enum import Enum
 
 class Config(Enum):
     BASE_CONFIG = "config.json"
-    SUBMIT_ON_SUCCESS_TRUE = "configSubmitOnSuccessTrue.json"
+    SUBMIT_ON_SUCCESS_AND_ERROR_TRUE = "configSubmitOnSuccessAndErrorTrue.json"
     ANIMATED_CARD = "configAnimatedCardTrue.json"
     UPDATE_JWT = "configUpdateJwtTrue.json"
     FIELD_STYLE = "configFieldStyle.json"
@@ -14,3 +14,4 @@ class Config(Enum):
     BYPASS_CARDS = "configBypassCards.json"
     INCORRECT_REQUEST_TYPE = "configIncorrectRequestType.json"
     PLACEHOLDERS = "configPlaceholders.json"
+    NOTIFICATIONS_FALSE = "configNotificationsFalse.json"

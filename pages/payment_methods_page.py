@@ -75,14 +75,11 @@ class PaymentMethodsPage(BasePage):
         self._action.send_keys(PaymentMethodsLocators.amount_field, value)
 
     def get_payment_status_message(self):
-        status_message = self._action.switch_to_iframe_and_get_text(FieldType.NOTIFICATION_FRAME.value,
-                                                                    PaymentMethodsLocators.notification_frame)
+        status_message = self._action.get_text_with_wait(PaymentMethodsLocators.notification_frame)
         return status_message
 
     def get_color_of_notification_frame(self):
-        frame_color = self._action.switch_to_iframe_and_get_element_attribute(FieldType.NOTIFICATION_FRAME.value,
-                                                                              PaymentMethodsLocators.notification_frame,
-                                                                              "data-notification-color")
+        frame_color = self._action.get_element_attribute(PaymentMethodsLocators.notification_frame, "data-notification-color")
         return frame_color
 
     def is_field_enabled(self, field_type):
@@ -171,8 +168,9 @@ class PaymentMethodsPage(BasePage):
             is_displayed = self._action.is_iframe_displayed(FieldType.EXPIRATION_DATE.value)
         elif field_type == FieldType.SECURITY_CODE.name:
             is_displayed = self._action.is_iframe_displayed(FieldType.SECURITY_CODE.value)
-        elif field_type == FieldType.SUBMIT_BUTTON.name:
-            is_displayed = self._action.is_iframe_displayed(FieldType.NOTIFICATION_FRAME.value)
+        elif field_type == FieldType.NOTIFICATION_FRAME.name:
+            if self._action.get_text_with_wait(PaymentMethodsLocators.notification_frame) != '':
+                is_displayed = True
         return is_displayed
 
     def get_card_type_icon_from_input_field(self):

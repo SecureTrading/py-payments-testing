@@ -387,7 +387,7 @@ Feature: Payment methods
     And User will see that notification frame has "green" color
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
-  @config_submit_on_success_true @smoke_test @full_test
+  @config_submit_on_success_and_error_true @smoke_test @full_test
   Scenario: Cardinal Commerce - successful payment with enabled 'submit on success' process
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response set to "ENROLLED_Y"
@@ -397,7 +397,7 @@ Feature: Payment methods
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
 # ToDo -Temporary comment
-#  @config_submit_on_success_true @smoke_test @full_test @visa_test
+#  @config_submit_on_success_and_error_true @smoke_test @full_test @visa_test
 #  Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
 #    When User chooses Visa Checkout as payment method - response set to "SUCCESS"
 #    Then User will see payment status information included in url
@@ -517,7 +517,28 @@ Feature: Payment methods
       | card_number         | expiration_date | card_type |
       | 340000000000611     | 12/23           | AMEX      |
       | 3089500000000000021 | 12/23           | PIBA      |
-
+      
   @base_config @full_test
   Scenario: Verify number on JSINIT requests
     Then JSINIT request was sent only once
+
+  @config_notifications_false @smoke_test @full_test
+  Scenario: Notification frame is not displayed after payment
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response set to "NOT_ENROLLED_N"
+    And User clicks Pay button - AUTH response set to "OK"
+    Then User will not see notification frame
+
+  @config_submit_on_success_and_error_true  @full_test
+  Scenario Outline: Notification frame is not displayed after payment with submitOn<submitOn>
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response set to "NOT_ENROLLED_N"
+    And User clicks Pay button - AUTH response set to "<action_code>"
+    Then User will not see notification frame
+    @smoke_test
+    Examples:
+      | submitOn | action_code |
+      | Success  | OK          |
+    Examples:
+      | submitOn | action_code |
+      | Error    | DECLINE     |

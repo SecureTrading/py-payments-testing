@@ -25,8 +25,8 @@ use_step_matcher("re")
 def step_impl(context):
     remove_item_from_request_journal()
     scenario_tags_list = context.scenario.tags
-    if 'config_submit_on_success_true' in scenario_tags_list:
-        stub_config(Config.SUBMIT_ON_SUCCESS_TRUE.value)
+    if 'config_submit_on_success_and_error_true' in scenario_tags_list:
+        stub_config(Config.SUBMIT_ON_SUCCESS_AND_ERROR_TRUE.value)
     elif 'config_field_style' in scenario_tags_list:
         stub_config(Config.FIELD_STYLE.value)
     elif 'config_animated_card_true' in scenario_tags_list:
@@ -47,6 +47,8 @@ def step_impl(context):
         stub_config(Config.INCORRECT_REQUEST_TYPE.value)
     elif 'config_placeholders' in scenario_tags_list:
         stub_config(Config.PLACEHOLDERS.value)
+    elif 'config_notifications_false' in scenario_tags_list:
+        stub_config(Config.NOTIFICATIONS_FALSE.value)
     else:
         stub_config(Config.BASE_CONFIG.value)
 
@@ -355,6 +357,12 @@ def step_impl(context, card_type):
     payment_page.validate_credit_card_icon_in_input_field(card_type)
 
 
+@then("User will not see notification frame")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_if_field_is_not_displayed(FieldType.NOTIFICATION_FRAME.name)
+
+    
 @step("AUTH and THREEDQUERY requests were sent only once with correct data")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
