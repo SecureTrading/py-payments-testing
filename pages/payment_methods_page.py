@@ -158,6 +158,8 @@ class PaymentMethodsPage(BasePage):
             background_color = self._action.switch_to_iframe_and_get_css_value(FieldType.SECURITY_CODE.value,
                                                                                PaymentMethodsLocators.security_code_input_field,
                                                                                property)
+        elif field_type == FieldType.NOTIFICATION_FRAME.name:
+            background_color = self._action.get_css_value_with_wait(PaymentMethodsLocators.notification_frame, property)
         return background_color
 
     def is_field_displayed(self, field_type):

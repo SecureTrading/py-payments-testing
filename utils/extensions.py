@@ -88,6 +88,12 @@ class WebElementsExtensions(Waits):
         element = self.find_element(locator)
         return element.text
 
+    def get_css_value_with_wait(self, locator, property):
+        self.wait_for_element(locator)
+        element = self.find_element(locator)
+        css_value = element.value_of_css_property(property)
+        return css_value
+
     def clear_input(self, locator):
         element = self.find_element(locator)
         element.clear()

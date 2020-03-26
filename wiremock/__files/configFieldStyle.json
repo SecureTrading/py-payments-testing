@@ -12,13 +12,14 @@
       "background-color-input": "AliceBlue"
     },
     "cardNumber": {
+      "background-color-input": "#6495ED",
       "background-color-input-error": "#e5e8ac",
       "color-input-error": "#721c24",
       "font-size-input": "9px",
       "line-height-input": "9px"
     },
     "expirationDate": {
-      "background-color-input": "red",
+      "background-color-input": "#8FBC8F",
       "background-color-input-error": "#f8d7da",
       "color-input-error": "#55FF33",
       "font-size-input": "12px",
@@ -32,6 +33,7 @@
       "line-height-input": "20px"
     },
     "notificationFrame": {
+      "background-color-notification-success":"#6495ED",
       "color-error": "#FFF333"
     },
     "controlFrame": {

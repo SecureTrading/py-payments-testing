@@ -405,7 +405,14 @@ Feature: Payment methods
   @config_field_style @smoke_test @full_test
   Scenario: Checking style of individual fields
     Then User will see that "CARD_NUMBER" field has correct style
-    And User will see that "SECURITY_CODE" field has correct style
+    And User will see that "EXPIRATION_DATE" field has correct style
+
+  @config_field_style @smoke_test @full_test
+  Scenario: Checking style of notification frame
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response set to "NOT_ENROLLED_N"
+    And User clicks Pay button - AUTH response set to "OK"
+    Then User will see that "NOTIFICATION_FRAME" field has correct style
 
   @config_update_jwt_true @smoke_test @full_test
   Scenario: Successful payment with updated JWT
@@ -517,7 +524,7 @@ Feature: Payment methods
       | card_number         | expiration_date | card_type |
       | 340000000000611     | 12/23           | AMEX      |
       | 3089500000000000021 | 12/23           | PIBA      |
-      
+
   @base_config @full_test
   Scenario: Verify number on JSINIT requests
     Then JSINIT request was sent only once
