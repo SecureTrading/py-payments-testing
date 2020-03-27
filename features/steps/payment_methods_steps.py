@@ -101,6 +101,9 @@ def step_impl(context, action_code):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
     payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
+    if 'config_submit_on_success_and_error_true' not in context.scenario.tags:
+        payment_page.scroll_to_top()
+
 
 @then('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):

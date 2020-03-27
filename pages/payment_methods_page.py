@@ -102,14 +102,23 @@ class PaymentMethodsPage(BasePage):
             self._executor.wait_for_javascript()
             self.scroll_to_bottom()
             self._executor.wait_for_element_visibility(PaymentMethodsLocators.visa_checkout_mock_button)
-            self._action.click(PaymentMethodsLocators.visa_checkout_mock_button)
+            if 'Catalina' in CONFIGURATION.REMOTE_OS_VERSION:
+                self._action.click_by_javascript(PaymentMethodsLocators.visa_checkout_mock_button)
+            else:
+                self._action.click(PaymentMethodsLocators.visa_checkout_mock_button)
         elif payment_type == PaymentType.APPLE_PAY.name:
             self._executor.wait_for_javascript()
             self.scroll_to_bottom()
-            self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
+            if 'Catalina' in CONFIGURATION.REMOTE_OS_VERSION:
+                self._action.click_by_javascript(PaymentMethodsLocators.apple_pay_mock_button)
+            else:
+                self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
         elif payment_type == PaymentType.CARDINAL_COMMERCE.name:
-            self._action.click(PaymentMethodsLocators.pay_mock_button)
-        self.scroll_to_top()
+            if 'Catalina' in CONFIGURATION.REMOTE_OS_VERSION:
+                self._executor.wait_for_javascript()
+                self._action.click_by_javascript(PaymentMethodsLocators.pay_mock_button)
+            else:
+                self._action.click(PaymentMethodsLocators.pay_mock_button)
         self._executor.wait_for_javascript()
 
     def get_field_validation_message(self, field_type):

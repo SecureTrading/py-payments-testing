@@ -1,4 +1,5 @@
 import ioc_config
+from configuration import CONFIGURATION
 from locators.animated_card_locators import AnimatedCardLocators
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
@@ -58,25 +59,26 @@ class AnimatedCardPage(BasePage):
         assert expected_data in actual_data_on_animated_card, assertion_message
 
     def validate_all_data_on_animated_card(self, card_number, exp_date, cvv, card_type, is_field_in_iframe):
-        if is_field_in_iframe:
-            self._action.switch_to_iframe(FieldType.ANIMATED_CARD.value)
         self.validate_data_on_animated_card(card_number, FieldType.CARD_NUMBER.name, card_type)
         self.validate_data_on_animated_card(exp_date, FieldType.EXPIRATION_DATE.name, card_type)
         if cvv is not None:
             self.validate_data_on_animated_card(cvv, FieldType.SECURITY_CODE.name, card_type)
 
     def validate_if_animated_card_is_flipped(self, card_type, is_field_in_iframe):
-        if is_field_in_iframe:
-            self._action.switch_to_iframe(FieldType.ANIMATED_CARD.value)
-        animated_card_side = self._action.get_element_attribute(AnimatedCardLocators.animated_card, "class")
-        if card_type == "AMEX":
-            assertion_message = f'Animated card is flipped for AMEX but should not be'
-            add_to_shared_dict("assertion_message", assertion_message)
-            assert "flip-card" not in animated_card_side, assertion_message
+        # Disabled checking flipping card for safari because switch_to_iframe method make card is back to the original
+        # position. This case is checked in animated card repo (without iframe)
+        if is_field_in_iframe and 'Safari' in CONFIGURATION.REMOTE_BROWSER:
+            pass
         else:
-            assertion_message = f'Animated card is not flipped but should be'
-            add_to_shared_dict("assertion_message", assertion_message)
-            assert "flip-card" in animated_card_side, assertion_message
+            animated_card_side = self._action.get_element_attribute(AnimatedCardLocators.animated_card, "class")
+            if card_type == "AMEX":
+                assertion_message = f'Animated card is flipped for AMEX but should not be'
+                add_to_shared_dict("assertion_message", assertion_message)
+                assert "flip-card" not in animated_card_side, assertion_message
+            else:
+                assertion_message = f'Animated card is not flipped but should be'
+                add_to_shared_dict("assertion_message", assertion_message)
+                assert "flip-card" in animated_card_side, assertion_message
 
     def change_field_focus(self):
         self._action.click(AnimatedCardLocators.card_number_input_field)
