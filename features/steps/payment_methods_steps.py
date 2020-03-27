@@ -60,7 +60,7 @@ def step_impl(context):
             'config_defer_init_and_start_on_load_true' not in context.scenario.tags:
         if ('safari' in context.browser) or ('iP' in CONFIGURATION.REMOTE_DEVICE):
             payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
-            if 'visa_test' in context.scenario.tags or 'apple_test' in context.scenario.tags:
+            if 'safari' in context.browser or 'visa_test' in context.scenario.tags or 'apple_test' in context.scenario.tags:
                 payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
         payment_page.open_page(CONFIGURATION.URL.BASE_URL)
         payment_page.is_connection_not_private_dispayed(CONFIGURATION.URL.BASE_URL)
@@ -101,6 +101,9 @@ def step_impl(context, action_code):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
     payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
+    if 'config_submit_on_success_and_error_true' not in context.scenario.tags:
+        payment_page.scroll_to_top()
+
 
 @then('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):
@@ -237,9 +240,13 @@ def step_impl(context):
 def step_impl(context, field):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if field == FieldType.CARD_NUMBER.name:
-        payment_page.validate_css_style(FieldType.CARD_NUMBER.name, "background-color", '240, 248, 255')
+        payment_page.validate_css_style(FieldType.CARD_NUMBER.name, "background-color", '100, 149, 237')
+    elif field == FieldType.EXPIRATION_DATE.name:
+        payment_page.validate_css_style(FieldType.EXPIRATION_DATE.name, "background-color", '143, 188, 143')
     elif field == FieldType.SECURITY_CODE.name:
         payment_page.validate_css_style(FieldType.SECURITY_CODE.name, "background-color", '255, 243, 51')
+    if field == FieldType.NOTIFICATION_FRAME.name:
+        payment_page.validate_css_style(FieldType.NOTIFICATION_FRAME.name, "background-color", '100, 149, 237')
 
 
 @when('User changes page language to "(?P<language>.+)"')
@@ -282,14 +289,14 @@ def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if 'safari' in context.browser or ('iP' in CONFIGURATION.REMOTE_DEVICE):
         payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
+        payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
         context.executor.wait_for_javascript()
     if 'parent_iframe' in context.scenario.tags:
         payment_page.open_page(CONFIGURATION.URL.BASE_URL+'/iframe.html')
         payment_page.switch_to_parent_iframe()
-        context.executor.wait_for_javascript()
     else:
         payment_page.open_page(CONFIGURATION.URL.BASE_URL)
-
+    payment_page.wait_for_iframe()
 
 @then("User will see payment status information included in url")
 def step_impl(context):

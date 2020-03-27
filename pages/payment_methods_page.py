@@ -102,14 +102,23 @@ class PaymentMethodsPage(BasePage):
             self._executor.wait_for_javascript()
             self.scroll_to_bottom()
             self._executor.wait_for_element_visibility(PaymentMethodsLocators.visa_checkout_mock_button)
-            self._action.click(PaymentMethodsLocators.visa_checkout_mock_button)
+            if 'Catalina' in CONFIGURATION.REMOTE_OS_VERSION:
+                self._action.click_by_javascript(PaymentMethodsLocators.visa_checkout_mock_button)
+            else:
+                self._action.click(PaymentMethodsLocators.visa_checkout_mock_button)
         elif payment_type == PaymentType.APPLE_PAY.name:
             self._executor.wait_for_javascript()
             self.scroll_to_bottom()
-            self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
+            if 'Catalina' in CONFIGURATION.REMOTE_OS_VERSION:
+                self._action.click_by_javascript(PaymentMethodsLocators.apple_pay_mock_button)
+            else:
+                self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
         elif payment_type == PaymentType.CARDINAL_COMMERCE.name:
-            self._action.click(PaymentMethodsLocators.pay_mock_button)
-        self.scroll_to_top()
+            if 'Catalina' in CONFIGURATION.REMOTE_OS_VERSION:
+                self._executor.wait_for_javascript()
+                self._action.click_by_javascript(PaymentMethodsLocators.pay_mock_button)
+            else:
+                self._action.click(PaymentMethodsLocators.pay_mock_button)
         self._executor.wait_for_javascript()
 
     def get_field_validation_message(self, field_type):
@@ -158,6 +167,8 @@ class PaymentMethodsPage(BasePage):
             background_color = self._action.switch_to_iframe_and_get_css_value(FieldType.SECURITY_CODE.value,
                                                                                PaymentMethodsLocators.security_code_input_field,
                                                                                property)
+        elif field_type == FieldType.NOTIFICATION_FRAME.name:
+            background_color = self._action.get_css_value_with_wait(PaymentMethodsLocators.notification_frame, property)
         return background_color
 
     def is_field_displayed(self, field_type):
