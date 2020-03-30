@@ -114,7 +114,7 @@ class PaymentMethodsPage(BasePage):
             else:
                 self._action.click(PaymentMethodsLocators.apple_pay_mock_button)
         elif payment_type == PaymentType.CARDINAL_COMMERCE.name:
-            if 'Catalina' in CONFIGURATION.REMOTE_OS_VERSION:
+            if 'Catalina' in CONFIGURATION.REMOTE_OS_VERSION or 'High Sierra' in CONFIGURATION.REMOTE_OS_VERSION:
                 self._executor.wait_for_javascript()
                 self._action.click_by_javascript(PaymentMethodsLocators.pay_mock_button)
             else:

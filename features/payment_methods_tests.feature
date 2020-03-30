@@ -275,7 +275,7 @@ Feature: Payment methods
 #      | no_NO    |
 #      | sv_SE    |
 
-  @config_animated_card_true @animated_card @translations
+  @config_animated_card_true @animated_card @full_test @translations
   Scenario Outline: Checking animated card translation for <language>
     When User changes page language to "<language>"
     And User fills payment form with credit card number "340000000000611", expiration date "12/22" and cvv "123"
