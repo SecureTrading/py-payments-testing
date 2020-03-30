@@ -108,7 +108,8 @@ def step_impl(context, action_code):
 @then('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    # context.executor.wait_for_javascript()
+    if 'ie' in context.browser and 'config_submit_cvv_only' in context.scenario.tags:
+        context.executor.wait_for_javascript()
     payment_page.validate_payment_status_message(payment_status_message)
 
 
