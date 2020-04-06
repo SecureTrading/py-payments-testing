@@ -213,9 +213,9 @@ def step_impl(context, form_status):
 @step('User will see that all input fields are "(?P<form_status>.+)"')
 def step_impl(context, form_status):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
     payment_page.validate_form_status(FieldType.CARD_NUMBER.name, form_status)
     payment_page.validate_form_status(FieldType.EXPIRATION_DATE.name, form_status)
-    payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
 
 
 @step('AUTH response set to "(?P<action_code>.+)"')
