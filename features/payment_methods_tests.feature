@@ -396,11 +396,10 @@ Feature: Payment methods
     Then User will see payment status information included in url
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
-# ToDo -Temporary comment
-#  @config_submit_on_success_and_error_true @smoke_test_part_1 @smoke_test @full_test_part_1 @full_test @visa_test
-#  Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
-#    When User chooses Visa Checkout as payment method - response set to "SUCCESS"
-#    Then User will see payment status information included in url
+  @config_submit_on_success_and_error_true @full_test_part_1 @full_test @visa_test
+  Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
+    When User chooses Visa Checkout as payment method - response set to "SUCCESS"
+    Then User will see payment status information included in url
 
   @config_field_style @smoke_test_part_2 @smoke_test @full_test_part_2 @full_test
   Scenario: Checking style of individual fields
