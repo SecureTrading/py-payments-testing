@@ -98,6 +98,7 @@ class DriverConfig:
                          "build": config.BUILD_NAME,
                          "browserstack.debug": config.BROWSERSTACK_DEBUG,
                          "browserstack.networkLogs": network_logs,
+                         "browserstack.console": "errors",
                          "ie.ensureCleanSession": 'true',
                          "ie.forceCreateProcessApi": 'true',
                          # "browserstack.idleTimeout": 300
