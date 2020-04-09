@@ -15,3 +15,6 @@ class Config(Enum):
     INCORRECT_REQUEST_TYPE = "configIncorrectRequestType.json"
     PLACEHOLDERS = "configPlaceholders.json"
     NOTIFICATIONS_FALSE = "configNotificationsFalse.json"
+    CYBERTONICA = "configCybertonica.json"
+    CYBERTONICA_BYPASS_CARD = "configCybertonicaBypassCards.json"
+    CYBERTONICA_IMMEDIATE_PAYMENT = "configCybertonicaImmediatePayment.json"
