@@ -38,6 +38,27 @@ def get_number_of_requests_with_data(request_type, pan, expiry_date, cvv):
     data = json.loads(count.content)
     return data['count']
 
+def get_number_of_requests_with_data_and_fraudcontroltransactionid_flag(request_type, pan, expiry_date, cvv):
+    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+                          json={"url": "/jwt/", "bodyPatterns": [
+                              {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['" + request_type + "'])]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.pan=='" + pan + "')]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.expirydate=='" + expiry_date + "')]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.securitycode=='" + cvv + "')]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.fraudcontroltransactionid=='63d1d099-d635-41b6-bb82-96017f7da6bb')]"}
+                          ]}, verify=False)
+    data = json.loads(count.content)
+    return data['count']
+
+def get_number_of_requests_with_fraudcontroltransactionid_flag(request_type):
+    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+                          json={"url": "/jwt/", "bodyPatterns": [
+                              {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['" + request_type + "'])]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.fraudcontroltransactionid=='63d1d099-d635-41b6-bb82-96017f7da6bb')]"}
+                          ]}, verify=False)
+    data = json.loads(count.content)
+    return data['count']
+
 
 def get_number_of_requests_without_data(request_type):
     count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",

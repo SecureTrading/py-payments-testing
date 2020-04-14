@@ -49,6 +49,12 @@ def step_impl(context):
         stub_config(Config.PLACEHOLDERS.value)
     elif 'config_notifications_false' in scenario_tags_list:
         stub_config(Config.NOTIFICATIONS_FALSE.value)
+    elif 'config_cybertonica' in scenario_tags_list:
+        stub_config(Config.CYBERTONICA.value)
+    elif 'config_cybertonica_bypass_cards' in scenario_tags_list:
+        stub_config(Config.CYBERTONICA_BYPASS_CARD.value)
+    elif 'config_cybertonica_immediate_payment' in scenario_tags_list:
+        stub_config(Config.CYBERTONICA_IMMEDIATE_PAYMENT.value)
     else:
         stub_config(Config.BASE_CONFIG.value)
 
@@ -57,7 +63,7 @@ def step_impl(context):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if 'config_immediate_payment' not in context.scenario.tags and 'parent_iframe' not in context.scenario.tags and \
-            'config_defer_init_and_start_on_load_true' not in context.scenario.tags:
+        'config_defer_init_and_start_on_load_true' not in context.scenario.tags and 'config_cybertonica_immediate_payment' not in context.scenario.tags:
         if ('safari' in context.browser) or ('iP' in CONFIGURATION.REMOTE_DEVICE):
             payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
             if 'safari' in context.browser or 'visa_test' in context.scenario.tags or 'apple_test' in context.scenario.tags:
@@ -424,3 +430,23 @@ def step_impl(context, thirdparty):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_number_of_requests_without_data(RequestType.JSINIT.name, 1)
+
+
+@step("(?P<request_type>.+) request was sent only once (?P<scenario>.+) 'fraudcontroltransactionid' flag")
+def step_impl(context, request_type, scenario):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if 'with' == scenario:
+        if 'config_cybertonica_immediate_payment' in context.scenario.tags:
+            payment_page.validate_number_of_requests_with_fraudcontroltransactionid_flag(request_type, 1)
+        else:
+            payment_page.validate_number_of_requests_with_data_and_fraudcontroltransactionid_flag(request_type, context.pan,
+                                                                                 context.exp_date, context.cvv, 1)
+    else:
+        payment_page.validate_number_of_requests_with_data_and_fraudcontroltransactionid_flag(request_type, context.pan,
+                                                                                     context.exp_date, context.cvv, 0)
+
+
+@step("(?P<request_type>.+) request was not sent")
+def step_impl(context, request_type):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_number_of_requests_without_data(request_type, 0)
