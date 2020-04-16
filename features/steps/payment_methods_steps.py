@@ -27,6 +27,10 @@ def step_impl(context):
     scenario_tags_list = context.scenario.tags
     if 'config_submit_on_success_and_error_true' in scenario_tags_list:
         stub_config(Config.SUBMIT_ON_SUCCESS_AND_ERROR_TRUE.value)
+    elif 'config_submit_on_success_true' in scenario_tags_list:
+        stub_config(Config.SUBMIT_ON_SUCCESS_TRUE.value)
+    elif 'config_submit_on_error_true' in scenario_tags_list:
+        stub_config(Config.SUBMIT_ON_ERROR_TRUE.value)
     elif 'config_field_style' in scenario_tags_list:
         stub_config(Config.FIELD_STYLE.value)
     elif 'config_animated_card_true' in scenario_tags_list:
@@ -309,13 +313,18 @@ def step_impl(context):
 
 @then("User will see payment status information included in url")
 def step_impl(context):
-    scenario_name = context.scenario.name
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     time.sleep(1)
-    if scenario_name[0:4] in "Visa":
+    if "Visa" in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
                                                                  context.test_data.step_payment_visa_url)
-    elif scenario_name[0:4] in "Card":
+    if "ApplePay - successful" in context.scenario.name:
+        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
+                                                                 context.test_data.step_payment_apple_pay_success_url)
+    if "ApplePay - error" in context.scenario.name:
+        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
+                                                                 context.test_data.step_payment_apple_pay_error_url)
+    elif "Cardinal" in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
                                                                  context.test_data.step_payment_cardinal_url)
 

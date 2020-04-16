@@ -3,6 +3,8 @@ from enum import Enum
 
 class Config(Enum):
     BASE_CONFIG = "config.json"
+    SUBMIT_ON_SUCCESS_TRUE = "configSubmitOnSuccessTrue.json"
+    SUBMIT_ON_ERROR_TRUE = "configSubmitOnErrorTrue.json"
     SUBMIT_ON_SUCCESS_AND_ERROR_TRUE = "configSubmitOnSuccessAndErrorTrue.json"
     ANIMATED_CARD = "configAnimatedCardTrue.json"
     UPDATE_JWT = "configUpdateJwtTrue.json"
