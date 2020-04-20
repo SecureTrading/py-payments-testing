@@ -90,6 +90,8 @@ def step_impl(context, card_number, exp_date, cvv):
 @step('THREEDQUERY mock response set to "(?P<tdq_response>.+)"')
 def step_impl(context, tdq_response):
     stub_st_request_type(TDQresponse[tdq_response].value, RequestType.THREEDQUERY.name)
+    if 'ie' in context.browser and 'config_submit_cvv_only' in context.scenario.tags:
+        context.executor.wait_for_javascript()
 
 
 @step('ACS mock response set to "(?P<acs_response>.+)"')
@@ -110,6 +112,8 @@ def step_impl(context, acs_response):
 def step_impl(context, action_code):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
+    if 'ie' in context.browser and 'config_submit_cvv_only' in context.scenario.tags:
+        context.executor.wait_for_javascript()
     payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
     if 'config_submit_on_success_and_error_true' not in context.scenario.tags:
         payment_page.scroll_to_top()
@@ -118,8 +122,6 @@ def step_impl(context, action_code):
 @then('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'ie' in context.browser and 'config_submit_cvv_only' in context.scenario.tags:
-        context.executor.wait_for_javascript()
     payment_page.validate_payment_status_message(payment_status_message)
 
 
@@ -243,7 +245,6 @@ def step_impl(context, field, value):
 @step("User will not see card number and expiration date fields")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    #TODO Temporary comment for ie
     if 'ie' not in context.browser:
         payment_page.validate_if_field_is_not_displayed(FieldType.CARD_NUMBER.name)
         payment_page.validate_if_field_is_not_displayed(FieldType.EXPIRATION_DATE.name)
