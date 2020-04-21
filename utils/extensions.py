@@ -27,7 +27,8 @@ class WebElementsExtensions(Waits):
 
     def switch_to_iframe_and_send_keys_one_by_one(self, iframe_name, locator, string):
         self.switch_to_iframe(iframe_name)
-        self.send_key_one_by_one(locator, string)
+        if string != 'None':
+            self.send_key_one_by_one(locator, string)
         self.switch_to_default_iframe()
 
     def switch_to_iframe_and_send_keys_by_java_script(self, iframe_name, locator, string):
