@@ -22,13 +22,8 @@ class PaymentMethodsPage(BasePage):
 
     def fill_credit_card_field(self, field_type, value):
         if field_type == FieldType.CARD_NUMBER.name:
-            if "ie" in ioc_config.CONFIG.resolve('driver').browser:
-                self._action.switch_to_iframe_and_send_keys_one_by_one(FieldType.CARD_NUMBER.value,
-                                                                       PaymentMethodsLocators.card_number_input_field,
-                                                                       value)
-            else:
-                self._action.switch_to_iframe_and_send_keys(FieldType.CARD_NUMBER.value,
-                                                            PaymentMethodsLocators.card_number_input_field, value)
+            self._action.switch_to_iframe_and_send_keys(FieldType.CARD_NUMBER.value,
+                                                        PaymentMethodsLocators.card_number_input_field, value)
         elif field_type == FieldType.EXPIRATION_DATE.name:
             self._action.switch_to_iframe_and_send_keys(FieldType.EXPIRATION_DATE.value,
                                                         PaymentMethodsLocators.expiration_date_input_field, value)
