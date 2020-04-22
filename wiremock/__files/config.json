@@ -55,5 +55,6 @@
     "settings": {
       "displayName": "My Test Site"
     }
-  }
+  },
+  "cybertonicaApiKey": ""
 }
