@@ -116,7 +116,6 @@ def step_impl(context, action_code):
     stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
     if 'ie' in context.browser and 'config_submit_cvv_only' in context.scenario.tags:
         context.executor.wait_for_javascript()
-    time.sleep(200)
     payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
     if 'config_submit_on_success_and_error_true' not in context.scenario.tags:
         payment_page.scroll_to_top()
