@@ -31,6 +31,8 @@ def step_impl(context):
         stub_config(Config.SUBMIT_ON_SUCCESS_TRUE.value)
     elif 'config_submit_on_error_true' in scenario_tags_list:
         stub_config(Config.SUBMIT_ON_ERROR_TRUE.value)
+    elif 'config_submit_on_cancel_true' in scenario_tags_list:
+        stub_config(Config.SUBMIT_ON_CANCEL_TRUE.value)
     elif 'config_field_style' in scenario_tags_list:
         stub_config(Config.FIELD_STYLE.value)
     elif 'config_animated_card_true' in scenario_tags_list:
@@ -114,6 +116,7 @@ def step_impl(context, action_code):
     stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
     if 'ie' in context.browser and 'config_submit_cvv_only' in context.scenario.tags:
         context.executor.wait_for_javascript()
+    time.sleep(200)
     payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
     if 'config_submit_on_success_and_error_true' not in context.scenario.tags:
         payment_page.scroll_to_top()
@@ -316,15 +319,21 @@ def step_impl(context):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     time.sleep(1)
-    if "Visa" in context.scenario.name:
+    if "Visa Checkout - successful" in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
-                                                                 context.test_data.step_payment_visa_url)
-    if "ApplePay - successful" in context.scenario.name:
+                                                                 context.test_data.step_payment_visa_success_url)
+    elif "Visa Checkout - canceled" in context.scenario.name:
+        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
+                                                                 context.test_data.step_payment_visa_cancel_url)
+    elif "ApplePay - successful" in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
                                                                  context.test_data.step_payment_apple_pay_success_url)
-    if "ApplePay - error" in context.scenario.name:
+    elif "ApplePay - error" in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
                                                                  context.test_data.step_payment_apple_pay_error_url)
+    elif "ApplePay - canceled" in context.scenario.name:
+        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
+                                                                 context.test_data.step_payment_apple_pay_cancel_url)
     elif "Cardinal" in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
                                                                  context.test_data.step_payment_cardinal_url)

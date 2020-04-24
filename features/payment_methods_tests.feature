@@ -406,9 +406,19 @@ Feature: Payment methods
     When User chooses ApplePay as payment method - response set to "DECLINE"
     Then User will see payment status information included in url
 
+  @config_submit_on_cancel_true @smoke_test_part_2 @full_test_part_2 @full_test @apple_test
+  Scenario: ApplePay - canceled payment with enabled 'submit on cancel' process
+    When User chooses ApplePay as payment method - response set to "CANCEL"
+    Then User will see payment status information included in url
+
   @config_submit_on_success_and_error_true @full_test_part_1 @full_test @visa_test
   Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
     When User chooses Visa Checkout as payment method - response set to "SUCCESS"
+    Then User will see payment status information included in url
+
+  @config_submit_on_cancel_true @full_test_part_1 @full_test @visa_test
+  Scenario: Visa Checkout - canceled payment with enabled 'submit on cancel' process
+    When User chooses Visa Checkout as payment method - response set to "CANCEL"
     Then User will see payment status information included in url
 
   @config_field_style @smoke_test_part_2 @smoke_test @full_test_part_2 @full_test
@@ -469,6 +479,16 @@ Feature: Payment methods
       | action_code | callback_popup |
       | OK          | success        |
       | DECLINE     | error          |
+
+    @base_config @smoke_test_part_2 @smoke_test @full_test_part_2 @full_test @visa_test
+    Scenario: Visa Checkout - Checking cancel callback functionality
+    When User chooses Visa Checkout as payment method - response set to "CANCEL"
+    And User will see "cancel" popup
+
+  @base_config @smoke_test @full_test_part_2 @full_test @visa_test
+    Scenario: Apple Pay - Checking cancel callback functionality
+    When User chooses ApplePay as payment method - response set to "CANCEL"
+    And User will see "cancel" popup
 
   @base_config @full_test_part_2 @full_test
   Scenario: Checking callback function for in-browser validation
