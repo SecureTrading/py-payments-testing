@@ -86,8 +86,8 @@ class DriverConfig:
         send_keys = 'false'
         if 'Safari' in config.REMOTE_BROWSER:
             network_logs = 'false'
-        if 'IE' in config.REMOTE_BROWSER:
-            send_keys = 'true'
+        # if 'IE' in config.REMOTE_BROWSER:
+        #     send_keys = 'true'
         possible_caps = {"os": config.REMOTE_OS,
                          "os_version": config.REMOTE_OS_VERSION,
                          "browserName": config.REMOTE_BROWSER,
@@ -104,7 +104,7 @@ class DriverConfig:
                          "browserstack.console": "errors",
                          "ie.ensureCleanSession": 'true',
                          "ie.forceCreateProcessApi": 'true',
-                         "browserstack.sendKeys": send_keys,
+                         # "browserstack.sendKeys": send_keys,
                          # "browserstack.idleTimeout": 300
                          }
         capabilities = {}
