@@ -55,6 +55,14 @@ class PaymentMethodsPage(BasePage):
             self.fill_credit_card_field(FieldType.EXPIRATION_DATE.name, expiration_date)
             self.fill_credit_card_field(FieldType.SECURITY_CODE.name, cvv)
 
+    def fill_payment_form_without_cvv(self, card_number, expiration_date):
+        if "ie" in ioc_config.CONFIG.resolve('driver').browser:
+            self.fill_credit_card_field_ie_browser(FieldType.CARD_NUMBER.name, card_number)
+            self.fill_credit_card_field_ie_browser(FieldType.EXPIRATION_DATE.name, expiration_date)
+        else:
+            self.fill_credit_card_field(FieldType.CARD_NUMBER.name, card_number)
+            self.fill_credit_card_field(FieldType.EXPIRATION_DATE.name, expiration_date)
+
     def fill_merchant_input_field(self, field_type, value):
         if field_type == FieldType.NAME.name:
             self._action.send_keys(PaymentMethodsLocators.merchant_name, value)
@@ -76,7 +84,8 @@ class PaymentMethodsPage(BasePage):
         return status_message
 
     def get_color_of_notification_frame(self):
-        frame_color = self._action.get_element_attribute(PaymentMethodsLocators.notification_frame, "data-notification-color")
+        frame_color = self._action.get_element_attribute(PaymentMethodsLocators.notification_frame,
+                                                         "data-notification-color")
         return frame_color
 
     def is_field_enabled(self, field_type):
@@ -373,14 +382,19 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
 
-    def validate_number_of_requests_with_data_and_fraudcontroltransactionid_flag(self, request_type, pan, expiry_date, cvv, expected_number_of_requests):
-        actual_number_of_requests = get_number_of_requests_with_data_and_fraudcontroltransactionid_flag(request_type, pan, expiry_date, cvv)
+    def validate_number_of_requests_with_data_and_fraudcontroltransactionid_flag(self, request_type, pan, expiry_date,
+                                                                                 cvv, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests_with_data_and_fraudcontroltransactionid_flag(request_type,
+                                                                                                        pan,
+                                                                                                        expiry_date,
+                                                                                                        cvv)
         assertion_message = f'Number of {request_type} requests or request data are not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
 
-    def validate_number_of_requests_with_fraudcontroltransactionid_flag(self, request_type, expected_number_of_requests):
+    def validate_number_of_requests_with_fraudcontroltransactionid_flag(self, request_type,
+                                                                        expected_number_of_requests):
         actual_number_of_requests = get_number_of_requests_with_fraudcontroltransactionid_flag(request_type)
         assertion_message = f'Number of {request_type} requests or request data are not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
