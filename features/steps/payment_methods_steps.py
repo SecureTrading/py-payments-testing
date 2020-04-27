@@ -333,8 +333,7 @@ def step_impl(context):
 @when('User fills payment form with credit card number "(?P<card_number>.+)", expiration date "(?P<exp_date>.+)"')
 def step_impl(context, card_number, exp_date):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.fill_credit_card_field(FieldType.CARD_NUMBER.name, card_number)
-    payment_page.fill_credit_card_field(FieldType.EXPIRATION_DATE.name, exp_date)
+    payment_page.fill_payment_form(card_number, exp_date, '')
 
 
 @step("User fills amount field")
