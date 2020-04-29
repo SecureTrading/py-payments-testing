@@ -485,8 +485,8 @@ Feature: Payment methods
     When User chooses Visa Checkout as payment method - response set to "CANCEL"
     And User will see "cancel" popup
 
-  @base_config @smoke_test @full_test_part_2 @full_test @visa_test
-    Scenario: Apple Pay - Checking cancel callback functionality
+  @base_config @smoke_test @full_test_part_2 @full_test @apple_test
+  Scenario: Apple Pay - Checking cancel callback functionality
     When User chooses ApplePay as payment method - response set to "CANCEL"
     And User will see "cancel" popup
 
