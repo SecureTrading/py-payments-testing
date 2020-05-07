@@ -413,8 +413,12 @@ def step_impl(context):
 @step("THREEDQUERY request was sent only once with correct data")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 1)
-    payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, context.pan, context.exp_date, context.cvv, 0)
+    if 'config_immediate_payment' in context.scenario.tags:
+        payment_page.validate_number_of_requests_without_data(RequestType.THREEDQUERY.name, 1)
+        payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 0)
+    else:
+        payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 1)
+        payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, context.pan, context.exp_date, context.cvv, 0)
 
 @step("AUTH request was sent only once with correct data")
 def step_impl(context):
