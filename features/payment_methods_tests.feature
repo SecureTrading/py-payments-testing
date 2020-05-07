@@ -372,16 +372,12 @@ Feature: Payment methods
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_immediate_payment @full_test_part_2 @full_test
-  Scenario Outline: Immediate payment (card enrolled Y) - check ACS response for code: <action_code>
+  Scenario: Immediate payment (card enrolled Y) - check ACS response for code: FAILURE
     When THREEDQUERY mock response set to "ENROLLED_Y"
-    And ACS mock response set to "<action_code>"
+    And ACS mock response set to "FAILURE"
     And User opens payment page
-    Then User will see payment status information: "<payment_status_message>"
-    And AUTH and THREEDQUERY requests were sent only once with correct data
-    Examples:
-      | action_code | payment_status_message |
-#      | ERROR      | Invalid response |
-      | FAILURE     | Merchant decline       |
+    Then User will see payment status information: "Wystąpił błąd"
+    And THREEDQUERY request was sent only once with correct data
 
   @config_skip_jsinit @smoke_test_part_2 @smoke_test @full_test_part_2 @full_test @cardinal_commerce
   Scenario: Successful payment with skipped JSINIT process
