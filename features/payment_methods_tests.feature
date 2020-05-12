@@ -71,6 +71,16 @@ Feature: Payment methods
     And User will see that notification frame has "red" color
     And THREEDQUERY request was sent only once with correct data
 
+  @base_config @smoke_test_part_1 @smoke_test @cardinal_commerce
+  Scenario: Cardinal Commerce (card enrolled Y) - check ACS response for code: FAILURE
+    When User fills payment form with credit card number "4111110000000211", expiration date "01/22" and cvv "123"
+    And THREEDQUERY mock response set to "ENROLLED_Y"
+    And ACS mock response set to "FAILURE"
+    And User clicks Pay button
+    Then User will see payment status information: "Wystąpił błąd"
+    And User will see that notification frame has "red" color
+    And THREEDQUERY request was sent only once with correct data
+
   @base_config @full_test_part_1 @full_test @cardinal_commerce
   Scenario Outline: Cardinal Commerce (card enrolled Y) - check ACS response for code: <action_code>
     When User fills payment form with credit card number "4111110000000211", expiration date "01/22" and cvv "123"
@@ -80,14 +90,9 @@ Feature: Payment methods
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
     And AUTH and THREEDQUERY requests were sent only once with correct data
-    @smoke_test_part_1 @smoke_test
-    Examples:
-      | action_code | payment_status_message | color |
-      | FAILURE     | Merchant decline       | red   |
     Examples:
       | action_code | payment_status_message                  | color |
       | NOACTION    | Payment has been successfully processed | green |
-#      | ERROR      | Invalid response                        | red   |
 
   @base_config @full_test_part_1 @full_test @cardinal_commerce
   Scenario Outline: Successful payment using most popular Credit Cards: <card_type>
@@ -367,16 +372,12 @@ Feature: Payment methods
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_immediate_payment @full_test_part_2 @full_test
-  Scenario Outline: Immediate payment (card enrolled Y) - check ACS response for code: <action_code>
+  Scenario: Immediate payment (card enrolled Y) - check ACS response for code: FAILURE
     When THREEDQUERY mock response set to "ENROLLED_Y"
-    And ACS mock response set to "<action_code>"
+    And ACS mock response set to "FAILURE"
     And User opens payment page
-    Then User will see payment status information: "<payment_status_message>"
-    And AUTH and THREEDQUERY requests were sent only once with correct data
-    Examples:
-      | action_code | payment_status_message |
-#      | ERROR      | Invalid response |
-      | FAILURE     | Merchant decline       |
+    Then User will see payment status information: "Wystąpił błąd"
+    And THREEDQUERY request was sent only once with correct data
 
   @config_skip_jsinit @smoke_test_part_2 @smoke_test @full_test_part_2 @full_test @cardinal_commerce
   Scenario: Successful payment with skipped JSINIT process
@@ -406,9 +407,19 @@ Feature: Payment methods
     When User chooses ApplePay as payment method - response set to "DECLINE"
     Then User will see payment status information included in url
 
+  @config_submit_on_cancel_true @smoke_test_part_2 @full_test_part_2 @full_test @apple_test
+  Scenario: ApplePay - canceled payment with enabled 'submit on cancel' process
+    When User chooses ApplePay as payment method - response set to "CANCEL"
+    Then User will see payment status information included in url
+
   @config_submit_on_success_and_error_true @full_test_part_1 @full_test @visa_test
   Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
     When User chooses Visa Checkout as payment method - response set to "SUCCESS"
+    Then User will see payment status information included in url
+
+  @config_submit_on_cancel_true @full_test_part_1 @full_test @visa_test
+  Scenario: Visa Checkout - canceled payment with enabled 'submit on cancel' process
+    When User chooses Visa Checkout as payment method - response set to "CANCEL"
     Then User will see payment status information included in url
 
   @config_field_style @smoke_test_part_2 @smoke_test @full_test_part_2 @full_test
@@ -469,6 +480,16 @@ Feature: Payment methods
       | action_code | callback_popup |
       | OK          | success        |
       | DECLINE     | error          |
+
+    @base_config @smoke_test_part_2 @smoke_test @full_test_part_2 @full_test @visa_test
+    Scenario: Visa Checkout - Checking cancel callback functionality
+    When User chooses Visa Checkout as payment method - response set to "CANCEL"
+    And User will see "cancel" popup
+
+  @base_config @smoke_test @full_test_part_2 @full_test @apple_test
+  Scenario: Apple Pay - Checking cancel callback functionality
+    When User chooses ApplePay as payment method - response set to "CANCEL"
+    And User will see "cancel" popup
 
   @base_config @full_test_part_2 @full_test
   Scenario: Checking callback function for in-browser validation
