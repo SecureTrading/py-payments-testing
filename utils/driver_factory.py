@@ -43,8 +43,6 @@ class DriverFactory:
         self._remote = config__driver.remote
         self._command_executor = config__driver.command_executor
         self._remote_capabilities = config__driver.remote_capabilities
-        self._browserstack_username = config__driver.username
-        self._browserstack_password = config__driver.password
 
     def _set_browser(self):
         driver = SeleniumDriver(browser_name=self._browser_name, remote=self._remote,
@@ -52,27 +50,7 @@ class DriverFactory:
                                 remote_capabilities=self._remote_capabilities
                                 )
         browser = driver.get_driver()
-        if self._remote:
-            self.check_active_sessions()
         self._browser = browser
-
-    def check_active_sessions(self):
-        try:
-            while True:
-                response = requests.get("https://api.browserstack.com/automate/plan.json",
-                                        auth=HTTPBasicAuth(self._browserstack_username, self._browserstack_password)
-                                        )
-                plan_data = response.json()
-                active_sessions = plan_data.get('parallel_sessions_running')
-                queued_sessions = plan_data.get('queued_sessions')
-                if active_sessions >= plan_data.get('parallel_sessions_max_allowed') or queued_sessions > 0:
-                    print("Waiting for free sessions currently %s active sessions with %s queued" % (active_sessions,
-                                                                                                     queued_sessions))
-                else:
-                    print("%s active sessions, continuing" % active_sessions)
-                    break
-        except Exception:
-            traceback.print_exc()
 
     def get_browser(self):
         if not self._browser:

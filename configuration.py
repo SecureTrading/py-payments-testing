@@ -33,8 +33,6 @@ def load_config():
         'PROJECT_NAME': get_from_env('PROJECT_NAME', 'JS Payments Interface'),
         'BUILD_NAME': get_from_env('BUILD_NAME', 'Behavioral test: ' + str(date.today())),
         'BROWSERSTACK_DEBUG': get_from_env('BROWSERSTACK_DEBUG', 'true'),
-        'BROWSERSTACK_USERNAME': get_from_env('BS_USERNAME'),
-        'BROWSERSTACK_PASSWORD': get_from_env('BS_PASSWORD'),
     }
 
     return AttrDict(config)
@@ -77,14 +75,10 @@ class DriverConfig:
                 self.browser = CONFIGURATION.REMOTE_DEVICE.lower()
             self.remote_capabilities = self.get_remote_capabilities(CONFIGURATION)
             self.command_executor = CONFIGURATION.COMMAND_EXECUTOR
-            self.username = CONFIGURATION.BROWSERSTACK_USERNAME
-            self.password = CONFIGURATION.BROWSERSTACK_PASSWORD
         else:
             self.browser = CONFIGURATION.BROWSER.lower()
             self.remote_capabilities = {}
             self.command_executor = ""
-            self.username = ""
-            self.password = ""
 
     @staticmethod
     def get_remote_capabilities(config):
