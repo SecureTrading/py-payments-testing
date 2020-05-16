@@ -7,6 +7,7 @@ It based on singleton pattern to operate on a single instance of a driver.
 """
 import abc
 from enum import Enum
+from modules import fast_selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
