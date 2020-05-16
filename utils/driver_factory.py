@@ -7,6 +7,7 @@ It based on singleton pattern to operate on a single instance of a driver.
 """
 import abc
 from enum import Enum
+import traceback
 # TODO this might need work before using it from modules import fast_selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -52,23 +53,26 @@ class DriverFactory:
                                 )
         browser = driver.get_driver()
         if self._remote:
-            self.check_runner_available()
+            self.check_active_sessions()
         self._browser = browser
 
-    def check_runner_available(self):
-        while True:
-            response = requests.get("https://api.browserstack.com/automate/plan.json",
-                                    auth=HTTPBasicAuth(self._browserstack_username, self._browserstack_password)
-                                    )
-            plan_data = response.json()
-            active_sessions = plan_data.get('parallel_sessions_running')
-            queued_sessions = plan_data.get('queued_sessions')
-            if active_sessions >= plan_data.get('parallel_sessions_max_allowed') or queued_sessions > 0:
-                print("Waiting for free sessions currently %s active sessions with %s queued" % (active_sessions,
-                                                                                                 queued_sessions))
-            else:
-                print("%s active sessions, continuing" % active_sessions)
-                break
+    def check_active_sessions(self):
+        try:
+            while True:
+                response = requests.get("https://api.browserstack.com/automate/plan.json",
+                                        auth=HTTPBasicAuth(self._browserstack_username, self._browserstack_password)
+                                        )
+                plan_data = response.json()
+                active_sessions = plan_data.get('parallel_sessions_running')
+                queued_sessions = plan_data.get('queued_sessions')
+                if active_sessions >= plan_data.get('parallel_sessions_max_allowed') or queued_sessions > 0:
+                    print("Waiting for free sessions currently %s active sessions with %s queued" % (active_sessions,
+                                                                                                     queued_sessions))
+                else:
+                    print("%s active sessions, continuing" % active_sessions)
+                    break
+        except Exception:
+            traceback.print_exc()
 
     def get_browser(self):
         if not self._browser:
