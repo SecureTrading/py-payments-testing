@@ -38,6 +38,7 @@ def get_number_of_requests_with_data(request_type, pan, expiry_date, cvv):
     data = json.loads(count.content)
     return data['count']
 
+
 def get_number_of_requests_with_data_and_fraudcontroltransactionid_flag(request_type, pan, expiry_date, cvv):
     count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
                           json={"url": "/jwt/", "bodyPatterns": [
@@ -50,11 +51,22 @@ def get_number_of_requests_with_data_and_fraudcontroltransactionid_flag(request_
     data = json.loads(count.content)
     return data['count']
 
+
 def get_number_of_requests_with_fraudcontroltransactionid_flag(request_type):
     count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
                           json={"url": "/jwt/", "bodyPatterns": [
                               {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['" + request_type + "'])]"},
                               {"matchesJsonPath": "$.request[:1][?(@.fraudcontroltransactionid=='63d1d099-d635-41b6-bb82-96017f7da6bb')]"}
+                          ]}, verify=False)
+    data = json.loads(count.content)
+    return data['count']
+
+
+def get_number_of_requests_with_updated_jwt(request_type):
+    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+                          json={"url": "/jwt/", "bodyPatterns": [
+                              {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['" + request_type + "'])]"},
+                              {"matchesJsonPath": "$.[?(@.jwt=='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU4NzYyNTMyOC4yNzkyMzg3LCJwYXlsb2FkIjp7Im1haW5hbW91bnQiOiIxMC4wMCIsImFjY291bnR0eXBlZGVzY3JpcHRpb24iOiJFQ09NIiwiY3VycmVuY3lpc28zYSI6IkdCUCIsInNpdGVyZWZlcmVuY2UiOiJ0ZXN0X2phbWVzMzg2NDEiLCJsb2NhbGUiOiJlbl9HQiJ9fQ.m_pVpCy6FGA0Q_5MzrdBQ8lUku0K3j33bRykxeQsh20')]"}
                           ]}, verify=False)
     data = json.loads(count.content)
     return data['count']

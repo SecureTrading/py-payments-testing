@@ -11,7 +11,7 @@ import json
 from utils.helpers.request_executor import add_to_shared_dict, get_number_of_requests_with_data, \
     get_number_of_thirdparty_requests, get_number_of_AUTH_thirdparty_requests, get_number_of_requests_without_data, \
     get_number_of_requests_with_fraudcontroltransactionid_flag, \
-    get_number_of_requests_with_data_and_fraudcontroltransactionid_flag
+    get_number_of_requests_with_data_and_fraudcontroltransactionid_flag, get_number_of_requests_with_updated_jwt
 
 
 class PaymentMethodsPage(BasePage):
@@ -399,6 +399,13 @@ class PaymentMethodsPage(BasePage):
                                                                         expected_number_of_requests):
         actual_number_of_requests = get_number_of_requests_with_fraudcontroltransactionid_flag(request_type)
         assertion_message = f'Number of {request_type} requests or request data are not correct, ' \
+                            f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_number_of_requests == actual_number_of_requests, assertion_message
+
+    def validate_updated_jwt_in_request(self, request_type, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests_with_updated_jwt(request_type)
+        assertion_message = f'Number of {request_type} with updated jwt is not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
