@@ -34,6 +34,15 @@ services:
           - webservices.securetrading.net
           - thirdparty.example.com
 
+  react:
+    image: securetrading1/reactjs-payments
+    ports:
+      - 3000:8443
+    networks:
+      securetrading:
+        aliases:
+          - reactjs.securetrading.net
+
 networks:
   securetrading:
     driver: bridge
