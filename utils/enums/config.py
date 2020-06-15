@@ -1,26 +1,30 @@
-from enum import Enum
-
-
-class Config(Enum):
-    BASE_CONFIG = "config.json"
-    SUBMIT_ON_SUCCESS_TRUE = "configSubmitOnSuccessTrue.json"
-    SUBMIT_ON_ERROR_TRUE = "configSubmitOnErrorTrue.json"
-    SUBMIT_ON_CANCEL_TRUE = "configSubmitOnCancelTrue.json"
-    SUBMIT_ON_SUCCESS_AND_ERROR_TRUE = "configSubmitOnSuccessAndErrorTrue.json"
-    ANIMATED_CARD = "configAnimatedCardTrue.json"
-    UPDATE_JWT = "configUpdateJwtTrue.json"
-    FIELD_STYLE = "configFieldStyle.json"
-    IMMEDIATE_PAYMENT = "configImmediatePayment.json"
-    IMMEDIATE_PAYMENT_SUBMIT_ON_SUCCESS = "configImmediatePaymentAndSubmitOnSuccess.json"
-    SKIP_JSINIT = "configSkipJSinit.json"
-    DEFER_INIT = "configDeferInitTrue.json"
-    SUBMIT_CVV_ONLY = "configSubmitCvvOnly.json"
-    SUBMIT_CVV_FOR_AMEX = "configSubmitCvvForAmex.json"
-    SUBMIT_CVV_TO_SUBMIT_AND_SUBMIT_ON_SUCCESS = "configSubmitCvvAndSubmitOnSuccess.json"
-    BYPASS_CARDS = "configBypassCards.json"
-    INCORRECT_REQUEST_TYPE = "configIncorrectRequestType.json"
-    PLACEHOLDERS = "configPlaceholders.json"
-    NOTIFICATIONS_FALSE = "configNotificationsFalse.json"
-    CYBERTONICA = "configCybertonica.json"
-    CYBERTONICA_BYPASS_CARD = "configCybertonicaBypassCards.json"
-    CYBERTONICA_IMMEDIATE_PAYMENT = "configCybertonicaImmediatePayment.json"
+config = {
+    "base_config": "config.json",
+    "config_submit_on_success_true": "configSubmitOnSuccessTrue.json",
+    "config_submit_on_error_true": "configSubmitOnErrorTrue.json",
+    "config_submit_on_cancel_true": "configSubmitOnCancelTrue.json",
+    "config_submit_on_success_and_error_true": "configSubmitOnSuccessAndErrorTrue.json",
+    "config_animated_card_true": "configAnimatedCardTrue.json",
+    "config_update_jwt_true": "configUpdateJwtTrue.json",
+    "config_field_style": "configFieldStyle.json",
+    "config_immediate_payment": "configImmediatePayment.json",
+    "config_immediate_payment_and_submit_on_success": "configImmediatePaymentAndSubmitOnSuccess.json",
+    "config_skip_jsinit": "configSkipJSinit.json",
+    "config_defer_init": "configDeferInitTrue.json",
+    "config_submit_cvv_only": "configSubmitCvvOnly.json",
+    "config_submit_cvv_for_amex": "configSubmitCvvForAmex.json",
+    "config_cvvToSubmit_and_submitOnSuccess": "configSubmitCvvAndSubmitOnSuccess.json",
+    "config_bypass_cards": "configBypassCards.json",
+    "config_incorrect_request_type": "configIncorrectRequestType.json",
+    "config_placeholders": "configPlaceholders.json",
+    "config_notifications_false": "configNotificationsFalse.json",
+    "config_cybertonica": "configCybertonica.json",
+    "config_cybertonica_bypass_cards": "configCybertonicaBypassCards.json",
+    "config_cybertonica_immediate_payment": "configCybertonicaImmediatePayment.json",
+    "config_requestTypes_acheck_tdq_auth_riskdec": "configRequestTypesAcheckTdqAuthRiskdec.json",
+    "config_requestTypes_riskdec_acheck_tdq_auth": "configRequestTypesRiskdecAcheckTdqAuth.json",
+    "config_requestTypes_tdq": "configRequestTypesTDQ.json",
+    "config_immediate_payment_riskdec_acheck_tdq_auth": "configImmediatePaymentRiskdecAcheckTdqAuth.json",
+    "config_immediate_payment_tdq": "configImmediatePaymentTDQ.json",
+    "config_immediate_payment_acheck_tdq_auth_riskdec": "configImmediatePaymentAcheckTdqAuthRiskdec.json"
+}

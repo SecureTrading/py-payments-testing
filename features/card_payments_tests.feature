@@ -1,6 +1,6 @@
-Feature: Cardinal Commerce
+Feature: Card Payments
   As a user
-  I want to use various payment methods using correct and incorrect credentials
+  I want to use card payments method
   In order to check full payment functionality
 
   Background:
@@ -71,7 +71,7 @@ Feature: Cardinal Commerce
     And User will see that notification frame has "red" color
     And THREEDQUERY request was sent only once with correct data
 
-    @base_config @smoke_test_part_1 @smoke_test @cardinal_commerce
+  @base_config @smoke_test_part_1 @smoke_test @cardinal_commerce
   Scenario: Cardinal Commerce - check ACS response for code: FAILURE
     When User fills payment form with credit card number "4111110000000211", expiration date "01/22" and cvv "123"
     And THREEDQUERY mock response is set to "ENROLLED_Y"
@@ -391,7 +391,7 @@ Feature: Cardinal Commerce
     Then JSINIT request was sent only once
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
-  @config_defer_true @full_test_part_2
+  @config_defer_init @full_test_part_2
   Scenario: Successful payment with deferInit and updated JWT
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And User fills amount field
@@ -436,6 +436,60 @@ Feature: Cardinal Commerce
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And AUTH request was sent only once with correct data
+
+  @config_requestTypes_tdq @smoke_test_part_2 @full_test_part_2
+  Scenario: Successful payment with request types: THREEDQUERY
+    When User fills payment form with credit card number "5200000000001005", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
+    And User clicks Pay button
+    Then User will see payment status information: "Payment has been successfully processed"
+    And THREEDQUERY request was sent only once with correct data
+
+  @config_requestTypes_riskdec_acheck_tdq_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: Successful payment with additional request types: RISKDEC, ACCOUNTCHECK, THREEDQUERY, AUTH
+    When User fills payment form with credit card number "5200000000001005", expiration date "12/30" and cvv "123"
+    And RISKDEC, ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And RISKDEC, ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
+    And AUTH request was sent only once with correct data
+
+  @config_requestTypes_acheck_tdq_auth_riskdec @smoke_test_part_2 @full_test_part_2
+  Scenario: Successful payment with additional request types: ACCOUNTCHECK, THREEDQUERY, AUTH, RISKDEC
+    When User fills payment form with credit card number "5200000000001005", expiration date "12/30" and cvv "123"
+    And ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    And User clicks Pay button - AUTH, RISKDEC response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
+    And AUTH, RISKDEC ware sent only once in one request
+
+  @config_immediate_payment_tdq @smoke_test_part_2 @full_test_part_2
+  Scenario: Immediate payment - Successful payment with request types: THREEDQUERY
+    When THREEDQUERY mock response is set to "ENROLLED_Y"
+    And ACS mock response is set to "OK"
+    And User opens payment page
+    Then User will see payment status information: "Payment has been successfully processed"
+    And THREEDQUERY request was sent only once with correct data
+
+  @config_immediate_payment_riskdec_acheck_tdq_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: Immediate payment - Successful payment with additional request types: RISKDEC, ACCOUNTCHECK, THREEDQUERY, AUTH
+    And RISKDEC, ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    And ACS mock response is set to "OK"
+    And AUTH response is set to "OK"
+    And User opens payment page
+    Then User will see payment status information: "Payment has been successfully processed"
+    And RISKDEC, ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
+    And AUTH request was sent only once with correct data
+
+  @config_immediate_payment_acheck_tdq_auth_riskdec @smoke_test_part_2 @full_test_part_2
+  Scenario: Immediate payment - Successful payment with additional request types: ACCOUNTCHECK, THREEDQUERY, AUTH, RISKDEC
+    And ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    And ACS mock response is set to "OK"
+    And AUTH, RISKDEC response is set to "OK"
+    And User opens payment page
+    Then User will see payment status information: "Payment has been successfully processed"
+    And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
+    And AUTH, RISKDEC ware sent only once in one request
 
   @base_config @smoke_test_part_2 @full_test_part_2
   Scenario Outline: Checking <action_code> callback functionality
@@ -512,9 +566,15 @@ Feature: Cardinal Commerce
       | card_number      | expiration_date | card_type |
       | 4111110000000211 | 12/22           | VISA      |
     Examples:
-      | card_number         | expiration_date | card_type |
-      | 340000000000611     | 12/23           | AMEX      |
-      | 3089500000000000021 | 12/23           | PIBA      |
+      | card_number         | expiration_date | card_type    |
+      | 340000000000611     | 12/23           | AMEX         |
+#      | 6011000000000301    | 12/23           | DISCOVER     |
+#      | 3528000000000411    | 12/23           | JCB          |
+#      | 5000000000000611    | 12/23           | MAESTRO      |
+#      | 5100000000000511    | 12/23           | MASTERCARD   |
+#      | 3089500000000000021 | 12/23           | PIBA         |
+#      | 1801000000000901    | 12/23           | ASTROPAYCARD |
+#      | 3000000000000111    | 12/23           | DINERS       |
 
   @base_config @full_test_part_1
   Scenario: Verify number on JSINIT requests

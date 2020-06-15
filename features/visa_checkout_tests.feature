@@ -1,6 +1,6 @@
 Feature: Visa Checkout
-  As a user
-  I want to use various payment methods using correct and incorrect credentials
+ As a user
+  I want to use Visa Checkout payment method
   In order to check full payment functionality
 
   Background:

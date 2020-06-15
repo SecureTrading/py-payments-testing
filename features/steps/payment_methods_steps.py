@@ -4,7 +4,8 @@ import requests
 from behave import *
 
 from configuration import CONFIGURATION
-from utils.enums.config import Config
+from utils.enums.config import config
+
 from utils.enums.field_type import FieldType
 from utils.enums.payment_type import PaymentType
 from utils.enums.request_type import RequestType
@@ -24,57 +25,14 @@ use_step_matcher("re")
 @given("JavaScript configuration is set for scenario based on scenario's @config tag")
 def step_impl(context):
     remove_item_from_request_journal()
-    scenario_tags_list = context.scenario.tags
-    if 'config_submit_on_success_and_error_true' in scenario_tags_list:
-        stub_config(Config.SUBMIT_ON_SUCCESS_AND_ERROR_TRUE.value)
-    elif 'config_submit_on_success_true' in scenario_tags_list:
-        stub_config(Config.SUBMIT_ON_SUCCESS_TRUE.value)
-    elif 'config_submit_on_error_true' in scenario_tags_list:
-        stub_config(Config.SUBMIT_ON_ERROR_TRUE.value)
-    elif 'config_submit_on_cancel_true' in scenario_tags_list:
-        stub_config(Config.SUBMIT_ON_CANCEL_TRUE.value)
-    elif 'config_field_style' in scenario_tags_list:
-        stub_config(Config.FIELD_STYLE.value)
-    elif 'config_animated_card_true' in scenario_tags_list:
-        stub_config(Config.ANIMATED_CARD.value)
-    elif 'config_immediate_payment' in scenario_tags_list:
-        stub_config(Config.IMMEDIATE_PAYMENT.value)
-    elif 'config_immediate_payment_and_submit_on_success' in scenario_tags_list:
-        stub_config(Config.IMMEDIATE_PAYMENT_SUBMIT_ON_SUCCESS.value)
-    elif 'config_update_jwt_true' in scenario_tags_list:
-        stub_config(Config.UPDATE_JWT.value)
-    elif 'config_skip_jsinit' in scenario_tags_list:
-        stub_config(Config.SKIP_JSINIT.value)
-    elif 'config_defer_init' in scenario_tags_list:
-        stub_config(Config.DEFER_INIT.value)
-    elif 'config_submit_cvv_only' in scenario_tags_list:
-        stub_config(Config.SUBMIT_CVV_ONLY.value)
-    elif 'config_submit_cvv_for_amex' in scenario_tags_list:
-        stub_config(Config.SUBMIT_CVV_FOR_AMEX.value)
-    elif 'config_cvvToSubmit_and_submitOnSuccess' in scenario_tags_list:
-        stub_config(Config.SUBMIT_CVV_TO_SUBMIT_AND_SUBMIT_ON_SUCCESS.value)
-    elif 'config_bypass_cards' in scenario_tags_list:
-        stub_config(Config.BYPASS_CARDS.value)
-    elif 'config_incorrect_request_type' in scenario_tags_list:
-        stub_config(Config.INCORRECT_REQUEST_TYPE.value)
-    elif 'config_placeholders' in scenario_tags_list:
-        stub_config(Config.PLACEHOLDERS.value)
-    elif 'config_notifications_false' in scenario_tags_list:
-        stub_config(Config.NOTIFICATIONS_FALSE.value)
-    elif 'config_cybertonica' in scenario_tags_list:
-        stub_config(Config.CYBERTONICA.value)
-    elif 'config_cybertonica_bypass_cards' in scenario_tags_list:
-        stub_config(Config.CYBERTONICA_BYPASS_CARD.value)
-    elif 'config_cybertonica_immediate_payment' in scenario_tags_list:
-        stub_config(Config.CYBERTONICA_IMMEDIATE_PAYMENT.value)
-    else:
-        stub_config(Config.BASE_CONFIG.value)
+    config_tag = context.scenario.tags[0]
+    stub_config(config[config_tag])
 
 
 @step("User opens page with payment form")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'config_immediate_payment' not in context.scenario.tags and 'parent_iframe' not in context.scenario.tags and \
+    if 'config_immediate_payment' not in context.scenario.tags[0] and 'parent_iframe' not in context.scenario.tags and \
         'config_cybertonica_immediate_payment' not in context.scenario.tags:
         if ('safari' in context.browser) or ('iP' in CONFIGURATION.REMOTE_DEVICE):
             payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
@@ -102,6 +60,13 @@ def step_impl(context, tdq_response):
         context.executor.wait_for_javascript()
 
 
+@step("(?P<request_type>.+) mock response is set to OK")
+def step_impl(context, request_type):
+    if request_type == "RISKDEC, ACCOUNTCHECK, THREEDQUERY":
+        stub_st_request_type("ccRiskdecAcheckTdq.json", RequestType.RISKDEC_ACHECK_TDQ.name)
+    elif request_type == "ACCOUNTCHECK, THREEDQUERY":
+        stub_st_request_type("ccRiskdecAcheckTdq.json", RequestType.ACHECK_TDQ.name)
+
 @step('ACS mock response is set to "(?P<acs_response>.+)"')
 def step_impl(context, acs_response):
     if acs_response == "OK":
@@ -116,10 +81,14 @@ def step_impl(context, acs_response):
         stub_payment_status(MockUrl.CC_MOCK_ACS_URI.value, ACSresponse[acs_response].value)
 
 
-@step('User clicks Pay button - AUTH response is set to "(?P<action_code>.+)"')
-def step_impl(context, action_code):
+@step('User clicks Pay button - (?P<request_type>.+) response is set to "(?P<action_code>.+)"')
+def step_impl(context, request_type, action_code):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
+    if request_type == "AUTH":
+        stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
+    elif request_type == "AUTH, RISKDEC":
+        stub_st_request_type("ccAuthRiskdec.json", RequestType.AUTH_RISKDEC.name)
+
     if 'ie' in context.browser and 'config_submit_cvv_only' in context.scenario.tags:
         context.executor.wait_for_javascript()
     payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
@@ -242,9 +211,12 @@ def step_impl(context, form_status):
     payment_page.validate_form_status(FieldType.EXPIRATION_DATE.name, form_status)
 
 
-@step('AUTH response is set to "(?P<action_code>.+)"')
-def step_impl(context, action_code):
-    stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
+@step('(?P<request_type>.+) response is set to "(?P<action_code>.+)"')
+def step_impl(context, request_type, action_code):
+    if request_type == "AUTH":
+        stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
+    elif request_type == "AUTH, RISKDEC":
+        stub_st_request_type("ccAuthRiskdec.json", RequestType.AUTH_RISKDEC.name)
 
 
 @when('User fills "(?P<field>.+)" field "(?P<value>.+)"')
@@ -346,7 +318,7 @@ def step_impl(context):
     elif "ApplePay - canceled" in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
                                                                  context.test_data.step_payment_apple_pay_cancel_url)
-    elif "Cardinal Commerce - successful" in context.scenario.name:
+    elif "Cardinal Commerce - successful" in context.scenario.name or "Immediate payment with submitOnSuccess " in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
                                                                  context.test_data.step_payment_cardinal_success_url)
     elif "Cardinal Commerce - error" in context.scenario.name:
@@ -431,18 +403,23 @@ def step_impl(context):
 @step("THREEDQUERY request was sent only once with correct data")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'config_immediate_payment' in context.scenario.tags:
+    if 'config_immediate_payment' in context.scenario.tags[0]:
         payment_page.validate_number_of_requests_without_data(RequestType.THREEDQUERY.name, 1)
         payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 0)
     else:
         payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 1)
         payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, context.pan, context.exp_date, context.cvv, 0)
 
+
 @step("AUTH request was sent only once with correct data")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 0)
-    payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, context.pan, context.exp_date, context.cvv, 1)
+    if 'config_immediate_payment' in context.scenario.tags[0]:
+        payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 1)
+    else:
+        payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 0)
+        payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, context.pan, context.exp_date, context.cvv, 1)
+
 
 @step("AUTH and THREEDQUERY requests were not sent")
 def step_impl(context):
@@ -463,6 +440,33 @@ def step_impl(context, thirdparty):
         payment_page.validate_number_of_AUTH_thirdparty_requests(RequestType.AUTH.name, PaymentType[thirdparty].value, 1)
     else:
         payment_page.validate_number_of_AUTH_thirdparty_requests(RequestType.AUTH.name, PaymentType[thirdparty].value, 0)
+
+
+@step("AUTH, RISKDEC ware sent only once in one request")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if 'config_immediate_payment' in context.scenario.tags[0]:
+        payment_page.validate_number_of_requests_with_auth_riskdec("", "", "", 1)
+    else:
+        payment_page.validate_number_of_requests_with_auth_riskdec(context.pan, context.exp_date, context.cvv, 1)
+
+
+@step("RISKDEC, ACCOUNTCHECK, THREEDQUERY ware sent only once in one request")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if 'config_immediate_payment' in context.scenario.tags[0]:
+        payment_page.validate_number_of_requests_with_riskdec_accountcheck_3dq("", "", "", 1)
+    else:
+        payment_page.validate_number_of_requests_with_riskdec_accountcheck_3dq(context.pan, context.exp_date, context.cvv, 1)
+
+
+@step("ACCOUNTCHECK, THREEDQUERY ware sent only once in one request")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if 'config_immediate_payment' in context.scenario.tags[0]:
+        payment_page.validate_number_of_requests_with_accountcheck_3dq("", "", "", 1)
+    else:
+        payment_page.validate_number_of_requests_with_accountcheck_3dq(context.pan, context.exp_date, context.cvv, 1)
 
 
 @then("JSINIT request was sent only once")

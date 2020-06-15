@@ -66,7 +66,7 @@ def get_number_of_requests_with_updated_jwt(request_type):
     count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
                           json={"url": "/jwt/", "bodyPatterns": [
                               {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['" + request_type + "'])]"},
-                              {"matchesJsonPath": "$.[?(@.jwt=='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU4NzYyNTMyOC4yNzkyMzg3LCJwYXlsb2FkIjp7Im1haW5hbW91bnQiOiIxMC4wMCIsImFjY291bnR0eXBlZGVzY3JpcHRpb24iOiJFQ09NIiwiY3VycmVuY3lpc28zYSI6IkdCUCIsInNpdGVyZWZlcmVuY2UiOiJ0ZXN0X2phbWVzMzg2NDEiLCJsb2NhbGUiOiJlbl9HQiJ9fQ.m_pVpCy6FGA0Q_5MzrdBQ8lUku0K3j33bRykxeQsh20')]"}
+                              {"matchesJsonPath": "$.[?(@.jwt=='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU4ODY5NTEzOS41NTgwOTc0LCJwYXlsb2FkIjp7ImJhc2VhbW91bnQiOiIxMDAwIiwiYWNjb3VudHR5cGVkZXNjcmlwdGlvbiI6IkVDT00iLCJjdXJyZW5jeWlzbzNhIjoiR0JQIiwic2l0ZXJlZmVyZW5jZSI6InRlc3RfamFtZXMzODY0MSIsImxvY2FsZSI6ImVuX0dCIiwicGFuIjoiNTIwMDAwMDAwMDAwMTAwNSIsImV4cGlyeWRhdGUiOiIwMS8yMiJ9fQ.wAmn0JqsAfj7ZtsqbDadknWpPhUhJb7CPiQT8VqZ4hk')]"}
                           ]}, verify=False)
     data = json.loads(count.content)
     return data['count']
@@ -97,6 +97,41 @@ def get_number_of_AUTH_thirdparty_requests(url, walletsource):
     data = json.loads(count.content)
     return data['count']
 
+
+def get_number_of_requests_with_auth_riskdec(pan, expiry_date, cvv):
+    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+                          json={"url": "/jwt/", "bodyPatterns": [
+                              {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['AUTH', 'RISKDEC'])]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.pan=='" + pan + "')]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.expirydate=='" + expiry_date + "')]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.securitycode=='" + cvv + "')]"}
+                          ]}, verify=False)
+    data = json.loads(count.content)
+    return data['count']
+
+
+def get_number_of_requests_with_accountcheck_3dq(pan, expiry_date, cvv):
+    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+                          json={"url": "/jwt/", "bodyPatterns": [
+                              {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['ACCOUNTCHECK', 'THREEDQUERY'])]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.pan=='" + pan + "')]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.expirydate=='" + expiry_date + "')]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.securitycode=='" + cvv + "')]"}
+                          ]}, verify=False)
+    data = json.loads(count.content)
+    return data['count']
+
+
+def get_number_of_requests_with_riskdec_accountcheck_3dq(pan, expiry_date, cvv):
+    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+                          json={"url": "/jwt/", "bodyPatterns": [
+                              {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['RISKDEC', 'ACCOUNTCHECK', 'THREEDQUERY'])]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.pan=='" + pan + "')]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.expirydate=='" + expiry_date + "')]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.securitycode=='" + cvv + "')]"}
+                          ]}, verify=False)
+    data = json.loads(count.content)
+    return data['count']
 
 def remove_item_from_request_journal():
     requests.delete("https://webservices.securetrading.net:8443/__admin/requests", verify=False)

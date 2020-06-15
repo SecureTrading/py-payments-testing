@@ -1,6 +1,6 @@
 Feature: ApplePay
   As a user
-  I want to use various payment methods using correct and incorrect credentials
+  I want to use ApplePay payment method
   In order to check full payment functionality
 
   Background:
@@ -89,4 +89,12 @@ Feature: ApplePay
     When User chooses ApplePay as payment method - response is set to "SUCCESS"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
-    And VISA_CHECKOUT or AUTH requests were sent only once with correct data
+    And APPLE_PAY or AUTH requests were sent only once with correct data
+
+  @configApplePayRiskdecAcheckAuth @full_test_part_2 @full_test
+  Scenario: ApplePay - successful payment when app is embedded in another iframe
+    When User opens payment page
+    When User chooses ApplePay as payment method - response is set to "SUCCESS"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And APPLE_PAY or AUTH requests were sent only once with correct data
