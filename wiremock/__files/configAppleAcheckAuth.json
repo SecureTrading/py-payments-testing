@@ -7,11 +7,6 @@
   "buttonId": "merchant-submit-button",
   "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU3MTY0NzEyMC4xNzQzNDk1LCJwYXlsb2FkIjp7ImJhc2VhbW91bnQiOiIxMDAwIiwiYWNjb3VudHR5cGVkZXNjcmlwdGlvbiI6IkVDT00iLCJjdXJyZW5jeWlzbzNhIjoiR0JQIiwic2l0ZXJlZmVyZW5jZSI6InRlc3QxIiwibG9jYWxlIjoiZW5fR0IifX0._VTiUjM-op-4KUoVGtqA92HwgwTNi_XckqP8pdcyKFc",
   "panIcon": true,
-  "placeholders": {
-    "pan": "Card number",
-    "expirydate": "Exp date",
-    "securitycode": "CVV"
-  },
   "styles": {
     "defaultStyles": {
       "background-color-input": "AliceBlue"
@@ -29,6 +24,12 @@
     "An error occurred": "Wystąpił błąd"
   },
   "components": {
+    "requestTypes": [
+      "RISKDEC",
+      "ACCOUNTCHECK",
+      "THREEDQUERY",
+      "AUTH"
+    ]
   },
   "applePay": {
     "buttonStyle": "white-outline",
@@ -39,6 +40,10 @@
       "currencyCode": "USD",
       "merchantCapabilities": ["supports3DS", "supportsCredit", "supportsDebit"],
       "supportedNetworks": [],
+      "requestTypes": [
+      "ACCOUNTCHECK",
+      "AUTH"
+    ],
       "total": {
         "label": "Secure Trading Merchant",
         "amount": "10.00"
@@ -60,5 +65,6 @@
     "settings": {
       "displayName": "My Test Site"
     }
-  }
+  },
+  "cybertonicaApiKey": ""
 }

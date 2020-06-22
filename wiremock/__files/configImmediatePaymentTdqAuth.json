@@ -5,13 +5,8 @@
   "deferInit": false,
   "fieldsToSubmit": ["pan", "expirydate", "securitycode"],
   "buttonId": "merchant-submit-button",
-  "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU3MTY0NzEyMC4xNzQzNDk1LCJwYXlsb2FkIjp7ImJhc2VhbW91bnQiOiIxMDAwIiwiYWNjb3VudHR5cGVkZXNjcmlwdGlvbiI6IkVDT00iLCJjdXJyZW5jeWlzbzNhIjoiR0JQIiwic2l0ZXJlZmVyZW5jZSI6InRlc3QxIiwibG9jYWxlIjoiZW5fR0IifX0._VTiUjM-op-4KUoVGtqA92HwgwTNi_XckqP8pdcyKFc",
+  "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU3MTY0NzEyMC4xNzQzNDk1LCJwYXlsb2FkIjp7ImJhc2VhbW91bnQiOiIxMDAwIiwiYWNjb3VudHR5cGVkZXNjcmlwdGlvbiI6IkVDT00iLCJjdXJyZW5jeWlzbzNhIjoiR0JQIiwic2l0ZXJlZmVyZW5jZSI6InRlc3QxIiwibG9jYWxlIjoiZW5fR0IiLCJwYW4iOiI0MTExMTExMTExMTExMTExIiwiZXhwaXJ5ZGF0ZSI6IjAxLzIyIiwic2VjdXJpdHljb2RlIjoiMTIzIn19.9W6bxSTYc1d3KJy0ngH12rqgfQx4PmQ-zxaw5VN4BMc",
   "panIcon": true,
-  "placeholders": {
-    "pan": "Card number",
-    "expirydate": "Exp date",
-    "securitycode": "CVV"
-  },
   "styles": {
     "defaultStyles": {
       "background-color-input": "AliceBlue"
@@ -29,6 +24,11 @@
     "An error occurred": "Wystąpił błąd"
   },
   "components": {
+    "requestTypes": [
+      "THREEDQUERY",
+      "AUTH"
+    ],
+    "startOnLoad": true
   },
   "applePay": {
     "buttonStyle": "white-outline",

@@ -39,6 +39,12 @@ Feature: ApplePay
     And User chooses ApplePay as payment method - response is set to "SUCCESS"
     Then User will see payment status information included in url
 
+  @config_default @smoke_test_part_1 @full_test_part_2 @apple_test
+  Scenario: ApplePay - checking that 'submitOnSuccess' is enabled by default
+    When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
+    And User chooses ApplePay as payment method - response is set to "SUCCESS"
+    Then User will see payment status information included in url
+
   @config_submit_on_error_true @full_test_part_2 @apple_test
   Scenario: ApplePay - error payment with enabled 'submit on error' process
     When User chooses ApplePay as payment method - response is set to "DECLINE"
@@ -71,6 +77,46 @@ Feature: ApplePay
     And APPLE_PAY or AUTH requests were sent only once with correct data
     And JSINIT requests contains updated jwt
 
+  @config_apple_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK, AUTH
+    When AUTH ApplePay mock response is set to SUCCESS
+    And User chooses ApplePay as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And AUTH request for APPLE_PAY is sent only once with correct data
+
+  @config_apple_acheck @smoke_test_part_2 @full_test_part_2
+  Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK
+    When ACCOUNTCHECK ApplePay mock response is set to SUCCESS
+    And User chooses ApplePay as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And ACCOUNTCHECK request for APPLE_PAY is sent only once with correct data
+
+  @config_apple_acheck_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK, AUTH
+    When ACCOUNTCHECK, AUTH ApplePay mock response is set to SUCCESS
+    And User chooses ApplePay as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And ACCOUNTCHECK, AUTH request for APPLE_PAY is sent only once with correct data
+
+  @config_apple_riskdec_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK, AUTH
+    When RISKDEC, AUTH ApplePay mock response is set to SUCCESS
+    And User chooses ApplePay as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And RISKDEC, AUTH request for APPLE_PAY is sent only once with correct data
+
+  @config_apple_riskdec_acheck_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK, AUTH
+    When RISKDEC, ACCOUNTCHECK, AUTH ApplePay mock response is set to SUCCESS
+    And User chooses ApplePay as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And RISKDEC, ACCOUNTCHECK, AUTH request for APPLE_PAY is sent only once with correct data
+
   @config_cybertonica @smoke_test_part_2 @full_test_part_2
   Scenario: ApplePay - Cybertonica - 'fraudcontroltransactionid' flag is added to AUTH requests during payment
     When User chooses ApplePay as payment method - response is set to "SUCCESS"
@@ -83,18 +129,18 @@ Feature: ApplePay
     Then User will see payment status information: "Payment has been successfully processed"
     And AUTH request was sent only once without 'fraudcontroltransactionid' flag
 
-  @base_config @parent_iframe @full_test_part_2 @full_test
-  Scenario: ApplePay - successful payment when app is embedded in another iframe
-    When User opens payment page
-    When User chooses ApplePay as payment method - response is set to "SUCCESS"
-    Then User will see payment status information: "Payment has been successfully processed"
-    And User will see that notification frame has "green" color
-    And APPLE_PAY or AUTH requests were sent only once with correct data
-
-  @configApplePayRiskdecAcheckAuth @full_test_part_2 @full_test
-  Scenario: ApplePay - successful payment when app is embedded in another iframe
-    When User opens payment page
-    When User chooses ApplePay as payment method - response is set to "SUCCESS"
-    Then User will see payment status information: "Payment has been successfully processed"
-    And User will see that notification frame has "green" color
-    And APPLE_PAY or AUTH requests were sent only once with correct data
+#  @base_config @parent_iframe @full_test_part_2 @full_test
+#  Scenario: ApplePay - successful payment when app is embedded in another iframe
+#    When User opens payment page
+#    When User chooses ApplePay as payment method - response is set to "SUCCESS"
+#    Then User will see payment status information: "Payment has been successfully processed"
+#    And User will see that notification frame has "green" color
+#    And APPLE_PAY or AUTH requests were sent only once with correct data
+#
+#  @configApplePayRiskdecAcheckAuth @full_test_part_2 @full_test
+#  Scenario: ApplePay - successful payment when app is embedded in another iframe
+#    When User opens payment page
+#    When User chooses ApplePay as payment method - response is set to "SUCCESS"
+#    Then User will see payment status information: "Payment has been successfully processed"
+#    And User will see that notification frame has "green" color
+#    And APPLE_PAY or AUTH requests were sent only once with correct data

@@ -347,6 +347,15 @@ Feature: Card Payments
     Then User will see payment status information included in url
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
+  @config_default_true @smoke_test_part_2 @full_test_part_2
+  Scenario: Checking that 'submitOnSuccess' is enabled by default
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response is set to "ENROLLED_Y"
+    And ACS mock response is set to "OK"
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information included in url
+    And AUTH and THREEDQUERY requests were sent only once with correct data
+
   @config_submit_on_error_true @smoke_test_part_2 @full_test_part_2
   Scenario: Cardinal Commerce - error payment with enabled 'submit on error' process
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
@@ -409,7 +418,8 @@ Feature: Card Payments
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
-    And User will not see card number and expiration date fields
+    And User will not see CARD_NUMBER
+    And User will not see EXPIRATION_DATE
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_submit_cvv_for_amex @smoke_test_part_2 @full_test_part_2
@@ -418,7 +428,8 @@ Feature: Card Payments
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
-    And User will not see card number and expiration date fields
+    And User will not see CARD_NUMBER
+    And User will not see EXPIRATION_DATE
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_cvvToSubmit_and_submitOnSuccess @smoke_test_part_2 @full_test_part_2
@@ -444,6 +455,34 @@ Feature: Card Payments
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And THREEDQUERY request was sent only once with correct data
+
+  @config_requestTypes_tdq_auth @full_test_part_1 @cardinal_commerce
+  Scenario: Successful payment with request types: THREEDQUERY, AUTH
+    When User fills payment form with credit card number "4000000000001091", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response is set to "ENROLLED_Y"
+    And ACS mock response is set to "OK"
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And AUTH and THREEDQUERY requests were sent only once with correct data
+
+  @config_requestTypes_acheck_tdq_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: Successful payment with additional request types: ACCOUNTCHECK, THREEDQUERY, AUTH
+    When User fills payment form with credit card number "5200000000001005", expiration date "12/30" and cvv "123"
+    And ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
+    And AUTH request was sent only once with correct data
+
+  @config_requestTypes_tdq_auth_riskdec @smoke_test_part_2 @full_test_part_2
+  Scenario: Successful payment with additional request types: THREEDQUERY, AUTH, RISKDEC
+    When User fills payment form with credit card number "5200000000001005", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
+    And User clicks Pay button - AUTH, RISKDEC response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And THREEDQUERY request was sent only once with correct data
+    And AUTH, RISKDEC ware sent only once in one request
 
   @config_requestTypes_riskdec_acheck_tdq_auth @smoke_test_part_2 @full_test_part_2
   Scenario: Successful payment with additional request types: RISKDEC, ACCOUNTCHECK, THREEDQUERY, AUTH
@@ -471,9 +510,28 @@ Feature: Card Payments
     Then User will see payment status information: "Payment has been successfully processed"
     And THREEDQUERY request was sent only once with correct data
 
+  @config_immediate_payment_tdq_auth @full_test_part_1 @cardinal_commerce
+  Scenario: Immediate payment - Successful payment with request types: THREEDQUERY, AUTH
+    When ACS mock response is set to "OK"
+    And AUTH response is set to "OK"
+    And User opens payment page
+    Then User will see payment status information: "Payment has been successfully processed"
+    And THREEDQUERY ware sent only once in one request
+    And AUTH request was sent only once with correct data
+
+  @config_immediate_payment_acheck_tdq_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: Immediate payment - Successful payment with additional request types: ACCOUNTCHECK, THREEDQUERY, AUTH
+    When ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    And ACS mock response is set to "OK"
+    And AUTH response is set to "OK"
+    And User opens payment page
+    Then User will see payment status information: "Payment has been successfully processed"
+    And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
+    And AUTH request was sent only once with correct data
+
   @config_immediate_payment_riskdec_acheck_tdq_auth @smoke_test_part_2 @full_test_part_2
   Scenario: Immediate payment - Successful payment with additional request types: RISKDEC, ACCOUNTCHECK, THREEDQUERY, AUTH
-    And RISKDEC, ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    When RISKDEC, ACCOUNTCHECK, THREEDQUERY mock response is set to OK
     And ACS mock response is set to "OK"
     And AUTH response is set to "OK"
     And User opens payment page
@@ -489,6 +547,42 @@ Feature: Card Payments
     And User opens payment page
     Then User will see payment status information: "Payment has been successfully processed"
     And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
+    And AUTH, RISKDEC ware sent only once in one request
+
+  @config_bypass_cards_tdq_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: Successful payment with bypassCard and custom request types: THREEDQUERY, AUTH
+    When User fills payment form with credit card number "4000000000001026", expiration date "12/30" and cvv "123"
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And THREEDQUERY request was not sent
+    And AUTH ware sent only once in one request
+
+  @config_bypass_cards_acheck_tdq_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: Successful payment with bypassCard and custom request types: ACCOUNTCHECK, THREEDQUERY, AUTH
+    When User fills payment form with credit card number "4000000000001026", expiration date "12/30" and cvv "123"
+    And User clicks Pay button - ACCOUNTCHECK, AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And THREEDQUERY request was not sent
+    And ACCOUNTCHECK, AUTH ware sent only once in one request
+
+  @config_bypass_cards_riskdec_acheck_tdq_auth @smoke_test_part_2 @full_test_part_2
+  Scenario: Successful payment with bypassCard and custom request types: RISKDEC, ACCOUNTCHECK, THREEDQUERY, AUTH
+    When User fills payment form with credit card number "4000000000001026", expiration date "12/30" and cvv "123"
+    And User clicks Pay button - RISKDEC, ACCOUNTCHECK, AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And THREEDQUERY request was not sent
+    And RISKDEC, ACCOUNTCHECK, AUTH ware sent only once in one request
+
+  @config_bypass_cards_tdq_auth_riskdec @smoke_test_part_2 @full_test_part_2
+  Scenario: Successful payment with bypassCard and custom request types: THREEDQUERY, AUTH, RISKDEC
+    When User fills payment form with credit card number "4000000000001026", expiration date "12/30" and cvv "123"
+    And User clicks Pay button - AUTH, RISKDEC response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And THREEDQUERY request was not sent
     And AUTH, RISKDEC ware sent only once in one request
 
   @base_config @smoke_test_part_2 @full_test_part_2
@@ -551,11 +645,16 @@ Feature: Card Payments
 
   @config_placeholders @full_test_part_2
   Scenario: Checking placeholders in input fields
-    Then User will see specific placeholders in input fields
+    Then User will see specific placeholders in input fields: Card number, Exp date, CVV
 
-  @config_placeholders @full_test_part_2
+  @base_config @full_test_part_2
   Scenario: Checking default placeholders in input fields
-    Then User will see specific placeholders in input fields
+    Then User will see default placeholders in input fields: ***** ***** ***** *****, MM/YY, ***
+
+  @base_config @full_test_part_2
+  Scenario: Checking default cvv placeholder for AMEX card
+    When User fills payment form with credit card number "340000000000611", expiration date "12/23"
+    Then User will see '****' placeholder in security code field
 
   @base_config @full_test_part_2
   Scenario Outline: Checking <card_type> card icon displayed in input field
@@ -575,6 +674,12 @@ Feature: Card Payments
 #      | 3089500000000000021 | 12/23           | PIBA         |
 #      | 1801000000000901    | 12/23           | ASTROPAYCARD |
 #      | 3000000000000111    | 12/23           | DINERS       |
+
+  @config_default @full_test_part_2
+  Scenario: Checking that animated card and card icon are not displayed by default
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/23"
+    Then User will not see ANIMATED_CARD
+    And User will not see CARD_ICON
 
   @base_config @full_test_part_1
   Scenario: Verify number on JSINIT requests

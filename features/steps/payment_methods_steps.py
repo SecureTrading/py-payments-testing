@@ -8,7 +8,7 @@ from utils.enums.config import config
 
 from utils.enums.field_type import FieldType
 from utils.enums.payment_type import PaymentType
-from utils.enums.request_type import RequestType
+from utils.enums.request_type import RequestType, request_type_response, request_type_applepay
 from utils.enums.responses.acs_response import ACSresponse
 from utils.enums.responses.apple_pay_response import ApplePayResponse
 from utils.enums.responses.auth_response import AUTHresponse
@@ -62,10 +62,15 @@ def step_impl(context, tdq_response):
 
 @step("(?P<request_type>.+) mock response is set to OK")
 def step_impl(context, request_type):
-    if request_type == "RISKDEC, ACCOUNTCHECK, THREEDQUERY":
-        stub_st_request_type("ccRiskdecAcheckTdq.json", RequestType.RISKDEC_ACHECK_TDQ.name)
-    elif request_type == "ACCOUNTCHECK, THREEDQUERY":
-        stub_st_request_type("ccRiskdecAcheckTdq.json", RequestType.ACHECK_TDQ.name)
+    stub_st_request_type(request_type_response[request_type], request_type)
+
+
+@step("(?P<request_type>.+) ApplePay mock response is set to SUCCESS")
+def step_impl(context, request_type):
+    stub_st_request_type(ApplePayResponse.SUCCESS.value, RequestType.WALLETVERIFY.name)
+    stub_payment_status(MockUrl.APPLEPAY_MOCK_URI.value, ApplePayResponse.SUCCESS.value)
+    stub_st_request_type(request_type_applepay[request_type], request_type)
+
 
 @step('ACS mock response is set to "(?P<acs_response>.+)"')
 def step_impl(context, acs_response):
@@ -86,8 +91,8 @@ def step_impl(context, request_type, action_code):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if request_type == "AUTH":
         stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
-    elif request_type == "AUTH, RISKDEC":
-        stub_st_request_type("ccAuthRiskdec.json", RequestType.AUTH_RISKDEC.name)
+    else:
+        stub_st_request_type(request_type_response[request_type], request_type)
 
     if 'ie' in context.browser and 'config_submit_cvv_only' in context.scenario.tags:
         context.executor.wait_for_javascript()
@@ -196,6 +201,12 @@ def step_impl(context, action_code):
     payment_page.choose_payment_methods(PaymentType.APPLE_PAY.name)
 
 
+@when('User chooses ApplePay as payment method')
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.choose_payment_methods(PaymentType.APPLE_PAY.name)
+
+
 @then('User will see that Submit button is "(?P<form_status>.+)" after payment')
 def step_impl(context, form_status):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
@@ -223,15 +234,8 @@ def step_impl(context, request_type, action_code):
 def step_impl(context, field, value):
     context.cvv = value
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.fill_credit_card_field(FieldType[field].name, value)
-
-
-@step("User will not see card number and expiration date fields")
-def step_impl(context):
-    payment_page = context.page_factory.get_page(page_name='payment_methods')
     if 'ie' not in context.browser:
-        payment_page.validate_if_field_is_not_displayed(FieldType.CARD_NUMBER.name)
-        payment_page.validate_if_field_is_not_displayed(FieldType.EXPIRATION_DATE.name)
+        payment_page.fill_credit_card_field(FieldType[field].name, value)
 
 
 @then('User will see that "(?P<field>.+)" field has correct style')
@@ -364,12 +368,18 @@ def step_impl(context):
     payment_page.validate_if_field_is_not_displayed(FieldType.EXPIRATION_DATE.name)
 
 
-@then("User will see specific placeholders in input fields")
+@then("User will see (?P<placeholders>.+) placeholders in input fields: (?P<card>.+), (?P<date>.+), (?P<cvv>.+)")
+def step_impl(context, placeholders, card, date, cvv):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if placeholders == "specific":
+        payment_page.validate_placeholders(card, date, cvv)
+    if placeholders == "default":
+        payment_page.validate_placeholders(card, date, cvv)
+
+@then("User will see '\*\*\*\*' placeholder in security code field")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_placeholder(FieldType.CARD_NUMBER.name, 'Card number')
-    payment_page.validate_placeholder(FieldType.EXPIRATION_DATE.name, 'MM/YY')
-    payment_page.validate_placeholder(FieldType.SECURITY_CODE.name, 'CVV')
+    payment_page.validate_placeholder(FieldType.SECURITY_CODE.name, "****")
 
 
 @then('User will see "(?P<card_type>.+)" icon in card number input field')
@@ -432,41 +442,23 @@ def step_impl(context):
 def step_impl(context, thirdparty):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if "VISA_CHECKOUT" in thirdparty:
-        payment_page.validate_number_of_thirdparty_requests(MockUrl.VISA_MOCK_URI.value, 1)
+        payment_page.validate_number_of_wallet_verify_requests(MockUrl.VISA_MOCK_URI.value, 1)
     elif "APPLE_PAY" in thirdparty:
-        payment_page.validate_number_of_thirdparty_requests(MockUrl.APPLEPAY_MOCK_URI.value, 1)
+        payment_page.validate_number_of_wallet_verify_requests(MockUrl.APPLEPAY_MOCK_URI.value, 1)
 
     if 'SUCCESS' in context.action_code or 'DECLINE' in context.action_code or 'ERROR' in context.action_code:
-        payment_page.validate_number_of_AUTH_thirdparty_requests(RequestType.AUTH.name, PaymentType[thirdparty].value, 1)
+        payment_page.validate_number_of_thirdparty_requests(RequestType.AUTH.name, PaymentType[thirdparty].value, 1)
     else:
-        payment_page.validate_number_of_AUTH_thirdparty_requests(RequestType.AUTH.name, PaymentType[thirdparty].value, 0)
+        payment_page.validate_number_of_thirdparty_requests(RequestType.AUTH.name, PaymentType[thirdparty].value, 0)
 
 
-@step("AUTH, RISKDEC ware sent only once in one request")
-def step_impl(context):
+@step("(?P<request_type>.+) ware sent only once in one request")
+def step_impl(context, request_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if 'config_immediate_payment' in context.scenario.tags[0]:
-        payment_page.validate_number_of_requests_with_auth_riskdec("", "", "", 1)
+        payment_page.validate_number_of_requests(request_type, "", "", "", 1)
     else:
-        payment_page.validate_number_of_requests_with_auth_riskdec(context.pan, context.exp_date, context.cvv, 1)
-
-
-@step("RISKDEC, ACCOUNTCHECK, THREEDQUERY ware sent only once in one request")
-def step_impl(context):
-    payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'config_immediate_payment' in context.scenario.tags[0]:
-        payment_page.validate_number_of_requests_with_riskdec_accountcheck_3dq("", "", "", 1)
-    else:
-        payment_page.validate_number_of_requests_with_riskdec_accountcheck_3dq(context.pan, context.exp_date, context.cvv, 1)
-
-
-@step("ACCOUNTCHECK, THREEDQUERY ware sent only once in one request")
-def step_impl(context):
-    payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'config_immediate_payment' in context.scenario.tags[0]:
-        payment_page.validate_number_of_requests_with_accountcheck_3dq("", "", "", 1)
-    else:
-        payment_page.validate_number_of_requests_with_accountcheck_3dq(context.pan, context.exp_date, context.cvv, 1)
+        payment_page.validate_number_of_requests(request_type, context.pan, context.exp_date, context.cvv, 1)
 
 
 @then("JSINIT request was sent only once")
@@ -509,3 +501,16 @@ def step_impl(context, name, email, phone):
 def step_impl(context, request_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_updated_jwt_in_request(request_type, 1)
+
+
+@then("User will not see (?P<field_type>.+)")
+def step_impl(context, field_type):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_if_field_is_not_displayed(FieldType[field_type].name)
+
+
+@step("(?P<request_type>.+) request for (?P<thirdparty>.+) is sent only once with correct data")
+def step_impl(context, request_type, thirdparty):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_number_of_thirdparty_requests(request_type, PaymentType[thirdparty].value, 1)
+
