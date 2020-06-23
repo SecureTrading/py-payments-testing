@@ -300,34 +300,28 @@ def step_impl(context):
         payment_page.open_page(CONFIGURATION.URL.BASE_URL)
     payment_page.wait_for_iframe()
 
-@then("User will see payment status information included in url")
+@then("User is redirected to action page")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     time.sleep(1)
     if "Visa Checkout - successful" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
-                                                                 context.test_data.step_payment_visa_success_url)
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_success_url)
     elif "Visa Checkout - error" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
-                                                                 context.test_data.step_payment_visa_error_url)
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_error_url)
     elif "Visa Checkout - canceled" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
-                                                                 context.test_data.step_payment_visa_cancel_url)
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_cancel_url)
     elif "ApplePay - successful" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
-                                                                 context.test_data.step_payment_apple_pay_success_url)
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_success_url)
     elif "ApplePay - error" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
-                                                                 context.test_data.step_payment_apple_pay_error_url)
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_error_url)
     elif "ApplePay - canceled" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
-                                                                 context.test_data.step_payment_apple_pay_cancel_url)
-    elif "Cardinal Commerce - successful" in context.scenario.name or "Immediate payment with submitOnSuccess " in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
-                                                                 context.test_data.step_payment_cardinal_success_url)
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_cancel_url)
+    elif "Cardinal Commerce - successful" in context.scenario.name:
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url)
     elif "Cardinal Commerce - error" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(CONFIGURATION.URL.BASE_URL +
-                                                                 context.test_data.step_payment_cardinal_error_url)
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_error_url)
+    elif "Immediate payment with submitOnSuccess " in context.scenario.name:
+        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_immediate_payment_url)
 
 
 @when('User fills payment form with credit card number "(?P<card_number>.+)", expiration date "(?P<exp_date>.+)"')

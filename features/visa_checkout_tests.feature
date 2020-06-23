@@ -26,17 +26,17 @@ Feature: Visa Checkout
   Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
     And User chooses Visa Checkout as payment method - response is set to "SUCCESS"
-    Then User will see payment status information included in url
+    Then User is redirected to action page
 
   @config_submit_on_error_true @full_test_part_1 @visa_test
   Scenario: Visa Checkout - error payment with enabled 'submit on error' process
     When User chooses Visa Checkout as payment method - response is set to "ERROR"
-    Then User will see payment status information included in url
+    Then User is redirected to action page
 
   @config_submit_on_cancel_true @full_test_part_1 @visa_test
   Scenario: Visa Checkout - canceled payment with enabled 'submit on cancel' process
     When User chooses Visa Checkout as payment method - response is set to "CANCEL"
-    Then User will see payment status information included in url
+    Then User is redirected to action page
 
   @base_config @full_test_part_1 @wallet_test
   Scenario Outline: Visa Checkout - checking <callback> callback functionality

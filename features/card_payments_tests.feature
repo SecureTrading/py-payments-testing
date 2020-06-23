@@ -325,7 +325,7 @@ Feature: Card Payments
     And ACS mock response is set to "OK"
     And AUTH response is set to "OK"
     And User opens payment page
-    Then User will see payment status information included in url
+    Then User is redirected to action page
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_skip_jsinit @smoke_test_part_2 @full_test_part_2 @cardinal_commerce
@@ -344,16 +344,16 @@ Feature: Card Payments
     And THREEDQUERY mock response is set to "ENROLLED_Y"
     And ACS mock response is set to "OK"
     And User clicks Pay button - AUTH response is set to "OK"
-    Then User will see payment status information included in url
+    Then User is redirected to action page
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
-  @config_default_true @smoke_test_part_2 @full_test_part_2
+  @config_default @smoke_test_part_2 @full_test_part_2
   Scenario: Checking that 'submitOnSuccess' is enabled by default
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "ENROLLED_Y"
     And ACS mock response is set to "OK"
     And User clicks Pay button - AUTH response is set to "OK"
-    Then User will see payment status information included in url
+    Then User is redirected to action page
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_submit_on_error_true @smoke_test_part_2 @full_test_part_2
@@ -362,7 +362,7 @@ Feature: Card Payments
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "DECLINE"
-    Then User will see payment status information included in url
+    Then User is redirected to action page
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_field_style @smoke_test_part_2 @full_test_part_2
@@ -437,7 +437,7 @@ Feature: Card Payments
     When User fills "SECURITY_CODE" field "123"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "OK"
-    Then User will see payment status information included in url
+    Then User is redirected to action page
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_bypass_cards @bypass_cards @smoke_test_part_2 @full_test_part_2

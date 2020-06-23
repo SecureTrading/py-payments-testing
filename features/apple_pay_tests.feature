@@ -37,23 +37,23 @@ Feature: ApplePay
   Scenario: ApplePay - successful payment with enabled 'submit on success' process
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
     And User chooses ApplePay as payment method - response is set to "SUCCESS"
-    Then User will see payment status information included in url
+    Then User is redirected to action page
 
   @config_default @smoke_test_part_1 @full_test_part_2 @apple_test
   Scenario: ApplePay - checking that 'submitOnSuccess' is enabled by default
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
     And User chooses ApplePay as payment method - response is set to "SUCCESS"
-    Then User will see payment status information included in url
+        Then User is redirected to action page
 
   @config_submit_on_error_true @full_test_part_2 @apple_test
   Scenario: ApplePay - error payment with enabled 'submit on error' process
     When User chooses ApplePay as payment method - response is set to "DECLINE"
-    Then User will see payment status information included in url
+    Then User is redirected to action page
 
   @config_submit_on_cancel_true @smoke_test_part_2 @full_test_part_2 @apple_test
   Scenario: ApplePay - canceled payment with enabled 'submit on cancel' process
     When User chooses ApplePay as payment method - response is set to "CANCEL"
-    Then User will see payment status information included in url
+    Then User is redirected to action page
 
   @base_config @full_test_part_1 @wallet_test @apple_test
   Scenario Outline: ApplePay - checking <callback> callback functionality
