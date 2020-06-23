@@ -38,7 +38,9 @@ config = {
     "config_bypass_cards_tdq_auth_riskdec": "configBypassCardsTdqAuthRiskdec.json",
     "config_bypass_cards_tdq_auth": "configBypassCardsTdqAuth.json",
     "config_apple_auth": "configAppleAuth.json",
+    "config_apple_acheck": "configAppleAcheck.json",
     "config_apple_acheck_auth": "configAppleAcheckAuth.json",
     "config_apple_riskdec_auth": "configAppleRiskdecAuth.json",
     "config_apple_riskdec_acheck_auth": "configAppleRiskdecAcheckAuth.json",
+    "config_apple_network_amex": "configAppleNetworkAmex.json",
 }

@@ -78,7 +78,7 @@ Feature: ApplePay
     And JSINIT requests contains updated jwt
 
   @config_apple_auth @smoke_test_part_2 @full_test_part_2
-  Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK, AUTH
+  Scenario: ApplePay - successful payment with additional request types: AUTH
     When AUTH ApplePay mock response is set to SUCCESS
     And User chooses ApplePay as payment method
     Then User will see payment status information: "Payment has been successfully processed"

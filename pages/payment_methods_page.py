@@ -185,7 +185,8 @@ class PaymentMethodsPage(BasePage):
                 is_displayed = True
         elif field_type == FieldType.NOTIFICATION_FRAME.name:
             if len(self._action.find_elements(PaymentMethodsLocators.notification_frame)) > 0:
-                is_displayed = True
+                if self._action.get_text_with_wait(PaymentMethodsLocators.notification_frame) != '':
+                    is_displayed = True
         else:
             is_displayed = self._action.is_iframe_displayed(FieldType[field_type].value)
         return is_displayed
