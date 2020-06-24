@@ -513,6 +513,16 @@ Feature: Card Payments
     Then User will see payment status information: "Payment has been successfully processed"
     And THREEDQUERY request was sent only once with correct data
 
+  @config_immediate_payment_acheck_tdq_auth_riskdec
+  Scenario: Immediate payment - Successful payment with additional request types: ACCOUNTCHECK, THREEDQUERY, AUTH, RISKDEC
+    And ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    And ACS mock response is set to "OK"
+    And AUTH, RISKDEC mock response is set to OK
+    And User opens payment page
+    Then User will see payment status information: "Payment has been successfully processed"
+    And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
+    And AUTH, RISKDEC ware sent only once in one request
+
   @config_immediate_payment_tdq_auth
   Scenario: Immediate payment - Successful payment with request types: THREEDQUERY, AUTH
     When ACS mock response is set to "OK"
@@ -541,16 +551,6 @@ Feature: Card Payments
     Then User will see payment status information: "Payment has been successfully processed"
     And RISKDEC, ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
     And AUTH request was sent only once with correct data
-
-  @config_immediate_payment_acheck_tdq_auth_riskdec
-  Scenario: Immediate payment - Successful payment with additional request types: ACCOUNTCHECK, THREEDQUERY, AUTH, RISKDEC
-    And ACCOUNTCHECK, THREEDQUERY mock response is set to OK
-    And ACS mock response is set to "OK"
-    And AUTH, RISKDEC mock response is set to OK
-    And User opens payment page
-    Then User will see payment status information: "Payment has been successfully processed"
-    And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
-    And AUTH, RISKDEC ware sent only once in one request
 
   @config_bypass_cards_tdq_auth
   Scenario: Successful payment with bypassCard and custom request types: THREEDQUERY, AUTH
