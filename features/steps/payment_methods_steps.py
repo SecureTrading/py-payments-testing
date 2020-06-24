@@ -449,6 +449,7 @@ def step_impl(context, thirdparty):
 def step_impl(context, request_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if 'config_immediate_payment' in context.scenario.tags[0]:
+        payment_page.wait_for_iframe()
         payment_page.validate_number_of_requests(request_type, "", "", "", 1)
     else:
         payment_page.validate_number_of_requests(request_type, context.pan, context.exp_date, context.cvv, 1)
