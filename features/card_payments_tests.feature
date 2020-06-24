@@ -521,7 +521,8 @@ Feature: Card Payments
     And User opens payment page
     Then User will see payment status information: "Payment has been successfully processed"
     And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
-    And AUTH, RISKDEC ware sent only once in one request
+#    ToDo
+#    And AUTH, RISKDEC ware sent only once in one request
 
   @config_immediate_payment_tdq_auth
   Scenario: Immediate payment - Successful payment with request types: THREEDQUERY, AUTH
