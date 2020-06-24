@@ -10,7 +10,7 @@ request_type_response = {
 }
 
 request_type_applepay = {
-    "AUTH": "applAuth.json",
+    "AUTH": "appleAuth.json",
     "ACCOUNTCHECK": "appleAccountcheck.json",
     "ACCOUNTCHECK, AUTH": "appleAccountcheckAuth.json",
     "RISKDEC, AUTH": "appleRiskdecAuth.json",

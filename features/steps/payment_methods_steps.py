@@ -293,12 +293,13 @@ def step_impl(context):
         payment_page.open_page(MockUrl.WEBSERVICES_DOMAIN.value)
         payment_page.open_page(MockUrl.THIRDPARTY_URL.value)
         context.executor.wait_for_javascript()
+        payment_page.wait_for_iframe()
     if 'parent_iframe' in context.scenario.tags:
         payment_page.open_page(CONFIGURATION.URL.BASE_URL+'/iframe.html')
         payment_page.switch_to_parent_iframe()
+        payment_page.wait_for_iframe()
     else:
         payment_page.open_page(CONFIGURATION.URL.BASE_URL)
-    payment_page.wait_for_iframe()
 
 @then("User is redirected to action page")
 def step_impl(context):
