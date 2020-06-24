@@ -226,8 +226,6 @@ def step_impl(context, form_status):
 def step_impl(context, request_type, action_code):
     if request_type == "AUTH":
         stub_st_request_type(AUTHresponse[action_code].value, RequestType.AUTH.name)
-    elif request_type == "AUTH, RISKDEC":
-        stub_st_request_type("ccAuthRiskdec.json", RequestType.AUTH_RISKDEC.name)
 
 
 @when('User fills "(?P<field>.+)" field "(?P<value>.+)"')
