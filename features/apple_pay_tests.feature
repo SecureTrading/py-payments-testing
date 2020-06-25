@@ -7,7 +7,7 @@ Feature: ApplePay
     Given JavaScript configuration is set for scenario based on scenario's @config tag
     And User opens page with payment form
 
-  @base_config @extended_tests__part_2 @wallet_test @apple_test
+  @base_config @extended_tests_part_2 @wallet_test @apple_test @apple_test_part1
   Scenario Outline: ApplePay - checking payment status for <action_code> response code
     When User chooses ApplePay as payment method - response is set to "<action_code>"
     Then User will see payment status information: "<payment_status_message>"
@@ -23,7 +23,7 @@ Feature: ApplePay
       | DECLINE     | Decline                    | red    |
       | CANCEL      | Payment has been cancelled | yellow |
 
-  @base_config @extended_tests__part_2 @translations @apple_test
+  @base_config @extended_tests_part_2 @translations @apple_test @apple_test_part1
   Scenario Outline: ApplePay - checking translation for "Payment has been cancelled" status for <language>
     When User changes page language to "<language>"
     When User chooses ApplePay as payment method - response is set to "CANCEL"
@@ -33,29 +33,29 @@ Feature: ApplePay
       | es_ES    |
 #      | no_NO    |
 
-  @config_submit_on_success_true @smoke_test @extended_tests__part_2 @apple_test
+  @config_submit_on_success_true @smoke_test @extended_tests_part_2 @apple_test @apple_test_part1
   Scenario: ApplePay - successful payment with enabled 'submit on success' process
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
     And User chooses ApplePay as payment method - response is set to "SUCCESS"
     Then User is redirected to action page
 
-  @config_default @apple_test
+  @config_default @apple_test @apple_test_part1
   Scenario: ApplePay - checking that 'submitOnSuccess' is enabled by default
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
     And User chooses ApplePay as payment method - response is set to "SUCCESS"
         Then User is redirected to action page
 
-  @config_submit_on_error_true @apple_test
+  @config_submit_on_error_true @apple_test @apple_test_part1
   Scenario: ApplePay - error payment with enabled 'submit on error' process
     When User chooses ApplePay as payment method - response is set to "DECLINE"
     Then User is redirected to action page
 
-  @config_submit_on_cancel_true @apple_test
+  @config_submit_on_cancel_true @apple_test @apple_test_part1
   Scenario: ApplePay - canceled payment with enabled 'submit on cancel' process
     When User chooses ApplePay as payment method - response is set to "CANCEL"
     Then User is redirected to action page
 
-  @base_config @extended_tests__part_2 @wallet_test @apple_test
+  @base_config @extended_tests_part_2 @wallet_test @apple_test @apple_test_part1
   Scenario Outline: ApplePay - checking <callback> callback functionality
     When User chooses ApplePay as payment method - response is set to "<action_code>"
     Then User will see "<callback>" popup
@@ -68,7 +68,7 @@ Feature: ApplePay
       | DECLINE     | error    |
       | CANCEL      | cancel   |
 
-  @config_update_jwt_true @smoke_test @extended_tests__part_2 @apple_test
+  @config_update_jwt_true @smoke_test @extended_tests_part_2 @apple_test @apple_test_part1
   Scenario: ApplePay - Successful payment with updated JWT
     When User fills amount field
     When User chooses ApplePay as payment method - response is set to "SUCCESS"
@@ -77,7 +77,7 @@ Feature: ApplePay
     And APPLE_PAY or AUTH requests were sent only once with correct data
     And JSINIT requests contains updated jwt
 
-  @config_apple_auth @apple_test
+  @config_apple_auth @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: AUTH
     When AUTH ApplePay mock response is set to SUCCESS
     And User chooses ApplePay as payment method
@@ -85,7 +85,7 @@ Feature: ApplePay
     And User will see that notification frame has "green" color
     And AUTH request for APPLE_PAY is sent only once with correct data
 
-  @config_apple_acheck @apple_test
+  @config_apple_acheck @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK
     When ACCOUNTCHECK ApplePay mock response is set to SUCCESS
     And User chooses ApplePay as payment method
@@ -93,7 +93,7 @@ Feature: ApplePay
     And User will see that notification frame has "green" color
     And ACCOUNTCHECK request for APPLE_PAY is sent only once with correct data
 
-  @config_apple_acheck_auth @apple_test
+  @config_apple_acheck_auth @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK, AUTH
     When ACCOUNTCHECK, AUTH ApplePay mock response is set to SUCCESS
     And User chooses ApplePay as payment method
@@ -101,7 +101,7 @@ Feature: ApplePay
     And User will see that notification frame has "green" color
     And ACCOUNTCHECK, AUTH request for APPLE_PAY is sent only once with correct data
 
-  @config_apple_riskdec_auth @apple_test
+  @config_apple_riskdec_auth @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK, AUTH
     When RISKDEC, AUTH ApplePay mock response is set to SUCCESS
     And User chooses ApplePay as payment method
@@ -109,7 +109,7 @@ Feature: ApplePay
     And User will see that notification frame has "green" color
     And RISKDEC, AUTH request for APPLE_PAY is sent only once with correct data
 
-  @config_apple_riskdec_acheck_auth @apple_test
+  @config_apple_riskdec_acheck_auth @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK, AUTH
     When RISKDEC, ACCOUNTCHECK, AUTH ApplePay mock response is set to SUCCESS
     And User chooses ApplePay as payment method
@@ -117,13 +117,13 @@ Feature: ApplePay
     And User will see that notification frame has "green" color
     And RISKDEC, ACCOUNTCHECK, AUTH request for APPLE_PAY is sent only once with correct data
 
-  @config_cybertonica @apple_test
+  @config_cybertonica @apple_test @apple_test_part2
   Scenario: ApplePay - Cybertonica - 'fraudcontroltransactionid' flag is added to AUTH requests during payment
     When User chooses ApplePay as payment method - response is set to "SUCCESS"
     Then User will see payment status information: "Payment has been successfully processed"
     And AUTH request was sent only once with 'fraudcontroltransactionid' flag
 
-  @base_config @cybertonica @apple_test
+  @base_config @cybertonica @apple_test @apple_test_part2
   Scenario: ApplePay - Cybertonica - 'fraudcontroltransactionid' flag is not added to AUTH requests during payment
     When User chooses ApplePay as payment method - response is set to "SUCCESS"
     Then User will see payment status information: "Payment has been successfully processed"

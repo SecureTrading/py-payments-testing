@@ -36,12 +36,9 @@ Feature: Card Payments
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
     And AUTH and THREEDQUERY requests were sent only once with correct data
-    @smoke_test
     Examples:
       | card_number      | action_code     | payment_status_message | color |
       | 4000000000001018 | UNAUTHENTICATED | Unauthenticated        | red   |
-    Examples:
-      | card_number      | action_code | payment_status_message                  | color |
       | 4000000000001026 | OK          | Payment has been successfully processed | green |
       | 4000000000001018 | DECLINE     | Decline                                 | red   |
 
@@ -68,7 +65,7 @@ Feature: Card Payments
     And User will see that notification frame has "red" color
     And THREEDQUERY request was sent only once with correct data
 
-  @base_config @smoke_test @extended_tests_part_1
+  @base_config @extended_tests_part_1
   Scenario: Cardinal Commerce - check ACS response for code: FAILURE
     When User fills payment form with credit card number "4111110000000211", expiration date "01/22" and cvv "123"
     And THREEDQUERY mock response is set to "ENROLLED_Y"
@@ -101,12 +98,12 @@ Feature: Card Payments
     And AUTH and THREEDQUERY requests were sent only once with correct data
     @smoke_test
     Examples:
-      | card_number      | expiration_date | cvv  | card_type |
-      | 340000000000611  | 12/22           | 1234 | AMEX      |
-      | 4111110000000211 | 12/22           | 123  | VISA      |
+      | card_number      | expiration_date | cvv | card_type |
+      | 4111110000000211 | 12/22           | 123 | VISA      |
     Examples:
-      | card_number      | expiration_date | cvv | card_type  |
-      | 5100000000000511 | 12/22           | 123 | MASTERCARD |
+      | card_number      | expiration_date | cvv  | card_type  |
+      | 5100000000000511 | 12/22           | 123  | MASTERCARD |
+      | 340000000000611  | 12/22           | 1234 | AMEX       |
 
   @config_animated_card_true @extended_tests_part_1 @animated_card
   Scenario Outline: Credit card recognition for <card_type> and validate date on animated card
@@ -282,7 +279,6 @@ Feature: Card Payments
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see "Payment has been successfully processed" payment status translated into "<language>"
     And AUTH and THREEDQUERY requests were sent only once with correct data
-    @smoke_test
     Examples:
       | language |
       | no_NO    |
@@ -373,7 +369,7 @@ Feature: Card Payments
     Then User will see that "CARD_NUMBER" field has correct style
     And User will see that "EXPIRATION_DATE" field has correct style
 
-  @config_field_style @smoke_test @extended_tests_part_1
+  @config_field_style @smoke_test @extended_tests_part_2
   Scenario: Checking style of notification frame
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
@@ -415,7 +411,7 @@ Feature: Card Payments
     And AUTH and THREEDQUERY requests were sent only once with correct data
     And JSINIT requests contains updated jwt
 
-  @config_submit_cvv_only @smoke_test @extended_tests_part_2
+  @config_submit_cvv_only @extended_tests_part_2
   Scenario: Successful payment when cvv field is selected to submit
     When User fills "SECURITY_CODE" field "123"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
@@ -469,7 +465,7 @@ Feature: Card Payments
     And User will see that notification frame has "green" color
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
-  @config_requestTypes_acheck_tdq_auth @smoke_test @extended_tests_part_2
+  @config_requestTypes_acheck_tdq_auth
   Scenario: Successful payment with additional request types: ACCOUNTCHECK, THREEDQUERY, AUTH
     When User fills payment form with credit card number "5200000000001005", expiration date "12/30" and cvv "123"
     And ACCOUNTCHECK, THREEDQUERY mock response is set to OK
@@ -692,7 +688,7 @@ Feature: Card Payments
   Scenario: Verify number on JSINIT requests
     Then JSINIT request was sent only once
 
-  @config_notifications_false @smoke_test @extended_tests_part_1
+  @config_notifications_false @extended_tests_part_1
   Scenario: Notification frame is not displayed after payment
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"

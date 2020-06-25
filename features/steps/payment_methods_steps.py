@@ -316,9 +316,15 @@ def step_impl(context):
     elif "ApplePay - canceled" in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_cancel_url)
     elif "Cardinal Commerce - successful" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url)
+        if 'ie' in context.browser:
+            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url_IE)
+        else:
+            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url)
     elif "Cardinal Commerce - error" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_error_url)
+        if 'ie' in context.browser:
+            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_error_url_IE)
+        else:
+            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_error_url)
     elif "Immediate payment with submitOnSuccess " in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_immediate_payment_url)
 
