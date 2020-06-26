@@ -315,7 +315,7 @@ def step_impl(context):
     elif "ApplePay - canceled" in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_cancel_url)
     elif "Cardinal Commerce - successful" in context.scenario.name:
-        if 'IE' in CONFIGURATION.REMOTE_DEVICE:
+        if 'IE' in CONFIGURATION.REMOTE_BROWSER:
             payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url_IE)
         else:
             payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url)
@@ -401,8 +401,12 @@ def step_impl(context):
         payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 1)
     elif 'config_submit_cvv_only' in context.scenario.tags or 'config_submit_cvv_for_amex' in context.scenario.tags \
         or ('config_cvvToSubmit_and_submitOnSuccess' in context.scenario.tags):
-        payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, '', '', context.cvv, 1)
-        payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, '', '', context.cvv, 1)
+        #ToDo
+        if 'config_submit_cvv_only' in context.scenario.tags and ('IE' in CONFIGURATION.REMOTE_BROWSER):
+            pass
+        else:
+            payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, '', '', context.cvv, 1)
+            payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, '', '', context.cvv, 1)
     else:
         payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 1)
         payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, context.pan, context.exp_date, context.cvv, 1)
