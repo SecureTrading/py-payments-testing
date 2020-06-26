@@ -41,6 +41,8 @@ def before_scenario(context, scenario):
     if "apple_test" in scenario.tags and (context.browser not in "safari"):
         if 'iP' not in CONFIGURATION.REMOTE_DEVICE:
             scenario.skip("SCENARIO SKIPPED as iOS system and Safari is required for ApplePay test")
+    if "visa_test" in scenario.tags and ('IE' in CONFIGURATION.REMOTE_DEVICE):
+        scenario.skip("SCENARIO SKIPPED as IE browser doesn't support Visa Checkout ")
     if "animated_card_repo_test" in scenario.tags:
         context.is_field_in_iframe = False
     #ToDo Temporarily disabled parent-iframe test. Problem with cress-origin restriction on ios

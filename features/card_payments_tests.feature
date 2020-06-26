@@ -7,7 +7,7 @@ Feature: Card Payments
     Given JavaScript configuration is set for scenario based on scenario's @config tag
     And User opens page with payment form
 
-  @base_config @extended_tests_part_1 @cardinal_commerce
+  @base_config @cardinal_commerce
   Scenario Outline: Cardinal Commerce (step-up payment) - checking payment status for <action_code> response code
     When User fills payment form with credit card number "<card_number>", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "ENROLLED_Y"
@@ -16,7 +16,7 @@ Feature: Card Payments
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
     And AUTH and THREEDQUERY requests were sent only once with correct data
-    @smoke_test
+    @smoke_test @extended_tests_part_1
     Examples:
       | card_number      | action_code | payment_status_message                  | color |
       | 4000000000001091 | OK          | Payment has been successfully processed | green |
@@ -28,7 +28,7 @@ Feature: Card Payments
       | 4000000000001109 | UNAUTHENTICATED | Unauthenticated        | red   |
 #     |4000000000001109 | UNKNOWN_ERROR   | Unknown error        | red   |
 
-  @base_config @extended_tests_part_1 @cardinal_commerce
+  @base_config @cardinal_commerce
   Scenario Outline: Cardinal Commerce (frictionless cards) - checking payment status for <action_code> response code
     When User fills payment form with credit card number "<card_number>", expiration date "01/22" and cvv "123"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
@@ -36,11 +36,14 @@ Feature: Card Payments
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
     And AUTH and THREEDQUERY requests were sent only once with correct data
+    @extended_tests_part_1
+    Examples:
+      | card_number      | action_code | payment_status_message                  | color |
+      | 4000000000001026 | OK          | Payment has been successfully processed | green |
     Examples:
       | card_number      | action_code     | payment_status_message | color |
       | 4000000000001018 | UNAUTHENTICATED | Unauthenticated        | red   |
-      | 4000000000001026 | OK          | Payment has been successfully processed | green |
-      | 4000000000001018 | DECLINE     | Decline                                 | red   |
+      | 4000000000001018 | DECLINE         | Decline                | red   |
 
   @base_config @cardinal_commerce
   Scenario Outline: Cardinal Commerce (card not-enrolled U) - checking payment status for <action_code> response code
@@ -76,7 +79,7 @@ Feature: Card Payments
     And THREEDQUERY request was sent only once with correct data
     And User will see that Submit button is "enabled" after payment
 
-  @base_config @extended_tests_part_1 @cardinal_commerce
+  @base_config @cardinal_commerce
   Scenario Outline: Cardinal Commerce - check ACS response for code: <action_code>
     When User fills payment form with credit card number "4111110000000211", expiration date "01/22" and cvv "123"
     And THREEDQUERY mock response is set to "ENROLLED_Y"
@@ -138,7 +141,7 @@ Feature: Card Payments
     And User will see that all fields are highlighted
     And AUTH and THREEDQUERY requests were not sent
 
-  @base_config @extended_tests_part_1 @fields_validation
+  @base_config @fields_validation
   Scenario Outline: Filling payment form with empty fields -> cardNumber "<card_number>" expiration: "<expiration>", cvv: "<cvV>"
     When User fills payment form with incorrect or missing data: card number "<card_number>", expiration date "<expiration>" and cvv "<cvv>"
     And User clicks Pay button
@@ -149,10 +152,13 @@ Feature: Card Payments
     Examples:
       | card_number | expiration | cvv | field       |
       | None        | 12/22      | 123 | CARD_NUMBER |
+    @extended_tests_part_1
     Examples:
-      | card_number      | expiration | cvv  | field           |
-      | 4000000000001000 | None       | 123  | EXPIRATION_DATE |
-      | 4000000000001000 | 12/22      | None | SECURITY_CODE   |
+      | card_number      | expiration | cvv | field           |
+      | 4000000000001000 | None       | 123 | EXPIRATION_DATE |
+    Examples:
+      | card_number      | expiration | cvv  | field         |
+      | 4000000000001000 | 12/22      | None | SECURITY_CODE |
 
   @base_config @fields_validation
   Scenario Outline: Filling payment form with incomplete data (frontend validation) -> cardNumber "<card_number>", expiration: "<expiration>", cvv: "<cvv>"
@@ -247,7 +253,7 @@ Feature: Card Payments
       | language |
       | de_DE    |
 
-  @base_config @extended_tests_part_1 @translations
+  @base_config @translations
   Scenario Outline: Checking translation of fields validation for <language>
     When User changes page language to "<language>"
     And User fills payment form with credit card number "4000000000000051 ", expiration date "12/22" and cvv "12"
@@ -421,7 +427,7 @@ Feature: Card Payments
     And User will not see EXPIRATION_DATE
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
-  @config_submit_cvv_for_amex @extended_tests_part_2
+  @config_submit_cvv_for_amex
   Scenario: Successful payment by AMEX when cvv field is selected to submit
     When User fills "SECURITY_CODE" field "1234"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
@@ -431,7 +437,7 @@ Feature: Card Payments
     And User will not see EXPIRATION_DATE
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
-  @config_cvvToSubmit_and_submitOnSuccess @extended_tests_part_2
+  @config_cvvToSubmit_and_submitOnSuccess
   Scenario: Successful payment with fieldToSubmit and submitOnSuccess
     When User fills "SECURITY_CODE" field "123"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
@@ -599,7 +605,7 @@ Feature: Card Payments
       | action_code | callback_popup |
       | DECLINE     | error          |
 
-  @base_config @extended_tests_part_2
+  @base_config
   Scenario: Checking callback function for in-browser validation
     When User clicks Pay button
     And User will see "error" popup
@@ -609,7 +615,7 @@ Feature: Card Payments
     When User sets incorrect request type in config file
     Then User will see that application is not fully loaded
 
-  @base_config @parent_iframe @extended_tests_part_2
+  @base_config @parent_iframe
   Scenario Outline: App is embedded in another iframe - Cardinal Commerce test
     When User opens payment page
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
@@ -619,7 +625,7 @@ Feature: Card Payments
     Then User will see payment status information: "<payment_status_message>"
     And User will see that notification frame has "<color>" color
     And AUTH and THREEDQUERY requests were sent only once with correct data
-    @smoke_test
+    @smoke_test @extended_tests_part_2
     Examples:
       | action_code | payment_status_message                  | color |
       | OK          | Payment has been successfully processed | green |
@@ -659,11 +665,11 @@ Feature: Card Payments
     When User fills payment form with credit card number "340000000000611", expiration date "12/23"
     Then User will see '****' placeholder in security code field
 
-  @base_config @extended_tests_part_2
+  @base_config
   Scenario Outline: Checking <card_type> card icon displayed in input field
     When User fills payment form with credit card number "<card_number>", expiration date "<expiration_date>"
     Then User will see "<card_type>" icon in card number input field
-    @smoke_test
+    @smoke_test @extended_tests_part_2
     Examples:
       | card_number      | expiration_date | card_type |
       | 4111110000000211 | 12/22           | VISA      |

@@ -232,8 +232,7 @@ def step_impl(context, request_type, action_code):
 def step_impl(context, field, value):
     context.cvv = value
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'ie' not in context.browser:
-        payment_page.fill_credit_card_field(FieldType[field].name, value)
+    payment_page.fill_credit_card_field(FieldType[field].name, value)
 
 
 @then('User will see that "(?P<field>.+)" field has correct style')
@@ -316,7 +315,7 @@ def step_impl(context):
     elif "ApplePay - canceled" in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_cancel_url)
     elif "Cardinal Commerce - successful" in context.scenario.name:
-        if 'ie' in context.browser:
+        if 'IE' in CONFIGURATION.REMOTE_DEVICE:
             payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url_IE)
         else:
             payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url)

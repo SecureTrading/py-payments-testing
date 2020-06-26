@@ -38,7 +38,7 @@ Feature: Visa Checkout
     When User chooses Visa Checkout as payment method - response is set to "CANCEL"
     Then User is redirected to action page
 
-  @base_config @wallet_test
+  @base_config @wallet_test @visa_test
   Scenario Outline: Visa Checkout - checking <callback> callback functionality
     When User chooses Visa Checkout as payment method - response is set to "<action_code>"
     Then User will see "<callback>" popup
@@ -51,7 +51,7 @@ Feature: Visa Checkout
       | ERROR       | error    |
       | CANCEL      | cancel   |
 
-  @config_update_jwt_true @extended_tests_part_2
+  @config_update_jwt_true @extended_tests_part_2 @visa_test
   Scenario: Visa Checkout - successful payment with updated JWT
     When User fills amount field
     And User chooses Visa Checkout as payment method - response is set to "SUCCESS"
@@ -60,19 +60,19 @@ Feature: Visa Checkout
     And VISA_CHECKOUT or AUTH requests were sent only once with correct data
     And JSINIT requests contains updated jwt
 
-  @config_cybertonica
+  @config_cybertonica @visa_test
   Scenario: Visa Checkout - Cybertonica - 'fraudcontroltransactionid' flag is added to AUTH requests during payment
     When User chooses Visa Checkout as payment method - response is set to "SUCCESS"
     Then User will see payment status information: "Payment has been successfully processed"
     And AUTH request was sent only once with 'fraudcontroltransactionid' flag
 
-  @base_config @cybertonica
+  @base_config @cybertonica @visa_test
   Scenario: Visa Checkout - Cybertonica - 'fraudcontroltransactionid' flag is not added to AUTH requests during payment
     When User chooses Visa Checkout as payment method - response is set to "SUCCESS"
     Then User will see payment status information: "Payment has been successfully processed"
     And AUTH request was sent only once without 'fraudcontroltransactionid' flag
 
-  @base_config @parent_iframe @full_test
+  @base_config @parent_iframe @full_test @visa_test
   Scenario: Visa Checkout - successful payment when app is embedded in another iframe
     When User opens payment page
     And User chooses Visa Checkout as payment method - response is set to "SUCCESS"
