@@ -416,8 +416,8 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
 
-    def validate_updated_jwt_in_request(self, request_type, expected_number_of_requests):
-        actual_number_of_requests = get_number_of_requests_with_updated_jwt(request_type)
+    def validate_updated_jwt_in_request(self, request_type, update_jwt, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests_with_updated_jwt(request_type, update_jwt)
         assertion_message = f'Number of {request_type} with updated jwt is not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
         add_to_shared_dict("assertion_message", assertion_message)

@@ -495,7 +495,7 @@ def step_impl(context, name, email, phone):
 @step("(?P<request_type>.+) requests contains updated jwt")
 def step_impl(context, request_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_updated_jwt_in_request(request_type, 1)
+    payment_page.validate_updated_jwt_in_request(request_type, context.test_data.update_jwt, 1)
 
 
 @then("User will not see (?P<field_type>.+)")

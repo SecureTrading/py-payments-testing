@@ -62,11 +62,11 @@ def get_number_of_requests_with_fraudcontroltransactionid_flag(request_type):
     return data['count']
 
 
-def get_number_of_requests_with_updated_jwt(request_type):
+def get_number_of_requests_with_updated_jwt(request_type, update_jwt):
     count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
                           json={"url": "/jwt/", "bodyPatterns": [
                               {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['" + request_type + "'])]"},
-                              {"matchesJsonPath": "$.[?(@.jwt=='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU4ODY5NTEzOS41NTgwOTc0LCJwYXlsb2FkIjp7ImJhc2VhbW91bnQiOiIxMDAwIiwiYWNjb3VudHR5cGVkZXNjcmlwdGlvbiI6IkVDT00iLCJjdXJyZW5jeWlzbzNhIjoiR0JQIiwic2l0ZXJlZmVyZW5jZSI6InRlc3RfamFtZXMzODY0MSIsImxvY2FsZSI6ImVuX0dCIiwicGFuIjoiNTIwMDAwMDAwMDAwMTAwNSIsImV4cGlyeWRhdGUiOiIwMS8yMiJ9fQ.wAmn0JqsAfj7ZtsqbDadknWpPhUhJb7CPiQT8VqZ4hk')]"}
+                              {"matchesJsonPath": "$.[?(@.jwt=='"+update_jwt+"')]"}
                           ]}, verify=False)
     data = json.loads(count.content)
     return data['count']
