@@ -319,7 +319,7 @@ class PaymentMethodsPage(BasePage):
         self._executor.wait_for_javascript()
         actual_url = self._executor.get_page_url()
         if expected_url not in actual_url:
-            time.sleep(2)
+            time.sleep(3)
             actual_url = self._executor.get_page_url()
         assertion_message = f'Url is not correct, should be: "{expected_url}" but is: "{actual_url}"'
         add_to_shared_dict("assertion_message", assertion_message)
