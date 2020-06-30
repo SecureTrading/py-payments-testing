@@ -12,3 +12,4 @@ class FieldType(Enum):
     NAME = 2
     EMAIL = 3
     PHONE = 4
+    CARD_ICON = 5
