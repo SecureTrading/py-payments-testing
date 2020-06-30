@@ -76,7 +76,7 @@ class WebElementsExtensions(Waits):
             return False
 
     def find_elements(self, locator):
-        self.wait_for_ajax()
+        # self.wait_for_ajax()
         elements = self._browser.find_elements(*locator)
         return elements
 
