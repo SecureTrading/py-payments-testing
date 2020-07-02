@@ -20,7 +20,7 @@ services:
       - securetrading
 
   wiremock:
-    image: rodolpheche/wiremock
+    image: rodolpheche/wiremock:2.26.3
     volumes:
       - ./wiremock/__files:/home/wiremock/__files
       - ./wiremock/mappings:/home/wiremock/mappings
