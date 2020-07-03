@@ -25,6 +25,13 @@ use_step_matcher("re")
 @given("JavaScript configuration is set for scenario based on scenario's @config tag")
 def step_impl(context):
     remove_item_from_request_journal()
+    if 'config_skip_jsinit' not in context.scenario.tags:
+        if 'config_tokenization_visa' in context.scenario.tags[0]:
+            stub_st_request_type("jsinitTokenizationVisa.json", RequestType.JSINIT.name)
+        elif 'config_tokenization_amex' in context.scenario.tags[0]:
+            stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
+        else:
+            stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
     config_tag = context.scenario.tags[0]
     stub_config(config[config_tag])
 
@@ -463,10 +470,10 @@ def step_impl(context, request_type):
         payment_page.validate_number_of_requests(request_type, context.pan, context.exp_date, context.cvv, 1)
 
 
-@then("JSINIT request was sent only once")
-def step_impl(context):
+@then("JSINIT request was sent only (?P<number>.+)")
+def step_impl(context, number):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_number_of_requests_without_data(RequestType.JSINIT.name, 1)
+    payment_page.validate_number_of_requests_without_data(RequestType.JSINIT.name, number)
 
 
 @step("(?P<request_type>.+) request was sent only once (?P<scenario>.+) 'fraudcontroltransactionid' flag")

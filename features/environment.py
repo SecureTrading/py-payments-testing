@@ -50,8 +50,6 @@ def before_scenario(context, scenario):
         scenario.skip("Temporarily disabled test ")
     else:
         context.is_field_in_iframe = True
-    if 'config_skip_jsinit' not in scenario.tags:
-        stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
 
 
 def after_scenario(context, scenario):

@@ -27,6 +27,8 @@ config = {
     "config_requestTypes_acheck_tdq_auth": "configRequestTypesAcheckTdqAuth.json",
     "config_requestTypes_tdq_auth_riskdec": "configRequestTypesTdqAuthRiskdec.json",
     "config_requestTypes_tdq": "configRequestTypesTDQ.json",
+    "config_requestTypes_tdq_submit_on_success": "configRequestTypesTDQSubmitOnSuccess.json",
+    "config_requestTypes_tdq_submit_on_error": "configRequestTypesTDQSubmitOnError.json",
     "config_requestTypes_tdq_auth": "configRequestTypesTdqAuth.json",
     "config_immediate_payment_riskdec_acheck_tdq_auth": "configImmediatePaymentRiskdecAcheckTdqAuth.json",
     "config_immediate_payment_tdq": "configImmediatePaymentTDQ.json",
@@ -43,4 +45,8 @@ config = {
     "config_apple_riskdec_auth": "configAppleRiskdecAuth.json",
     "config_apple_riskdec_acheck_auth": "configAppleRiskdecAcheckAuth.json",
     "config_apple_network_amex": "configAppleNetworkAmex.json",
+    "config_tokenization_visa": "configTokenizationVisa",
+    "config_tokenization_amex": "configTokenizationAmex",
+    "config_tokenization_visa_defer_init": "configTokenizationVisaDeferInit",
+    "config_tokenization_amex_defer_init": "configTokenizationAmexDeferInit",
 }

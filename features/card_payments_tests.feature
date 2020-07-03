@@ -370,6 +370,24 @@ Feature: Card Payments
     Then User is redirected to action page
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
+  @config_requestTypes_tdq_submit_on_success
+  Scenario: Successful payment with request types: THREEDQUERY and submitOnSuccess
+    When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
+    And User clicks Pay button
+    Then User is redirected to action page
+    And THREEDQUERY request was sent only once with correct data
+
+  @config_requestTypes_tdq_submit_on_error
+  Scenario: Error payment with request types: THREEDQUERY and submitOnError
+    When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response is set to "INVALID_ACQUIRER"
+    And User clicks Pay button
+    Then User is redirected to action page
+    And THREEDQUERY request was sent only once with correct data
+
   @config_field_style @smoke_test @extended_tests_part_1
   Scenario: Checking style of individual fields
     Then User will see that "CARD_NUMBER" field has correct style
@@ -402,7 +420,7 @@ Feature: Card Payments
     And JSINIT request was not sent
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
-    Then JSINIT request was sent only once
+    Then JSINIT request was sent only 1
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_defer_init
@@ -692,7 +710,14 @@ Feature: Card Payments
 
   @base_config
   Scenario: Verify number on JSINIT requests
-    Then JSINIT request was sent only once
+    Then JSINIT request was sent only 1
+
+  @base_config
+  Scenario: Verify number of JSINIT requests together with UpdateJWT
+    When User fills amount field
+    And User fills amount field
+    Then JSINIT request was sent only 2
+    And JSINIT requests contains updated jwt
 
   @config_notifications_false @extended_tests_part_1
   Scenario: Notification frame is not displayed after payment
@@ -749,3 +774,37 @@ Feature: Card Payments
     Then User will see payment status information: "Payment has been successfully processed"
     And THREEDQUERY request was sent only once with 'fraudcontroltransactionid' flag
     And AUTH request was sent only once with 'fraudcontroltransactionid' flag
+
+  @config_tokenization_visa @extended_tests_part_2
+  Scenario: Tokenization - successful payment by VISA card
+    When User fills "SECURITY_CODE" field "123"
+    When THREEDQUERY mock response is set to "ENROLLED_Y"
+    And ACS mock response is set to "OK"
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And AUTH and THREEDQUERY requests were sent only once with correct data
+
+  @config_tokenization_amex
+  Scenario: Tokenization - successful payment by AMEX card
+    When User fills "SECURITY_CODE" field "1234"
+    And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And AUTH and THREEDQUERY requests were sent only once with correct data
+
+  @config_tokenization_visa_defer_init
+  Scenario: Tokenization with deferInit - successful payment by VISA card
+    When User fills "SECURITY_CODE" field "123"
+    When THREEDQUERY mock response is set to "ENROLLED_Y"
+    And ACS mock response is set to "OK"
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And AUTH and THREEDQUERY requests were sent only once with correct data
+
+  @config_tokenization_amex_defer_init
+  Scenario: Tokenization with deferInit - successful payment by AMEX card
+    When User fills "SECURITY_CODE" field "1234"
+    And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And AUTH and THREEDQUERY requests were sent only once with correct data
