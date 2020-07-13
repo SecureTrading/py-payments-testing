@@ -402,21 +402,24 @@ def step_impl(context):
 @step("AUTH and THREEDQUERY requests were sent only once with correct data")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 1)
+    payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, context.pan, context.exp_date, context.cvv, 1)
+
+
+@step("AUTH and THREEDQUERY requests were sent only once")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
     if 'config_immediate_payment' in context.scenario.tags or ('config_defer_init_and_start_on_load_true' in context.scenario.tags)\
         or ('config_immediate_payment_and_submit_on_success' in context.scenario.tags):
         payment_page.validate_number_of_requests_without_data(RequestType.THREEDQUERY.name, 1)
         payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 1)
-    elif 'config_submit_cvv_only' in context.scenario.tags or 'config_submit_cvv_for_amex' in context.scenario.tags \
-        or ('config_cvvToSubmit_and_submitOnSuccess' in context.scenario.tags):
+    else:
         #ToDo
         if 'config_submit_cvv_only' in context.scenario.tags and ('IE' in CONFIGURATION.REMOTE_BROWSER):
             pass
         else:
             payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, '', '', context.cvv, 1)
             payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, '', '', context.cvv, 1)
-    else:
-        payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 1)
-        payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, context.pan, context.exp_date, context.cvv, 1)
 
 
 @step("THREEDQUERY request was sent only once with correct data")
@@ -473,7 +476,7 @@ def step_impl(context, request_type):
 @then("JSINIT request was sent only (?P<number>.+)")
 def step_impl(context, number):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_number_of_requests_without_data(RequestType.JSINIT.name, number)
+    payment_page.validate_number_of_requests_without_data(RequestType.JSINIT.name, int(number))
 
 
 @step("(?P<request_type>.+) request was sent only once (?P<scenario>.+) 'fraudcontroltransactionid' flag")

@@ -45,8 +45,8 @@ config = {
     "config_apple_riskdec_auth": "configAppleRiskdecAuth.json",
     "config_apple_riskdec_acheck_auth": "configAppleRiskdecAcheckAuth.json",
     "config_apple_network_amex": "configAppleNetworkAmex.json",
-    "config_tokenization_visa": "configTokenizationVisa",
-    "config_tokenization_amex": "configTokenizationAmex",
-    "config_tokenization_visa_defer_init": "configTokenizationVisaDeferInit",
-    "config_tokenization_amex_defer_init": "configTokenizationAmexDeferInit",
+    "config_tokenization_visa": "configTokenizationVisa.json",
+    "config_tokenization_amex": "configTokenizationAmex.json",
+    "config_tokenization_visa_defer_init": "configTokenizationVisaDeferInit.json",
+    "config_tokenization_amex_defer_init": "configTokenizationAmexDeferInit.json",
 }

@@ -299,7 +299,7 @@ Feature: Card Payments
     And AUTH response is set to "<action_code>"
     And User opens payment page
     Then User will see payment status information: "<payment_status_message>"
-    And AUTH and THREEDQUERY requests were sent only once with correct data
+    And AUTH and THREEDQUERY requests were sent only once
     @smoke_test
     Examples:
       | action_code | payment_status_message                  |
@@ -314,7 +314,7 @@ Feature: Card Payments
     And AUTH response is set to "OK"
     And User opens payment page
     Then User will see payment status information: "Payment has been successfully processed"
-    And AUTH and THREEDQUERY requests were sent only once with correct data
+    And AUTH and THREEDQUERY requests were sent only once
 
   @config_immediate_payment
   Scenario: Immediate payment (card enrolled Y) - check ACS response for code: FAILURE
@@ -331,7 +331,7 @@ Feature: Card Payments
     And AUTH response is set to "OK"
     And User opens payment page
     Then User is redirected to action page
-    And AUTH and THREEDQUERY requests were sent only once with correct data
+    And AUTH and THREEDQUERY requests were sent only once
 
   @config_skip_jsinit @cardinal_commerce
   Scenario: Successful payment with skipped JSINIT process
@@ -443,7 +443,7 @@ Feature: Card Payments
     Then User will see payment status information: "Payment has been successfully processed"
     And User will not see CARD_NUMBER
     And User will not see EXPIRATION_DATE
-    And AUTH and THREEDQUERY requests were sent only once with correct data
+    And AUTH and THREEDQUERY requests were sent only once
 
   @config_submit_cvv_for_amex
   Scenario: Successful payment by AMEX when cvv field is selected to submit
@@ -453,7 +453,7 @@ Feature: Card Payments
     Then User will see payment status information: "Payment has been successfully processed"
     And User will not see CARD_NUMBER
     And User will not see EXPIRATION_DATE
-    And AUTH and THREEDQUERY requests were sent only once with correct data
+    And AUTH and THREEDQUERY requests were sent only once
 
   @config_cvvToSubmit_and_submitOnSuccess
   Scenario: Successful payment with fieldToSubmit and submitOnSuccess
@@ -461,7 +461,7 @@ Feature: Card Payments
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "OK"
     Then User is redirected to action page
-    And AUTH and THREEDQUERY requests were sent only once with correct data
+    And AUTH and THREEDQUERY requests were sent only once
 
   @config_bypass_cards @bypass_cards
   Scenario: Successful payment with bypassCard
@@ -782,7 +782,7 @@ Feature: Card Payments
     And ACS mock response is set to "OK"
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
-    And AUTH and THREEDQUERY requests were sent only once with correct data
+    And AUTH and THREEDQUERY requests were sent only once
 
   @config_tokenization_amex
   Scenario: Tokenization - successful payment by AMEX card
@@ -790,7 +790,7 @@ Feature: Card Payments
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
-    And AUTH and THREEDQUERY requests were sent only once with correct data
+    And AUTH and THREEDQUERY requests were sent only once
 
   @config_tokenization_visa_defer_init
   Scenario: Tokenization with deferInit - successful payment by VISA card
@@ -799,7 +799,7 @@ Feature: Card Payments
     And ACS mock response is set to "OK"
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
-    And AUTH and THREEDQUERY requests were sent only once with correct data
+    And AUTH and THREEDQUERY requests were sent only once
 
   @config_tokenization_amex_defer_init
   Scenario: Tokenization with deferInit - successful payment by AMEX card
@@ -807,4 +807,4 @@ Feature: Card Payments
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
-    And AUTH and THREEDQUERY requests were sent only once with correct data
+    And AUTH and THREEDQUERY requests were sent only once
