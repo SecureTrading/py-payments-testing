@@ -108,26 +108,30 @@ Feature: Card Payments
       | 5100000000000511 | 12/22           | 123  | MASTERCARD |
       | 340000000000611  | 12/22           | 1234 | AMEX       |
 
-  @config_animated_card_true @extended_tests_part_1 @animated_card
-  Scenario Outline: Credit card recognition for <card_type> and validate date on animated card
+  @config_animated_card_true @animated_card
+  Scenario Outline: Credit card recognition for <card_type> and validate date on animated card + card icon in input
     When User fills payment form with credit card number "<card_number>", expiration date "<expiration_date>" and cvv "<cvv>"
     Then User will see card icon connected to card type <card_type>
     And User will see the same provided data on animated credit card "<formatted_card_number>", "<expiration_date>" and "<cvv>"
     And User will see that animated card is flipped, except for "AMEX"
+    Then User will see "<card_type>" icon in card number input field
     @smoke_test
     Examples:
       | card_number      | formatted_card_number | expiration_date | cvv | card_type |
       | 4111110000000211 | 4111 1100 0000 0211   | 12/22           | 123 | VISA      |
+    @extended_tests_part_1
     Examples:
       | card_number     | formatted_card_number | expiration_date | cvv  | card_type |
       | 340000000000611 | 3400 000000 00611     | 12/23           | 1234 | AMEX      |
-#      | 6011000000000301 | 6011 0000 0000 0301 | 12/23          | 123  | DISCOVER   |
-#      | 3528000000000411 | 3528 0000 0000 0411 | 12/23          | 123  | JCB        |
-#      | 5000000000000611 | 5000 0000 0000 0611 | 12/23          | 123  | MAESTRO    |
-#      | 5100000000000511 | 5100 0000 0000 0511 | 12/23          | 123  | MASTERCARD |
-#      | 3089500000000000021 | 3089 5000 0000 0000021 | 12/23          | 123 | PIBA         |
-#      | 1801000000000901    | 1801 0000 0000 0901    | 12/23          | 123 | ASTROPAYCARD |
-#      | 3000000000000111    | 3000 000000 000111     | 12/23          | 123 | DINERS       |
+    Examples:
+      | card_number         | formatted_card_number  | expiration_date | cvv | card_type    |
+      | 6011000000000301    | 6011 0000 0000 0301    | 12/23           | 123 | DISCOVER     |
+      | 3528000000000411    | 3528 0000 0000 0411    | 12/23           | 123 | JCB          |
+      | 5000000000000611    | 5000 0000 0000 0611    | 12/23           | 123 | MAESTRO      |
+      | 5100000000000511    | 5100 0000 0000 0511    | 12/23           | 123 | MASTERCARD   |
+      | 3000000000000111    | 3000 000000 000111     | 12/23           | 123 | DINERS       |
+      | 3089500000000000021 | 3089 5000 0000 0000021 | 12/23           | 123 | PIBA         |
+      | 1801000000000901    | 1801 0000 0000 0901    | 12/23           | 123 | ASTROPAYCARD |
 
   @base_config @smoke_test @extended_tests_part_1
   Scenario: Disabled CVV field for PIBA card type
@@ -139,6 +143,13 @@ Feature: Card Payments
     When User clicks Pay button
     Then User will see validation message "Field is required" under all fields
     And User will see that all fields are highlighted
+    And AUTH and THREEDQUERY requests were not sent
+
+  @config_submit_cvv_only
+  Scenario: Checking validation if only Security code field is enabled
+    When User clicks Pay button
+    Then User will see "Field is required" message under field: "SECURITY_CODE"
+    And User will see that "SECURITY_CODE" field is highlighted
     And AUTH and THREEDQUERY requests were not sent
 
   @base_config @fields_validation
@@ -314,6 +325,7 @@ Feature: Card Payments
     And AUTH response is set to "OK"
     And User opens payment page
     Then User will see payment status information: "Payment has been successfully processed"
+    And JSINIT request was sent only 1
     And AUTH and THREEDQUERY requests were sent only once
 
   @config_immediate_payment
@@ -331,6 +343,16 @@ Feature: Card Payments
     And AUTH response is set to "OK"
     And User opens payment page
     Then User is redirected to action page
+    And AUTH and THREEDQUERY requests were sent only once
+
+  @config_immediate_payment_and_defer_init
+  Scenario: Immediate payment with deferInit - successful payment
+    When THREEDQUERY mock response is set to "ENROLLED_Y"
+    And ACS mock response is set to "OK"
+    And AUTH response is set to "OK"
+    And User opens payment page
+    Then User will see payment status information: "Payment has been successfully processed"
+    And JSINIT request was sent only 1
     And AUTH and THREEDQUERY requests were sent only once
 
   @config_skip_jsinit @cardinal_commerce
@@ -464,12 +486,30 @@ Feature: Card Payments
     And AUTH and THREEDQUERY requests were sent only once
 
   @config_bypass_cards @bypass_cards
-  Scenario: Successful payment with bypassCard
-    When User fills payment form with credit card number "3528000000000411", expiration date "12/30" and cvv "123"
+  Scenario Outline: Bypass Cards - Successful payment by <card_type>
+    When User fills payment form with credit card number "<card_number>", expiration date "12/30" and cvv "<cvv>"
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And AUTH request was sent only once with correct data
+    Examples:
+      | card_number      | cvv  | card_type  |
+      | 4111110000000211 | 123  | VISA       |
+      | 340000000000611  | 1234 | AMEX       |
+      | 6011000000000301 | 123  | DISCOVER   |
+      | 3528000000000411 | 123  | JCB        |
+      | 5000000000000611 | 123  | MAESTRO    |
+      | 5100000000000511 | 123  | MASTERCARD |
+      | 3000000000000111 | 123  | DINERS     |
+
+  @config_bypass_cards
+  Scenario: Bypass Cards - Successful payment by PIBA
+    When User fills payment form with credit card number "3089500000000000021", expiration date "12/23"
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And THREEDQUERY request was not sent
+    And AUTH request was sent only once
 
   @config_requestTypes_tdq
   Scenario: Successful payment with request types: THREEDQUERY
@@ -683,17 +723,17 @@ Feature: Card Payments
     When User fills payment form with credit card number "340000000000611", expiration date "12/23"
     Then User will see '****' placeholder in security code field
 
-  @base_config
-  Scenario Outline: Checking <card_type> card icon displayed in input field
-    When User fills payment form with credit card number "<card_number>", expiration date "<expiration_date>"
-    Then User will see "<card_type>" icon in card number input field
-    @smoke_test @extended_tests_part_2
-    Examples:
-      | card_number      | expiration_date | card_type |
-      | 4111110000000211 | 12/22           | VISA      |
-    Examples:
-      | card_number     | expiration_date | card_type |
-      | 340000000000611 | 12/23           | AMEX      |
+#  @base_config
+#  Scenario Outline: Checking <card_type> card icon displayed in input field
+#    When User fills payment form with credit card number "<card_number>", expiration date "<expiration_date>"
+#    Then User will see "<card_type>" icon in card number input field
+#    @smoke_test @extended_tests_part_2
+#    Examples:
+#      | card_number      | expiration_date | card_type |
+#      | 4111110000000211 | 12/22           | VISA      |
+#    Examples:
+#      | card_number         | expiration_date | card_type    |
+#      | 340000000000611     | 12/23           | AMEX         |
 #      | 6011000000000301    | 12/23           | DISCOVER     |
 #      | 3528000000000411    | 12/23           | JCB          |
 #      | 5000000000000611    | 12/23           | MAESTRO      |
@@ -807,4 +847,45 @@ Feature: Card Payments
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
+    And AUTH and THREEDQUERY requests were sent only once
+
+  @config_tokenization_bypass_cards_visa
+  Scenario: Tokenization and bypassCard - successful payment by VISA card
+    When User fills "SECURITY_CODE" field "123"
+    When THREEDQUERY mock response is set to "ENROLLED_Y"
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And THREEDQUERY request was not sent
+    And AUTH request was sent only once
+
+  @base_config
+  Scenario: Checking notification banner style after second payment
+    When User fills payment form with credit card number "5100000000000412", expiration date "01/22" and cvv "123"
+    And THREEDQUERY mock response is set to "NOT_ENROLLED_U"
+    And User clicks Pay button - AUTH response is set to "UNAUTHENTICATED"
+    Then User will see payment status information: "Unauthenticated"
+    And User will see that notification frame has "red" color
+    When User fills payment form with credit card number "5100000000000412", expiration date "01/22" and cvv "123"
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+
+  @base_config
+  Scenario: Security code re-enabled if server error on PIBA
+    When User fills payment form with credit card number "3089500000000000021", expiration date "12/23"
+    And THREEDQUERY mock response is set to "ENROLLED_Y"
+    And ACS mock response is set to "OK"
+    And User clicks Pay button - AUTH response is set to "DECLINE"
+    Then User will see payment status information: "Decline"
+    And User will see that "SECURITY_CODE" field is disabled
+
+  @base_config
+  Scenario: Submit payment form by 'Enter' button
+    When User fills payment form with credit card number "5200000000001005", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response is set to "ENROLLED_Y"
+    And ACS mock response is set to "OK"
+    And AUTH response is set to "OK"
+    And User press enter button
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see the same provided data in inputs fields
     And AUTH and THREEDQUERY requests were sent only once

@@ -145,6 +145,12 @@ class WebElementsExtensions(Waits):
         element = self.find_element(locator)
         element.send_keys(Keys.RETURN)
 
+    def switch_to_iframe_and_press_enter(self, iframe_name, locator):
+        self.switch_to_iframe(iframe_name)
+        element = self.find_element(locator)
+        element.send_keys(Keys.RETURN)
+        self.switch_to_default_iframe()
+
     def select_element_from_list(self, locator, element_number):
         select = Select(self._browser.find_elements(*locator))
         select.select_by_index(element_number)

@@ -10,6 +10,7 @@ config = {
     "config_field_style": "configFieldStyle.json",
     "config_immediate_payment": "configImmediatePayment.json",
     "config_immediate_payment_and_submit_on_success": "configImmediatePaymentAndSubmitOnSuccess.json",
+    "config_immediate_payment_and_defer_init": "configImmediatePaymentAndDeferInit.json",
     "config_skip_jsinit": "configSkipJSinit.json",
     "config_defer_init": "configDeferInitTrue.json",
     "config_submit_cvv_only": "configSubmitCvvOnly.json",
@@ -49,4 +50,5 @@ config = {
     "config_tokenization_amex": "configTokenizationAmex.json",
     "config_tokenization_visa_defer_init": "configTokenizationVisaDeferInit.json",
     "config_tokenization_amex_defer_init": "configTokenizationAmexDeferInit.json",
+    "config_tokenization_bypass_cards_visa": "configTokenizationBypassCardVisa.json",
 }
