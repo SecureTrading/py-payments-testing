@@ -95,6 +95,10 @@ class PaymentMethodsPage(BasePage):
         status_message = self._action.get_text_with_wait(PaymentMethodsLocators.notification_frame)
         return status_message
 
+    def get_text_from_status_callback(self):
+        text = self._action.get_text_with_wait(PaymentMethodsLocators.callback_data_popup)
+        return text
+
     def get_color_of_notification_frame(self):
         frame_color = self._action.get_element_attribute(PaymentMethodsLocators.notification_frame,
                                                          "data-notification-color")
@@ -253,6 +257,12 @@ class PaymentMethodsPage(BasePage):
         if len(actual_message) == 0:
             time.sleep(2)
             actual_message = self.get_payment_status_message()
+        assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_message in actual_message, assertion_message
+
+    def validate_callback_with_data_type(self, expected_message):
+        actual_message = self.get_text_from_status_callback()
         assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_message in actual_message, assertion_message

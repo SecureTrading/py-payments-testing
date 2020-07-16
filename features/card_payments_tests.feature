@@ -109,12 +109,11 @@ Feature: Card Payments
       | 340000000000611  | 12/22           | 1234 | AMEX       |
 
   @config_animated_card_true @animated_card
-  Scenario Outline: Credit card recognition for <card_type> and validate date on animated card + card icon in input
+  Scenario Outline: Credit card recognition for <card_type> and validate date on animated card
     When User fills payment form with credit card number "<card_number>", expiration date "<expiration_date>" and cvv "<cvv>"
     Then User will see card icon connected to card type <card_type>
     And User will see the same provided data on animated credit card "<formatted_card_number>", "<expiration_date>" and "<cvv>"
     And User will see that animated card is flipped, except for "AMEX"
-    Then User will see "<card_type>" icon in card number input field
     @smoke_test
     Examples:
       | card_number      | formatted_card_number | expiration_date | cvv | card_type |
@@ -130,13 +129,13 @@ Feature: Card Payments
       | 5000000000000611    | 5000 0000 0000 0611    | 12/23           | 123 | MAESTRO      |
       | 5100000000000511    | 5100 0000 0000 0511    | 12/23           | 123 | MASTERCARD   |
       | 3000000000000111    | 3000 000000 000111     | 12/23           | 123 | DINERS       |
-      | 3089500000000000021 | 3089 5000 0000 0000021 | 12/23           | 123 | PIBA         |
       | 1801000000000901    | 1801 0000 0000 0901    | 12/23           | 123 | ASTROPAYCARD |
 
   @base_config @smoke_test @extended_tests_part_1
-  Scenario: Disabled CVV field for PIBA card type
+  Scenario: Disabled CVV field for PIBA card type and card recognition
     When User fills payment form with credit card number "3089500000000000021", expiration date "12/23"
     Then User will see that "SECURITY_CODE" field is disabled
+    And User will see "PIBA" icon in card number input field
 
   @base_config @smoke_test @extended_tests_part_1
   Scenario: Submit payment form without data - fields validation
@@ -246,14 +245,14 @@ Feature: Card Payments
     Examples:
       | language |
       | en_GB    |
-#      | fr_FR    |
-#      | en_US    |
-#      | cy_GB    |
-#      | da_DK    |
-#      | es_ES    |
-#      | nl_NL    |
-#      | no_NO    |
-#      | sv_SE    |
+      | fr_FR    |
+      | en_US    |
+      | cy_GB    |
+      | da_DK    |
+      | es_ES    |
+      | nl_NL    |
+      | no_NO    |
+      | sv_SE    |
 
   @config_animated_card_true @animated_card @extended_tests_part_1 @translations
   Scenario Outline: Checking animated card translation for <language>
@@ -668,6 +667,13 @@ Feature: Card Payments
     When User clicks Pay button
     And User will see "error" popup
 
+  @base_config
+  Scenario: Checking data type passing to callback function
+    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
+    And User clicks Pay button - AUTH response is set to "OK"
+    And User will see correct error code displayed in popup
+
   @config_incorrect_request_type @extended_tests_part_2
   Scenario: Checking request types validation
     When User sets incorrect request type in config file
@@ -723,24 +729,24 @@ Feature: Card Payments
     When User fills payment form with credit card number "340000000000611", expiration date "12/23"
     Then User will see '****' placeholder in security code field
 
-#  @base_config
-#  Scenario Outline: Checking <card_type> card icon displayed in input field
-#    When User fills payment form with credit card number "<card_number>", expiration date "<expiration_date>"
-#    Then User will see "<card_type>" icon in card number input field
-#    @smoke_test @extended_tests_part_2
-#    Examples:
-#      | card_number      | expiration_date | card_type |
-#      | 4111110000000211 | 12/22           | VISA      |
-#    Examples:
-#      | card_number         | expiration_date | card_type    |
-#      | 340000000000611     | 12/23           | AMEX         |
-#      | 6011000000000301    | 12/23           | DISCOVER     |
-#      | 3528000000000411    | 12/23           | JCB          |
-#      | 5000000000000611    | 12/23           | MAESTRO      |
-#      | 5100000000000511    | 12/23           | MASTERCARD   |
-#      | 3089500000000000021 | 12/23           | PIBA         |
-#      | 1801000000000901    | 12/23           | ASTROPAYCARD |
-#      | 3000000000000111    | 12/23           | DINERS       |
+  @base_config
+  Scenario Outline: Checking <card_type> card icon displayed in input field
+    When User fills payment form with credit card number "<card_number>", expiration date "<expiration_date>"
+    Then User will see "<card_type>" icon in card number input field
+    @smoke_test @extended_tests_part_2
+    Examples:
+      | card_number      | expiration_date | card_type |
+      | 4111110000000211 | 12/22           | VISA      |
+    Examples:
+      | card_number         | expiration_date | card_type    |
+      | 340000000000611     | 12/23           | AMEX         |
+      | 6011000000000301    | 12/23           | DISCOVER     |
+      | 3528000000000411    | 12/23           | JCB          |
+      | 5000000000000611    | 12/23           | MAESTRO      |
+      | 5100000000000511    | 12/23           | MASTERCARD   |
+      | 3089500000000000021 | 12/23           | PIBA         |
+      | 1801000000000901    | 12/23           | ASTROPAYCARD |
+      | 3000000000000111    | 12/23           | DINERS       |
 
   @config_default
   Scenario: Checking that animated card and card icon are not displayed by default
@@ -888,4 +894,3 @@ Feature: Card Payments
     And User press enter button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see the same provided data in inputs fields
-    And AUTH and THREEDQUERY requests were sent only once

@@ -555,3 +555,9 @@ def step_impl(context):
     payment_page.validate_value_of_input_field(FieldType.CARD_NUMBER.name, "5200 0000 0000 1005")
     payment_page.validate_value_of_input_field(FieldType.EXPIRATION_DATE.name, context.exp_date)
     payment_page.validate_value_of_input_field(FieldType.SECURITY_CODE.name, context.cvv)
+
+
+@step("User will see correct error code displayed in popup")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_callback_with_data_type("Error code: OK")
