@@ -3,7 +3,8 @@ Feature: E2E tests
   I want to use card payments method
   In order to check full payment functionality
 
-  #ToDO - Work ibn progess
+  #ToDO - Work in progress
+  #remove sleep before cardinal modal
   Background:
 #    Given JavaScript configuration is set for scenario based on scenario's @config tag
     Given User opens page with payment form

@@ -123,8 +123,6 @@ def step_impl(context, color):
 @step("User clicks Pay button")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    # ToDO
-    time.sleep(1)
     payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
 
 
