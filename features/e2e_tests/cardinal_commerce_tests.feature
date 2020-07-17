@@ -1,11 +1,12 @@
-Feature: E2E tests
+Feature: Cardinal Commerce E2E tests
   As a user
   I want to use card payments method
-  In order to check full payment functionality
+  In order to check Cardinal Commerce integration
 
-  #ToDO - Work in progress
+  #ToDo - Work in progress
   #remove sleep before cardinal modal
   Background:
+#    ToDo - Uncomment this line when environment for e2e test will be ready
 #    Given JavaScript configuration is set for scenario based on scenario's @config tag
     Given User opens page with payment form
 
@@ -118,5 +119,20 @@ Feature: E2E tests
     When User fills payment form with credit card number "5200000000002003", expiration date "12/30" and cvv "123"
     And User clicks Pay button
     And User fills authentication modal
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+
+  @base_config @cardinal_commerce_v2.0
+  Scenario: Pre-Whitelisted - Visa
+    When User fills payment form with credit card number "4000000000002016", expiration date "12/30" and cvv "123"
+    And User clicks Pay button
+    And User fills authentication modal
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+
+  @base_config @cardinal_commerce_v2.0
+  Scenario: Support TransStatus I - MasterCard
+    When User fills payment form with credit card number "5200000000002029", expiration date "12/30" and cvv "123"
+    And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
