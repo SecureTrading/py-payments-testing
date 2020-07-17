@@ -16,7 +16,7 @@ Feature: Cardinal Commerce E2E tests
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
-    Then User will see that Submit button is "disabled" after payment
+    And User will see that Submit button is "disabled" after payment
     And User will see that all input fields are "disabled"
 
   @base_config @cardinal_commerce_v2.0
@@ -25,7 +25,7 @@ Feature: Cardinal Commerce E2E tests
     And User clicks Pay button
     Then User will see payment status information: "Unauthenticated"
     And User will see that notification frame has "red" color
-    Then User will see that Submit button is "enabled" after payment
+    And User will see that Submit button is "enabled" after payment
     And User will see that all input fields are "enabled"
 
   @base_config @cardinal_commerce_v2.0
@@ -34,7 +34,7 @@ Feature: Cardinal Commerce E2E tests
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
-    Then User will see that Submit button is "disabled" after payment
+    And User will see that Submit button is "disabled" after payment
     And User will see that all input fields are "disabled"
 
   @base_config @cardinal_commerce_v2.0
@@ -43,7 +43,7 @@ Feature: Cardinal Commerce E2E tests
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
-    Then User will see that Submit button is "disabled" after payment
+    And User will see that Submit button is "disabled" after payment
     And User will see that all input fields are "disabled"
 
   @base_config @cardinal_commerce_v2.0
@@ -107,12 +107,14 @@ Feature: Cardinal Commerce E2E tests
     And User will see that notification frame has "green" color
 
   @base_config @cardinal_commerce_v2.0
-  Scenario: Require MethodURL - Visa
-    When User fills payment form with credit card number "4000010000000001", expiration date "12/30" and cvv "123"
+  Scenario: Error on Authentication - MasterCard
+    When User fills payment form with credit card number "5200000000001120", expiration date "12/30" and cvv "123"
     And User clicks Pay button
     And User fills authentication modal
-    Then User will see payment status information: "Payment has been successfully processed"
-    And User will see that notification frame has "green" color
+    Then User will see payment status information: "An error occurred"
+    And User will see that notification frame has "red" color
+    And User will see that Submit button is "enabled" after payment
+    And User will see that all input fields are "enabled"
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Prompt for Whitelist - MasterCard
