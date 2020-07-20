@@ -26,7 +26,7 @@ use_step_matcher("re")
 def step_impl(context):
     remove_item_from_request_journal()
     if 'config_skip_jsinit' not in context.scenario.tags:
-        if 'config_tokenization_visa' in context.scenario.tags[0]:
+        if 'config_tokenization_visa' in context.scenario.tags[0] or 'config_tokenization_bypass_cards_visa' in context.scenario.tags[0]:
             stub_st_request_type("jsinitTokenizationVisa.json", RequestType.JSINIT.name)
         elif 'config_tokenization_amex' in context.scenario.tags[0]:
             stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
@@ -409,8 +409,7 @@ def step_impl(context):
 @step("AUTH and THREEDQUERY requests were sent only once")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'config_immediate_payment' in context.scenario.tags or ('config_defer_init_and_start_on_load_true' in context.scenario.tags)\
-        or ('config_immediate_payment_and_submit_on_success' in context.scenario.tags):
+    if 'config_immediate_payment' in context.scenario.tags[0] or ('config_defer_init_and_start_on_load_true' in context.scenario.tags):
         payment_page.validate_number_of_requests_without_data(RequestType.THREEDQUERY.name, 1)
         payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 1)
     else:
@@ -441,6 +440,12 @@ def step_impl(context):
     else:
         payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 0)
         payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, context.pan, context.exp_date, context.cvv, 1)
+
+
+@step("AUTH request was sent only once")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 1)
 
 
 @step("AUTH and THREEDQUERY requests were not sent")
@@ -526,3 +531,31 @@ def step_impl(context, request_type, thirdparty):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_number_of_thirdparty_requests(request_type, PaymentType[thirdparty].value, 1)
 
+
+@step("User press enter button")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.press_enter_button_on_security_code_field()
+
+
+@step("User fills authentication modal")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    #ToDo - replace sleep
+    time.sleep(1)
+    payment_page.fill_cardinal_authentication_code("1234")
+    payment_page.click_cardinal_submit_btn()
+
+
+@step("User will see the same provided data in inputs fields")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_value_of_input_field(FieldType.CARD_NUMBER.name, "5200 0000 0000 1005")
+    payment_page.validate_value_of_input_field(FieldType.EXPIRATION_DATE.name, context.exp_date)
+    payment_page.validate_value_of_input_field(FieldType.SECURITY_CODE.name, context.cvv)
+
+
+@step("User will see correct error code displayed in popup")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_callback_with_data_type("Error code: OK")

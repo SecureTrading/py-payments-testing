@@ -1,11 +1,11 @@
 {
   "analytics": true,
   "animatedCard": false,
-  "bypassCards": ["VISA", "MASTERCARD", "MAESTRO","AMEX", "DISCOVER", "JCB", "DINERS", "PIBA"],
+  "bypassCards": ["VISA","PIBA"],
   "deferInit": false,
-  "fieldsToSubmit": ["pan", "expirydate", "securitycode"],
+  "fieldsToSubmit": ["securitycode"],
   "buttonId": "merchant-submit-button",
-  "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU3MTY0NzEyMC4xNzQzNDk1LCJwYXlsb2FkIjp7ImJhc2VhbW91bnQiOiIxMDAwIiwiYWNjb3VudHR5cGVkZXNjcmlwdGlvbiI6IkVDT00iLCJjdXJyZW5jeWlzbzNhIjoiR0JQIiwic2l0ZXJlZmVyZW5jZSI6InRlc3QxIiwibG9jYWxlIjoiZW5fR0IifX0._VTiUjM-op-4KUoVGtqA92HwgwTNi_XckqP8pdcyKFc",
+  "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU3MTY0NzEyMC4xNzQzNDk1LCJwYXlsb2FkIjp7ImJhc2VhbW91bnQiOiIxMDAwIiwiYWNjb3VudHR5cGVkZXNjcmlwdGlvbiI6IkVDT00iLCJjdXJyZW5jeWlzbzNhIjoiR0JQIiwic2l0ZXJlZmVyZW5jZSI6InRlc3QiLCJwYXJlbnR0cmFuc2FjdGlvbnJlZmVyZW5jZSI6IjYwLTktMTEzMzM2In19.gXYT_exZnGAdVUZPBmRaGUfh8zoOOOtk91N8aEJobQk",
   "panIcon": true,
   "styles": {
     "defaultStyles": {
