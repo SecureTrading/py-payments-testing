@@ -535,7 +535,7 @@ def step_impl(context, request_type, thirdparty):
 @step("User press enter button")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.press_enter_button()
+    payment_page.press_enter_button_on_security_code_field()
 
 
 @step("User fills authentication modal")
