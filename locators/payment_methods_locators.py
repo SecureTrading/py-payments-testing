@@ -37,6 +37,10 @@ class PaymentMethodsLocators:
     callback_success_popup: By = (By.ID, 'success-popup')
     callback_error_popup: By = (By.ID, 'error-popup')
     callback_cancel_popup: By = (By.ID, 'cancel-popup')
+    callback_data_popup: By = (By.ID, 'data-popup')
     card_icon_in_input_field: By = (By.ID, 'card-icon')
+
+    cardinal_authentication_code_field: By = (By.CLASS_NAME, 'input-field')
+    cardinal_authentication_submit_btn: By = (By.CLASS_NAME, 'primary')
 
     not_private_connection_text: By = (By.XPATH, "//*[contains(text(),'This Connection Is Not Private')]")

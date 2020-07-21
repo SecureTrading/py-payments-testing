@@ -9,9 +9,9 @@ from utils.enums.payment_type import PaymentType
 import json
 
 from utils.helpers.request_executor import add_to_shared_dict, get_number_of_requests_with_data, \
-    get_number_of_thirdparty_requests, get_number_of_AUTH_thirdparty_requests, get_number_of_requests_without_data, \
+    get_number_of_wallet_verify_requests, get_number_of_thirdparty_requests, get_number_of_requests_without_data, \
     get_number_of_requests_with_fraudcontroltransactionid_flag, \
-    get_number_of_requests_with_data_and_fraudcontroltransactionid_flag
+    get_number_of_requests_with_data_and_fraudcontroltransactionid_flag, get_number_of_requests_with_updated_jwt, get_number_of_requests
 
 
 class PaymentMethodsPage(BasePage):
@@ -79,14 +79,34 @@ class PaymentMethodsPage(BasePage):
     def fill_amount_field(self, value):
         self._action.send_keys(PaymentMethodsLocators.amount_field, value)
 
+    def fill_cardinal_authentication_code(self, value):
+        self._action.switch_to_iframe(FieldType.CONTROL_IFRAME.value)
+        self._action.switch_to_iframe(FieldType.CARDINAL_IFRAME.value)
+        self._action.send_keys(PaymentMethodsLocators.cardinal_authentication_code_field, value)
+
+    def click_cardinal_submit_btn(self):
+        self._action.click(PaymentMethodsLocators.cardinal_authentication_submit_btn)
+
+    def press_enter_button_on_security_code_field(self):
+        self._action.switch_to_iframe_and_press_enter(FieldType.SECURITY_CODE.value,
+                                                                   PaymentMethodsLocators.security_code_input_field)
+
     def get_payment_status_message(self):
         status_message = self._action.get_text_with_wait(PaymentMethodsLocators.notification_frame)
         return status_message
+
+    def get_text_from_status_callback(self):
+        text = self._action.get_text_with_wait(PaymentMethodsLocators.callback_data_popup)
+        return text
 
     def get_color_of_notification_frame(self):
         frame_color = self._action.get_element_attribute(PaymentMethodsLocators.notification_frame,
                                                          "data-notification-color")
         return frame_color
+
+    def get_value_of_input_field(self, field):
+        input_value = self.get_element_attribute(field, "value")
+        return input_value
 
     def is_field_enabled(self, field_type):
         is_enabled = False
@@ -179,15 +199,16 @@ class PaymentMethodsPage(BasePage):
 
     def is_field_displayed(self, field_type):
         is_displayed = False
-        if field_type == FieldType.CARD_NUMBER.name:
-            is_displayed = self._action.is_iframe_displayed(FieldType.CARD_NUMBER.value)
-        elif field_type == FieldType.EXPIRATION_DATE.name:
-            is_displayed = self._action.is_iframe_displayed(FieldType.EXPIRATION_DATE.value)
-        elif field_type == FieldType.SECURITY_CODE.name:
-            is_displayed = self._action.is_iframe_displayed(FieldType.SECURITY_CODE.value)
-        elif field_type == FieldType.NOTIFICATION_FRAME.name:
-            if self._action.get_text_with_wait(PaymentMethodsLocators.notification_frame) != '':
+        if field_type == FieldType.CARD_ICON.name:
+            self._action.switch_to_iframe(FieldType.CARD_NUMBER.value)
+            if len(self._action.find_elements(PaymentMethodsLocators.card_icon_in_input_field)) > 0:
                 is_displayed = True
+        elif field_type == FieldType.NOTIFICATION_FRAME.name:
+            if len(self._action.find_elements(PaymentMethodsLocators.notification_frame)) > 0:
+                if self._action.get_text_with_wait(PaymentMethodsLocators.notification_frame) != '':
+                    is_displayed = True
+        else:
+            is_displayed = self._action.is_iframe_displayed(FieldType[field_type].value)
         return is_displayed
 
     def get_card_type_icon_from_input_field(self):
@@ -222,6 +243,13 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_message in actual_message, assertion_message
 
+    def validate_value_of_input_field(self, field_type, expected_message):
+        input_value = self.get_value_of_input_field(field_type)
+        assertion_message = f'{FieldType[field_type].name} input value is not correct, ' \
+                            f'should be: "{expected_message}" but is: "{input_value}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_message in input_value, assertion_message
+
     def validate_payment_status_message(self, expected_message):
         if CONFIGURATION.REMOTE_DEVICE is not None:
             self.scroll_to_top()
@@ -229,6 +257,12 @@ class PaymentMethodsPage(BasePage):
         if len(actual_message) == 0:
             time.sleep(2)
             actual_message = self.get_payment_status_message()
+        assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_message in actual_message, assertion_message
+
+    def validate_callback_with_data_type(self, expected_message):
+        actual_message = self.get_text_from_status_callback()
         assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_message in actual_message, assertion_message
@@ -318,7 +352,7 @@ class PaymentMethodsPage(BasePage):
         self._executor.wait_for_javascript()
         actual_url = self._executor.get_page_url()
         if expected_url not in actual_url:
-            time.sleep(2)
+            time.sleep(3)
             actual_url = self._executor.get_page_url()
         assertion_message = f'Url is not correct, should be: "{expected_url}" but is: "{actual_url}"'
         add_to_shared_dict("assertion_message", assertion_message)
@@ -341,6 +375,11 @@ class PaymentMethodsPage(BasePage):
         assertion_message = f'{callback_popup} callback popup is not displayed but should be'
         add_to_shared_dict("assertion_message", assertion_message)
         assert is_displayed is True, assertion_message
+
+    def validate_placeholders(self, card_number, exp_date, cvv):
+        self.validate_placeholder(FieldType.CARD_NUMBER.name, card_number)
+        self.validate_placeholder(FieldType.EXPIRATION_DATE.name, exp_date)
+        self.validate_placeholder(FieldType.SECURITY_CODE.name, cvv)
 
     def validate_placeholder(self, field_type, expected_placeholder):
         actual_placeholder = self.get_element_attribute(field_type, "placeholder")
@@ -370,16 +409,23 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
 
-    def validate_number_of_thirdparty_requests(self, url, expected_number_of_requests):
-        actual_number_of_requests = get_number_of_thirdparty_requests(url)
+    def validate_number_of_wallet_verify_requests(self, url, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_wallet_verify_requests(url)
         assertion_message = f'Number of {url} requests is not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
 
-    def validate_number_of_AUTH_thirdparty_requests(self, url, walletsource, expected_number_of_requests):
-        actual_number_of_requests = get_number_of_AUTH_thirdparty_requests(url, walletsource)
-        assertion_message = f'Number of {url} requests or request data are not correct, ' \
+    def validate_number_of_thirdparty_requests(self, request_type, walletsource, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_thirdparty_requests(request_type, walletsource)
+        assertion_message = f'Number of request with {request_type} is not correct, ' \
+                            f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_number_of_requests == actual_number_of_requests, assertion_message
+
+    def validate_number_of_requests(self, request_type, pan, expiry_date, cvv, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests(request_type, pan, expiry_date, cvv)
+        assertion_message = f'Number of request with "{request_type}" is not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
@@ -399,6 +445,13 @@ class PaymentMethodsPage(BasePage):
                                                                         expected_number_of_requests):
         actual_number_of_requests = get_number_of_requests_with_fraudcontroltransactionid_flag(request_type)
         assertion_message = f'Number of {request_type} requests or request data are not correct, ' \
+                            f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_number_of_requests == actual_number_of_requests, assertion_message
+
+    def validate_updated_jwt_in_request(self, request_type, update_jwt, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests_with_updated_jwt(request_type, update_jwt)
+        assertion_message = f'Number of {request_type} with updated jwt is not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
