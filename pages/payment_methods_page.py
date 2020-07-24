@@ -144,6 +144,7 @@ class PaymentMethodsPage(BasePage):
                 self._executor.wait_for_javascript()
                 self._action.click_by_javascript(PaymentMethodsLocators.pay_mock_button)
             else:
+                self._executor.wait_for_element_to_be_clickable(PaymentMethodsLocators.pay_mock_button)
                 self._action.click(PaymentMethodsLocators.pay_mock_button)
         self._executor.wait_for_javascript()
 
