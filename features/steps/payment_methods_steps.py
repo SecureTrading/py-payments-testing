@@ -1,6 +1,6 @@
 import time
 
-import requests
+from assertpy import soft_assertions
 from behave import *
 
 from configuration import CONFIGURATION
@@ -333,6 +333,14 @@ def step_impl(context):
             payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_error_url)
     elif "Immediate payment with submitOnSuccess " in context.scenario.name:
         payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_immediate_payment_url)
+
+
+@step('User will be sent to page with url having params')
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    with soft_assertions():
+        for param in context.table:
+            payment_page.validate_if_url_contains_param(param['key'], param['value'])
 
 
 @when('User fills payment form with credit card number "(?P<card_number>.+)", expiration date "(?P<exp_date>.+)"')

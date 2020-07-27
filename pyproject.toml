@@ -14,6 +14,7 @@ pyioc = "^0.3.0"
 attrdict = "^2.0.1"
 wiremock = "^2.0"
 jwt = "^1.0.0"
+assertpy = "^1.1"
 
 
 [build-system]
