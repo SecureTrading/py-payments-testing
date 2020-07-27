@@ -51,4 +51,5 @@ config = {
     "config_tokenization_visa_defer_init": "configTokenizationVisaDeferInit.json",
     "config_tokenization_amex_defer_init": "configTokenizationAmexDeferInit.json",
     "config_tokenization_bypass_cards_visa": "configTokenizationBypassCardVisa.json",
+    "e2e_config_bypass_mastercard": "e2e_config/e2eConfigBypassMastercard.json"
 }
