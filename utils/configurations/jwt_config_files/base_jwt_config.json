@@ -1,6 +1,5 @@
 {
   "iat": 1595513452,
-  "iss": "am0310.autoapi",
   "payload": {
     "baseamount": "2000",
     "accounttypedescription": "ECOM",

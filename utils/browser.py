@@ -1,5 +1,6 @@
 """ This class consist all methods related with browser activities"""
 from configuration import CONFIGURATION
+from utils.enums.jwt_config import JwtConfig
 from utils.waits import Waits
 from utils.configurations.jwt_generator import encode_jwt_for_json
 
@@ -10,7 +11,7 @@ class Browser(Waits):
         self._browser.get(page_url)
         self.fullscreen()
 
-    def open_page_with_jwt_config(self, page_url, jwt_json_config):
+    def open_page_with_jwt_config(self, page_url, jwt_json_config: JwtConfig):
         jwt = encode_jwt_for_json(jwt_json_config)
         self._browser.get(page_url + f'?jwt={jwt}')
         self.fullscreen()
