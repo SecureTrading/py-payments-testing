@@ -4,6 +4,7 @@ import requests
 from behave import *
 
 from configuration import CONFIGURATION
+from utils.dict.url_after_redirection import url_after_redirection
 from utils.enums.config import config
 
 from utils.enums.field_type import FieldType
@@ -30,6 +31,8 @@ def step_impl(context):
             stub_st_request_type("jsinitTokenizationVisa.json", RequestType.JSINIT.name)
         elif 'config_tokenization_amex' in context.scenario.tags[0]:
             stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
+        elif 'config_auth_subscription' in context.scenario.tags[0] or 'config_acheck_subscription' in context.scenario.tags[0]:
+            stub_st_request_type("jsinitSubscription.json", RequestType.JSINIT.name)
         else:
             stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
     config_tag = context.scenario.tags[0]
@@ -309,30 +312,15 @@ def step_impl(context):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     time.sleep(1)
-    if "Visa Checkout - successful" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_success_url)
-    elif "Visa Checkout - error" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_error_url)
-    elif "Visa Checkout - canceled" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_cancel_url)
-    elif "ApplePay - successful" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_success_url)
-    elif "ApplePay - error" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_error_url)
-    elif "ApplePay - canceled" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_cancel_url)
-    elif "Cardinal Commerce - successful" in context.scenario.name:
-        if 'IE' in CONFIGURATION.REMOTE_BROWSER:
-            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url_IE)
-        else:
-            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url)
-    elif "Cardinal Commerce - error" in context.scenario.name:
-        if 'ie' in context.browser:
-            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_error_url_IE)
-        else:
-            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_error_url)
-    elif "Immediate payment with submitOnSuccess " in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_immediate_payment_url)
+    for key, value in url_after_redirection.items():
+        if key in context.scenario.name:
+            if "Cardinal Commerce - successful" in key and 'IE' in CONFIGURATION.REMOTE_BROWSER:
+                payment_page.validate_if_url_contains_info_about_payment(url_after_redirection['IE - success'])
+            elif "Cardinal Commerce - error" in key and 'IE' in CONFIGURATION.REMOTE_BROWSER:
+                payment_page.validate_if_url_contains_info_about_payment(url_after_redirection['IE - error'])
+            else:
+                payment_page.validate_if_url_contains_info_about_payment(value)
+                break
 
 
 @when('User fills payment form with credit card number "(?P<card_number>.+)", expiration date "(?P<exp_date>.+)"')
@@ -341,7 +329,7 @@ def step_impl(context, card_number, exp_date):
     payment_page.fill_payment_form_without_cvv(card_number, exp_date)
 
 
-@step("User fills amount field")
+@step("User calls updateJWT function by filling amount field")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.fill_amount_field('1')
@@ -559,3 +547,9 @@ def step_impl(context):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_callback_with_data_type("Error code: OK")
+
+
+@then("User remains on checkout page")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_page_url(CONFIGURATION.URL.BASE_URL)

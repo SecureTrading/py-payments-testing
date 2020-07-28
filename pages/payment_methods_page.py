@@ -358,6 +358,13 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_url in actual_url, assertion_message
 
+    def validate_page_url(self, expected_url):
+        self._executor.wait_for_javascript()
+        actual_url = self._executor.get_page_url()
+        assertion_message = f'Url is not correct, should be: "{expected_url}" but is: "{actual_url}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_url in actual_url, assertion_message
+
     def validate_form_status(self, field_type, form_status):
         if 'enabled' in form_status:
             self.validate_if_field_is_enabled(field_type)
