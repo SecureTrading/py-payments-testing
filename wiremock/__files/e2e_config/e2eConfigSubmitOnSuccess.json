@@ -6,10 +6,6 @@
   "components": {
     "defaultPaymentType": "",
     "requestTypes": [
-      "THREEDQUERY",
-      "RISKDEC",
-      "ACCOUNTCHECK",
-      "AUTH"
     ],
     "paymentTypes": [],
     "startOnLoad": false

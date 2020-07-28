@@ -335,10 +335,11 @@ def step_impl(context):
         payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_immediate_payment_url)
 
 
-@step('User will be sent to page with url having params')
-def step_impl(context):
+@step('User will be sent to page with url "(?P<url>.+)" having params')
+def step_impl(context, url: str):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     with soft_assertions():
+        payment_page.validate_base_url(url)
         for param in context.table:
             payment_page.validate_if_url_contains_param(param['key'], param['value'])
 
