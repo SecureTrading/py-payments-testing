@@ -547,13 +547,10 @@ def step_impl(context):
     payment_page.press_enter_button_on_security_code_field()
 
 
-@step("User fills authentication modal")
-def step_impl(context):
+@step("User fills (?P<auth_type>.+) authentication modal")
+def step_impl(context, auth_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    #ToDo - replace sleep
-    time.sleep(1)
-    payment_page.fill_cardinal_authentication_code("1234")
-    payment_page.click_cardinal_submit_btn()
+    payment_page.fill_cardinal_authentication_code(auth_type)
 
 
 @step("User will see the same provided data in inputs fields")

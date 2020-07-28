@@ -7,6 +7,8 @@ import ioc_config
 from configuration import CONFIGURATION
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
+from utils.enums.auth_data import AuthData
+from utils.enums.auth_type import AuthType
 from utils.enums.field_type import FieldType
 from utils.enums.payment_type import PaymentType
 import json
@@ -82,13 +84,28 @@ class PaymentMethodsPage(BasePage):
     def fill_amount_field(self, value):
         self._action.send_keys(PaymentMethodsLocators.amount_field, value)
 
-    def fill_cardinal_authentication_code(self, value):
+    def fill_cardinal_authentication_code(self, auth_type):
+        auth = AuthType.__members__[auth_type].name
+        self.select_proper_cardinal_authentication(auth)
+
+    def select_proper_cardinal_authentication(self, auth):
+        self._executor.wait_for_element(PaymentMethodsLocators.secure_trade_form)
         self._action.switch_to_iframe(FieldType.CONTROL_IFRAME.value)
         self._action.switch_to_iframe(FieldType.CARDINAL_IFRAME.value)
-        self._action.send_keys(PaymentMethodsLocators.cardinal_authentication_code_field, value)
+
+        if auth == AuthType.V1.value:
+            self._action.switch_to_iframe(FieldType.V1_PARENT_IFRAME.value)
+            self._executor.wait_for_element(PaymentMethodsLocators.cardinal_v1_authentication_code_field)
+            self._action.send_keys(PaymentMethodsLocators.cardinal_v1_authentication_code_field, AuthData.PASSWORD.value)
+            self._action.click(PaymentMethodsLocators.cardinal_v1_authentication_submit_btn)
+            self._action.switch_to_parent_iframe()
+        else:
+            self._executor.wait_for_element(PaymentMethodsLocators.cardinal_v2_authentication_code_field)
+            self._action.send_keys(PaymentMethodsLocators.cardinal_v2_authentication_code_field, AuthData.PASSWORD.value)
+            self._action.click(PaymentMethodsLocators.cardinal_v2_authentication_submit_btn)
 
     def click_cardinal_submit_btn(self):
-        self._action.click(PaymentMethodsLocators.cardinal_authentication_submit_btn)
+        self._action.click(PaymentMethodsLocators.cardinal_v2_authentication_submit_btn)
 
     def press_enter_button_on_security_code_field(self):
         self._action.switch_to_iframe_and_press_enter(FieldType.SECURITY_CODE.value,
@@ -256,6 +273,7 @@ class PaymentMethodsPage(BasePage):
 
     def validate_payment_status_message(self, expected_message):
         if CONFIGURATION.REMOTE_DEVICE is not None:
+            time.sleep(1)
             self.scroll_to_top()
         actual_message = self.get_payment_status_message()
         if len(actual_message) == 0:
