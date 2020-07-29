@@ -446,6 +446,7 @@ def step_impl(context):
 @step("(?P<thirdparty>.+) or AUTH requests were sent only once with correct data")
 def step_impl(context, thirdparty):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    context.thirdparty = thirdparty
     if "VISA_CHECKOUT" in thirdparty:
         payment_page.validate_number_of_wallet_verify_requests(MockUrl.VISA_MOCK_URI.value, 1)
     elif "APPLE_PAY" in thirdparty:
@@ -505,7 +506,12 @@ def step_impl(context, name, email, phone):
 @step("(?P<request_type>.+) requests contains updated jwt")
 def step_impl(context, request_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_updated_jwt_in_request(request_type, context.test_data.update_jwt, 1)
+    if "WALLETVERIFY" in request_type and "APPLE_PAY" in context.thirdparty:
+        payment_page.validate_updated_jwt_in_request(request_type, MockUrl.APPLEPAY_MOCK_URI.value, context.test_data.update_jwt, 1)
+    elif "WALLETVERIFY" in request_type and "VISA_CHECKOUT" in context.thirdparty:
+        payment_page.validate_updated_jwt_in_request(request_type, MockUrl.VISA_MOCK_URI.value, context.test_data.update_jwt, 1)
+    else:
+        payment_page.validate_updated_jwt_in_request(request_type, MockUrl.GATEWAY_MOCK_URI.value, context.test_data.update_jwt, 1)
 
 
 @then("User will not see (?P<field_type>.+)")
