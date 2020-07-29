@@ -22,6 +22,7 @@ class Card(Enum):
     JCB_CARD = '3528 0000 0000 0411', '12/23', CardType.JCB, 123
     MAESTRO_CARD = '5000 0000 0000 0611', '12/23', CardType.MAESTRO, 123
     MASTERCARD_CARD = '5100 0000 0000 0511', '12/23', CardType.MASTERCARD, 123
+    DECLINED_MASTERCARD_CARD = '5100 0000 0000 0412', '12/23', CardType.MASTERCARD, 123
 
     @property
     def number(self):
