@@ -1,4 +1,7 @@
 import time
+from urllib.parse import urlparse, parse_qs
+
+from assertpy import assert_that
 
 import ioc_config
 from configuration import CONFIGURATION
@@ -144,6 +147,7 @@ class PaymentMethodsPage(BasePage):
                 self._executor.wait_for_javascript()
                 self._action.click_by_javascript(PaymentMethodsLocators.pay_mock_button)
             else:
+                self._executor.wait_for_element_to_be_clickable(PaymentMethodsLocators.pay_mock_button)
                 self._action.click(PaymentMethodsLocators.pay_mock_button)
         self._executor.wait_for_javascript()
 
@@ -364,6 +368,19 @@ class PaymentMethodsPage(BasePage):
         assertion_message = f'Url is not correct, should be: "{expected_url}" but is: "{actual_url}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_url in actual_url, assertion_message
+
+    def validate_base_url(self, url: str):
+        self._executor.wait_for_javascript()
+        actual_url = self._executor.get_page_url()
+        parsed_url = urlparse(actual_url)
+        assert_that(parsed_url.hostname).is_equal_to(url)
+
+    def validate_if_url_contains_param(self, key, value):
+        self._executor.wait_for_javascript()
+        actual_url = self._executor.get_page_url()
+        parsed_url = urlparse(actual_url)
+        parsed_query_from_url = parse_qs(parsed_url.query)
+        assert_that(parsed_query_from_url[key][0]).is_equal_to(value)
 
     def validate_form_status(self, field_type, form_status):
         if 'enabled' in form_status:

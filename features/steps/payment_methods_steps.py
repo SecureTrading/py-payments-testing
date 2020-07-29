@@ -1,6 +1,6 @@
 import time
 
-import requests
+from assertpy import soft_assertions
 from behave import *
 
 from configuration import CONFIGURATION
@@ -321,6 +321,15 @@ def step_impl(context):
             else:
                 payment_page.validate_if_url_contains_info_about_payment(value)
                 break
+
+
+@step('User will be sent to page with url "(?P<url>.+)" having params')
+def step_impl(context, url: str):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    with soft_assertions():
+        payment_page.validate_base_url(url)
+        for param in context.table:
+            payment_page.validate_if_url_contains_param(param['key'], param['value'])
 
 
 @when('User fills payment form with credit card number "(?P<card_number>.+)", expiration date "(?P<exp_date>.+)"')

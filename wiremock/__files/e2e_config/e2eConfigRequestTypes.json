@@ -1,0 +1,19 @@
+{
+  "bypassCards": [
+    "MASTERCARD"
+  ],
+  "cancelCallback": null,
+  "components": {
+    "defaultPaymentType": "",
+    "requestTypes": [
+      "RISKDEC",
+      "ACCOUNTCHECK",
+      "THREEDQUERY",
+      "AUTH"
+    ],
+    "paymentTypes": [],
+    "startOnLoad": false
+  },
+  "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTU0OTU5MTcsImlzcyI6ImFtMDMxMC5hdXRvYXBpIiwicGF5bG9hZCI6eyJiYXNlYW1vdW50IjoiMTAwMCIsImFjY291bnR0eXBlZGVzY3JpcHRpb24iOiJFQ09NIiwiY3VycmVuY3lpc28zYSI6IkdCUCIsInNpdGVyZWZlcmVuY2UiOiJ0ZXN0X2phbWVzMzg2NDEiLCJsb2NhbGUiOiJlbl9HQiJ9fQ.Pe3AJfVRbSE6gd0DQs3N_xK7dg8U5J9Z7lqfs-7-Ims",
+  "panIcon": true
+}
