@@ -53,5 +53,6 @@ config = {
     "config_tokenization_bypass_cards_visa": "configTokenizationBypassCardVisa.json",
     "e2e_config_bypass_mastercard": "e2e_config/e2eConfigBypassMastercard.json",
     "e2e_config_submit_on_success": "e2e_config/e2eConfigSubmitOnSuccess.json",
-    "e2e_config_submit_on_error": "e2e_config/e2eConfigSubmitOnError.json"
+    "e2e_config_submit_on_error": "e2e_config/e2eConfigSubmitOnError.json",
+    "e2e_config_for_bypass_cards": "e2e_config/e2eConfigForByPassCards.json"
 }
