@@ -23,6 +23,6 @@ Feature: E2E Card Payments
     And User will see that notification frame has "green" color
 
     Examples:
-      | card                   |
-      | VISA_BYPASS_CARD       |
-      | MASTERCARD_BYPASS_CARD |
+      | card                    |
+      | VISA_STEP_UP_CARD       |
+      | MASTERCARD_STEP_UP_CARD |
