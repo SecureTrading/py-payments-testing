@@ -22,7 +22,7 @@ class PaymentMethodsLocators:
     security_code_field_validation_message: By = (By.ID, 'st-security-code-message')
 
     # Notification frame
-    notification_frame: By = (By.ID, 'st-notification-frame')
+    notification_frame: By = (By.CSS_SELECTOR, '.example-form__group.notification-frame')
 
     # payment methods
     pay_mock_button: By = (By.ID, 'merchant-submit-button')
