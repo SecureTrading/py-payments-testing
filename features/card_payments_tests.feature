@@ -424,7 +424,7 @@ Feature: Card Payments
   @config_update_jwt_true @smoke_test @extended_tests_part_2
   Scenario: Successful payment with updated JWT
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
-    And User fills amount field
+    And User calls updateJWT function by filling amount field
     And THREEDQUERY mock response is set to "ENROLLED_Y"
     And ACS mock response is set to "OK"
     And User clicks Pay button - AUTH response is set to "OK"
@@ -447,7 +447,7 @@ Feature: Card Payments
   @config_defer_init
   Scenario: Successful payment with deferInit and updated JWT
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
-    And User fills amount field
+    And User calls updateJWT function by filling amount field
     And THREEDQUERY mock response is set to "ENROLLED_Y"
     And ACS mock response is set to "OK"
     And User clicks Pay button - AUTH response is set to "OK"
@@ -760,12 +760,12 @@ Feature: Card Payments
 
   @base_config
   Scenario: Verify number of JSINIT requests together with UpdateJWT
-    When User fills amount field
-    And User fills amount field
+    When User calls updateJWT function by filling amount field
+    And User calls updateJWT function by filling amount field
     Then JSINIT request was sent only 2
     And JSINIT requests contains updated jwt
 
-  @config_notifications_false @extended_tests_part_1
+  @config_disable_notifications_true @extended_tests_part_1
   Scenario: Notification frame is not displayed after payment
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"

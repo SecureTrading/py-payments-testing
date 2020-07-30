@@ -5,6 +5,7 @@ config = {
     "config_submit_on_error_true": "configSubmitOnErrorTrue.json",
     "config_submit_on_cancel_true": "configSubmitOnCancelTrue.json",
     "config_submit_on_success_and_error_true": "configSubmitOnSuccessAndErrorTrue.json",
+    "config_submit_on_success_error_cancel_false": "configSubmitOnSuccessErrorCancelFalse.json",
     "config_animated_card_true": "configAnimatedCardTrue.json",
     "config_update_jwt_true": "configUpdateJwtTrue.json",
     "config_field_style": "configFieldStyle.json",
@@ -19,7 +20,8 @@ config = {
     "config_bypass_cards": "configBypassCards.json",
     "config_incorrect_request_type": "configIncorrectRequestType.json",
     "config_placeholders": "configPlaceholders.json",
-    "config_notifications_false": "configNotificationsFalse.json",
+    "config_disable_notifications_false": "configDisableNotificationsFalse.json",
+    "config_disable_notifications_true": "configDisableNotificationsTrue.json",
     "config_cybertonica": "configCybertonica.json",
     "config_cybertonica_bypass_cards": "configCybertonicaBypassCards.json",
     "config_cybertonica_immediate_payment": "configCybertonicaImmediatePayment.json",
@@ -45,6 +47,8 @@ config = {
     "config_apple_acheck_auth": "configAppleAcheckAuth.json",
     "config_apple_riskdec_auth": "configAppleRiskdecAuth.json",
     "config_apple_riskdec_acheck_auth": "configAppleRiskdecAcheckAuth.json",
+    "config_auth_subscription": "configAppleAuthSubscription.json",
+    "config_acheck_subscription": "configAppleAcheckSubscription.json",
     "config_apple_network_amex": "configAppleNetworkAmex.json",
     "config_tokenization_visa": "configTokenizationVisa.json",
     "config_tokenization_amex": "configTokenizationAmex.json",
@@ -54,5 +58,6 @@ config = {
     "e2e_config_bypass_mastercard": "e2e_config/e2eConfigBypassMastercard.json",
     "e2e_config_submit_on_success": "e2e_config/e2eConfigSubmitOnSuccess.json",
     "e2e_config_submit_on_error": "e2e_config/e2eConfigSubmitOnError.json",
+    "e2e_config_request_types": "e2e_config/e2eConfigRequestTypes.json",
     "e2e_config_for_bypass_cards": "e2e_config/e2eConfigForByPassCards.json"
 }
