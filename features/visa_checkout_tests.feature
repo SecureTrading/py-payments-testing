@@ -53,7 +53,7 @@ Feature: Visa Checkout
 
   @config_update_jwt_true @extended_tests_part_2 @visa_test
   Scenario: Visa Checkout - successful payment with updated JWT
-    When User fills amount field
+    When User calls updateJWT function by filling amount field
     And User chooses Visa Checkout as payment method - response is set to "SUCCESS"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color

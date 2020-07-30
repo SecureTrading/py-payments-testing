@@ -15,6 +15,8 @@ request_type_applepay = {
     "ACCOUNTCHECK, AUTH": "appleAccountcheckAuth.json",
     "RISKDEC, AUTH": "appleRiskdecAuth.json",
     "RISKDEC, ACCOUNTCHECK, AUTH": "appleRiskdecAccountcheckAuth.json",
+    "AUTH, SUBSCRIPTION": "appleAuthSubscription.json",
+    "ACCOUNTCHECK, SUBSCRIPTION": "appleAcheckSubscription.json"
 }
 
 class RequestType(Enum):

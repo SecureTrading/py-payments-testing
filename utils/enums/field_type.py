@@ -8,8 +8,10 @@ class FieldType(Enum):
     ANIMATED_CARD = "st-animated-card-iframe"
     NOTIFICATION_FRAME = "st-notification-frame-iframe"
     CONTROL_IFRAME = "st-control-frame-iframe"
+    CT_FRAME = "Cardinal-collector"
     CARDINAL_IFRAME = "Cardinal-CCA-IFrame"
     PARENT_IFRAME = "st-parent-frame"
+    V1_PARENT_IFRAME = "authWindow"
     SUBMIT_BUTTON = 1
     NAME = 2
     EMAIL = 3

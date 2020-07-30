@@ -11,6 +11,7 @@ class CardType(Enum):
     MAESTRO = auto()
     MASTERCARD = auto()
     PIBA = auto()
+    AMERICANEXPRESS = auto()
 
     @property
     def value(self) -> str:

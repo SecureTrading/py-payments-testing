@@ -7,6 +7,8 @@ import ioc_config
 from configuration import CONFIGURATION
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
+from utils.enums.auth_data import AuthData
+from utils.enums.auth_type import AuthType
 from utils.enums.field_type import FieldType
 from utils.enums.payment_type import PaymentType
 import json
@@ -82,13 +84,28 @@ class PaymentMethodsPage(BasePage):
     def fill_amount_field(self, value):
         self._action.send_keys(PaymentMethodsLocators.amount_field, value)
 
-    def fill_cardinal_authentication_code(self, value):
+    def fill_cardinal_authentication_code(self, auth_type):
+        auth = AuthType.__members__[auth_type].name
+        self.select_proper_cardinal_authentication(auth)
+
+    def select_proper_cardinal_authentication(self, auth):
+        self._executor.wait_for_element(PaymentMethodsLocators.secure_trade_form)
         self._action.switch_to_iframe(FieldType.CONTROL_IFRAME.value)
         self._action.switch_to_iframe(FieldType.CARDINAL_IFRAME.value)
-        self._action.send_keys(PaymentMethodsLocators.cardinal_authentication_code_field, value)
+
+        if auth == AuthType.V1.value:
+            self._action.switch_to_iframe(FieldType.V1_PARENT_IFRAME.value)
+            self._executor.wait_for_element(PaymentMethodsLocators.cardinal_v1_authentication_code_field)
+            self._action.send_keys(PaymentMethodsLocators.cardinal_v1_authentication_code_field, AuthData.PASSWORD.value)
+            self._action.click(PaymentMethodsLocators.cardinal_v1_authentication_submit_btn)
+            self._action.switch_to_parent_iframe()
+        else:
+            self._executor.wait_for_element(PaymentMethodsLocators.cardinal_v2_authentication_code_field)
+            self._action.send_keys(PaymentMethodsLocators.cardinal_v2_authentication_code_field, AuthData.PASSWORD.value)
+            self._action.click(PaymentMethodsLocators.cardinal_v2_authentication_submit_btn)
 
     def click_cardinal_submit_btn(self):
-        self._action.click(PaymentMethodsLocators.cardinal_authentication_submit_btn)
+        self._action.click(PaymentMethodsLocators.cardinal_v2_authentication_submit_btn)
 
     def press_enter_button_on_security_code_field(self):
         self._action.switch_to_iframe_and_press_enter(FieldType.SECURITY_CODE.value,
@@ -255,12 +272,9 @@ class PaymentMethodsPage(BasePage):
         assert expected_message in input_value, assertion_message
 
     def validate_payment_status_message(self, expected_message):
-        if CONFIGURATION.REMOTE_DEVICE is not None:
+        if CONFIGURATION.REMOTE_DEVICE.strip():
             self.scroll_to_top()
         actual_message = self.get_payment_status_message()
-        if len(actual_message) == 0:
-            time.sleep(2)
-            actual_message = self.get_payment_status_message()
         assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_message in actual_message, assertion_message
@@ -366,6 +380,8 @@ class PaymentMethodsPage(BasePage):
         self._executor.wait_for_javascript()
         actual_url = self._executor.get_page_url()
         parsed_url = urlparse(actual_url)
+        assertion_message = f'Url is not correct, should be: "{url}" but is: "{actual_url}"'
+        add_to_shared_dict("assertion_message", assertion_message)
         assert_that(parsed_url.hostname).is_equal_to(url)
 
     def validate_if_url_contains_param(self, key, value):
@@ -466,8 +482,8 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
 
-    def validate_updated_jwt_in_request(self, request_type, update_jwt, expected_number_of_requests):
-        actual_number_of_requests = get_number_of_requests_with_updated_jwt(request_type, update_jwt)
+    def validate_updated_jwt_in_request(self, request_type, url, update_jwt, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests_with_updated_jwt(request_type, url, update_jwt)
         assertion_message = f'Number of {request_type} with updated jwt is not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
         add_to_shared_dict("assertion_message", assertion_message)

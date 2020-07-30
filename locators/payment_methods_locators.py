@@ -11,6 +11,7 @@ class PaymentMethodsLocators:
     amount_field: By = (By.ID, 'example-form-amount')
 
     # Credit card form
+    secure_trade_form: By = (By.ID, "st-control-frame-iframe")
     card_number_input_field: By = (By.ID, 'st-card-number-input')
     expiration_date_input_field: By = (By.ID, 'st-expiration-date-input')
     security_code_input_field: By = (By.ID, 'st-security-code-input')
@@ -21,7 +22,7 @@ class PaymentMethodsLocators:
     security_code_field_validation_message: By = (By.ID, 'st-security-code-message')
 
     # Notification frame
-    notification_frame: By = (By.ID, 'st-notification-frame')
+    notification_frame: By = (By.CSS_SELECTOR, '.example-form__group.notification-frame')
 
     # payment methods
     pay_mock_button: By = (By.ID, 'merchant-submit-button')
@@ -40,7 +41,10 @@ class PaymentMethodsLocators:
     callback_data_popup: By = (By.ID, 'data-popup')
     card_icon_in_input_field: By = (By.ID, 'card-icon')
 
-    cardinal_authentication_code_field: By = (By.CLASS_NAME, 'input-field')
-    cardinal_authentication_submit_btn: By = (By.CLASS_NAME, 'primary')
+    cardinal_v2_authentication_code_field: By = (By.CLASS_NAME, 'input-field')
+    cardinal_v2_authentication_submit_btn: By = (By.CLASS_NAME, 'primary')
+
+    cardinal_v1_authentication_code_field: By = (By.ID, 'password')
+    cardinal_v1_authentication_submit_btn: By = (By.NAME, 'UsernamePasswordEntry')
 
     not_private_connection_text: By = (By.XPATH, "//*[contains(text(),'This Connection Is Not Private')]")
