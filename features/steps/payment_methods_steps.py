@@ -567,4 +567,4 @@ def step_impl(context):
 @then("User remains on checkout page")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_page_url(CONFIGURATION.URL.BASE_URL)
+    payment_page.validate_base_url(CONFIGURATION.URL.BASE_URL[8:])

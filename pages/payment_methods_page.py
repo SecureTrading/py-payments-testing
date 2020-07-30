@@ -362,17 +362,12 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_url in actual_url, assertion_message
 
-    def validate_page_url(self, expected_url):
-        self._executor.wait_for_javascript()
-        actual_url = self._executor.get_page_url()
-        assertion_message = f'Url is not correct, should be: "{expected_url}" but is: "{actual_url}"'
-        add_to_shared_dict("assertion_message", assertion_message)
-        assert expected_url in actual_url, assertion_message
-
     def validate_base_url(self, url: str):
         self._executor.wait_for_javascript()
         actual_url = self._executor.get_page_url()
         parsed_url = urlparse(actual_url)
+        assertion_message = f'Url is not correct, should be: "{url}" but is: "{actual_url}"'
+        add_to_shared_dict("assertion_message", assertion_message)
         assert_that(parsed_url.hostname).is_equal_to(url)
 
     def validate_if_url_contains_param(self, key, value):
