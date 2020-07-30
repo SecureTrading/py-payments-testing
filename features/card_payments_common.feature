@@ -25,24 +25,6 @@ Feature: Card Payments
       | action_code | form_status |
       | DECLINE     | enabled     |
 
-  @config_default
-  Scenario: Checking that 'submitOnSuccess' is enabled by default
-    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
-    And THREEDQUERY mock response is set to "ENROLLED_Y"
-    And ACS mock response is set to "OK"
-    And User clicks Pay button - AUTH response is set to "OK"
-    Then User is redirected to action page
-    And AUTH and THREEDQUERY requests were sent only once with correct data
-
-  @config_requestTypes_tdq_submit_on_error
-  Scenario: Error payment with request types: THREEDQUERY and submitOnError
-    When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
-    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
-    And THREEDQUERY mock response is set to "INVALID_ACQUIRER"
-    And User clicks Pay button
-    Then User is redirected to action page
-    And THREEDQUERY request was sent only once with correct data
-
   @config_incorrect_request_type @extended_tests_part_2
   Scenario: Checking request types validation
     When User sets incorrect request type in config file

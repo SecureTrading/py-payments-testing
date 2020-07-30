@@ -97,21 +97,3 @@ Feature: Cardinal commerce
       | action_code | payment_status_message                  | color |
       | NOACTION    | Payment has been successfully processed | green |
 
-  @config_submit_on_error_true @smoke_test @extended_tests_part_1
-  Scenario: Cardinal Commerce - error payment with enabled 'submit on error' process
-    When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
-    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
-    And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
-    And User clicks Pay button - AUTH response is set to "DECLINE"
-    Then User is redirected to action page
-    And AUTH and THREEDQUERY requests were sent only once with correct data
-
-  @config_submit_on_success_true @smoke_test @extended_tests_part_1
-  Scenario: Cardinal Commerce - successful payment with enabled 'submit on success' process
-    When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
-    And User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
-    And THREEDQUERY mock response is set to "ENROLLED_Y"
-    And ACS mock response is set to "OK"
-    And User clicks Pay button - AUTH response is set to "OK"
-    Then User is redirected to action page
-    And AUTH and THREEDQUERY requests were sent only once with correct data

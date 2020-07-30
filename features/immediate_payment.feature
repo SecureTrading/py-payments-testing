@@ -18,7 +18,7 @@ Feature: Immediate payment
 
   @config_immediate_payment_acheck_tdq_auth_riskdec
   Scenario: Immediate payment - Successful payment with additional request types: ACCOUNTCHECK, THREEDQUERY, AUTH, RISKDEC
-    And ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    When ACCOUNTCHECK, THREEDQUERY mock response is set to OK
     And ACS mock response is set to "OK"
     And AUTH, RISKDEC mock response is set to OK
     And User opens payment page
