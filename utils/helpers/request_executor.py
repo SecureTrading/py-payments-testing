@@ -62,9 +62,9 @@ def get_number_of_requests_with_fraudcontroltransactionid_flag(request_type):
     return data['count']
 
 
-def get_number_of_requests_with_updated_jwt(request_type, update_jwt):
+def get_number_of_requests_with_updated_jwt(request_type, url, update_jwt):
     count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
-                          json={"url": "/jwt/", "bodyPatterns": [
+                          json={"url": url, "bodyPatterns": [
                               {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['" + request_type + "'])]"},
                               {"matchesJsonPath": "$.[?(@.jwt=='"+update_jwt+"')]"}
                           ]}, verify=False)

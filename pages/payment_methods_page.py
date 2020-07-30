@@ -366,6 +366,8 @@ class PaymentMethodsPage(BasePage):
         self._executor.wait_for_javascript()
         actual_url = self._executor.get_page_url()
         parsed_url = urlparse(actual_url)
+        assertion_message = f'Url is not correct, should be: "{url}" but is: "{actual_url}"'
+        add_to_shared_dict("assertion_message", assertion_message)
         assert_that(parsed_url.hostname).is_equal_to(url)
 
     def validate_if_url_contains_param(self, key, value):
@@ -466,8 +468,8 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
 
-    def validate_updated_jwt_in_request(self, request_type, update_jwt, expected_number_of_requests):
-        actual_number_of_requests = get_number_of_requests_with_updated_jwt(request_type, update_jwt)
+    def validate_updated_jwt_in_request(self, request_type, url, update_jwt, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests_with_updated_jwt(request_type, url, update_jwt)
         assertion_message = f'Number of {request_type} with updated jwt is not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
         add_to_shared_dict("assertion_message", assertion_message)
