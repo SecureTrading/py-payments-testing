@@ -31,8 +31,8 @@ Feature: E2E Card Payments - redirection
       | errorcode     | 0                                       |
 
   @e2e_config_submit_on_error
-  Scenario: Successful payment with submitOnError enabled
-    When User fills payment form with defined card DECLINED_MASTERCARD_CARD
+  Scenario: Unsuccessful payment with submitOnError enabled
+    When User fills payment form with defined card MASTERCARD_DECLINED_CARD
     And User clicks Pay button
     Then User will not see notification frame
     And User will be sent to page with url "www.example.com" having params

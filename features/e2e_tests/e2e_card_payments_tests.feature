@@ -29,3 +29,11 @@ Feature: E2E Card Payments
     And User fills V1 authentication modal
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
+
+  @e2e_config_bypass_mastercard
+  Scenario: Unsuccessful payment with bypassCard using Mastercard - invalid expiration date
+    When User fills payment form with defined card MASTERCARD_INVALID_EXP_DATE_CARD
+    And User clicks Pay button
+    Then User will see payment status information: "Invalid field"
+    And User will see that notification frame has "red" color
+    And User will see that "EXPIRATION_DATE" field is highlighted
