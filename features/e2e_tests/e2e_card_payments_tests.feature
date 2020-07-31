@@ -16,13 +16,16 @@ Feature: E2E Card Payments
     And User will see that notification frame has "green" color
 
   @e2e_config_for_bypass_cards
-  Scenario Outline: Successful payment bypass cards without 3d secure
-    When User fills payment form with defined card <card>
+  Scenario: Successful payment bypass cards without 3d secure
+    When User fills payment form with defined card VISA_STEP_UP_CARD
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
 
-    Examples:
-      | card                    |
-      | VISA_STEP_UP_CARD       |
-      | MASTERCARD_STEP_UP_CARD |
+  @e2e_config_for_bypass_cards
+  Scenario: Successful payment bypass cards with 3d secure
+    When User fills payment form with defined card MASTERCARD_SUCCESSFUL_AUTH_CARD
+    And User clicks Pay button
+    And User fills V1 authentication modal
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
