@@ -23,20 +23,57 @@ Feature: Visa Checkout
       | ERROR       | Wystąpił błąd              | red    |
 
   @config_submit_on_success_true @extended_tests_part_2 @visa_test
-  Scenario: Visa Checkout - successful payment with enabled 'submit on success' process
+  Scenario: Visa Checkout - successful payment with enabled 'submitOnSuccess' process
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
     And User chooses Visa Checkout as payment method - response is set to "SUCCESS"
     Then User is redirected to action page
 
+  @config_default @visa_test
+  Scenario: Visa Checkout - successful payment - checking that 'submitOnSuccess' is enabled by default
+    When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
+    And User chooses Visa Checkout as payment method - response is set to "SUCCESS"
+    Then User is redirected to action page
+    And VISA_CHECKOUT or AUTH requests were sent only once with correct data
+
   @config_submit_on_error_true @visa_test
-  Scenario: Visa Checkout - error payment with enabled 'submit on error' process
+  Scenario: Visa Checkout - error payment with enabled 'submitOnError' process
     When User chooses Visa Checkout as payment method - response is set to "ERROR"
     Then User is redirected to action page
 
+  @config_submit_on_success_error_cancel_false @visa_test
+  Scenario: Visa Checkout - error payment with disabled 'submitOnError' process
+    When User chooses Visa Checkout as payment method - response is set to "ERROR"
+    Then User remains on checkout page
+    And User will see payment status information: "An error occurred"
+    And User will see that notification frame has "red" color
+    And VISA_CHECKOUT or AUTH requests were sent only once with correct data
+
+  @config_default @visa_test
+  Scenario: Visa Checkout - error payment - checking that 'submitOnError' is disabled by default
+    When User chooses Visa Checkout as payment method - response is set to "ERROR"
+    Then User remains on checkout page
+    And User will see payment status information: "An error occurred"
+    And User will see that notification frame has "red" color
+    And VISA_CHECKOUT or AUTH requests were sent only once with correct data
+
   @config_submit_on_cancel_true @visa_test
-  Scenario: Visa Checkout - canceled payment with enabled 'submit on cancel' process
+  Scenario: Visa Checkout - canceled payment with enabled 'submitOnCancel' process
     When User chooses Visa Checkout as payment method - response is set to "CANCEL"
     Then User is redirected to action page
+
+  @config_submit_on_success_error_cancel_false @visa_test
+  Scenario: Visa Checkout - canceled payment with disabled 'submitOnCancel' process
+    When User chooses Visa Checkout as payment method - response is set to "CANCEL"
+    Then User remains on checkout page
+    And User will see payment status information: "Payment has been cancelled"
+    And User will see that notification frame has "yellow" color
+
+  @config_default @visa_test
+  Scenario: Visa Checkout - canceled payment - checking that 'submitOnCancel' is disabled by default
+    When User chooses Visa Checkout as payment method - response is set to "CANCEL"
+    Then User remains on checkout page
+    And User will see payment status information: "Payment has been cancelled"
+    And User will see that notification frame has "yellow" color
 
   @base_config @wallet_test @visa_test
   Scenario Outline: Visa Checkout - checking <callback> callback functionality
@@ -51,6 +88,7 @@ Feature: Visa Checkout
       | ERROR       | error    |
       | CANCEL      | cancel   |
 
+
   @config_update_jwt_true @extended_tests_part_2 @visa_test
   Scenario: Visa Checkout - successful payment with updated JWT
     When User calls updateJWT function by filling amount field
@@ -58,7 +96,25 @@ Feature: Visa Checkout
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And VISA_CHECKOUT or AUTH requests were sent only once with correct data
-    And JSINIT requests contains updated jwt
+    And VISA_CHECKOUT requests contains updated jwt
+
+  @config_defer_init @smoke_test @visa_test
+  Scenario: Visa Checkout - Successful payment with deferInit and updated JWT
+    When User calls updateJWT function by filling amount field
+    And User chooses Visa Checkout as payment method - response is set to "SUCCESS"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And VISA_CHECKOUT or AUTH requests were sent only once with correct data
+    And VISA_CHECKOUT requests contains updated jwt
+
+  @config_submit_on_success_true @smoke_test @visa_test
+  Scenario: Visa Checkout - with submitOnSuccess and updated JWT
+    When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
+    And User calls updateJWT function by filling amount field
+    When User chooses Visa Checkout as payment method - response is set to "SUCCESS"
+    Then User is redirected to action page
+    And VISA_CHECKOUT or AUTH requests were sent only once with correct data
+    And VISA_CHECKOUT requests contains updated jwt
 
   @config_cybertonica @visa_test
   Scenario: Visa Checkout - Cybertonica - 'fraudcontroltransactionid' flag is added to AUTH requests during payment
@@ -89,3 +145,75 @@ Feature: Visa Checkout
     Examples:
       | language |
       | fr_FR    |
+
+  @config_disable_notifications_true @visa_test
+  Scenario: Visa Checkout - notification frame is not displayed after successful payment
+    When User chooses Visa Checkout as payment method - response is set to "SUCCESS"
+    Then User will not see notification frame
+
+  @config_disable_notifications_true @visa_test
+  Scenario: Visa Checkout - notification frame is not displayed after declined payment
+    When User chooses Visa Checkout as payment method - response is set to "ERROR"
+    Then User will not see notification frame
+
+  @config_disable_notifications_false @visa_test
+  Scenario: Visa Checkout - notification frame is displayed after payment if disableNotification is false
+    When User chooses Visa Checkout as payment method - response is set to "SUCCESS"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+
+  @config_visa_auth @visa_test
+  Scenario: Visa Checkou - successful payment with additional request types: AUTH
+    When AUTH Visa Checkout mock response is set to SUCCESS
+    And User chooses Visa Checkout as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And AUTH request for VISA_CHECKOUT is sent only once with correct data
+
+  @config_visa_acheck_auth @visa_test
+  Scenario: Visa Checkou - successful payment with additional request types: ACCOUNTCHECK, AUTH
+    When ACCOUNTCHECK, AUTH Visa Checkout mock response is set to SUCCESS
+    And User chooses Visa Checkout as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And ACCOUNTCHECK, AUTH request for VISA_CHECKOUT is sent only once with correct data
+
+  @config_visa_acheck @visa_test
+  Scenario: Visa Checkou - successful payment with additional request types: ACCOUNTCHECK
+    When ACCOUNTCHECK Visa Checkout mock response is set to SUCCESS
+    And User chooses Visa Checkout as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And ACCOUNTCHECK request for VISA_CHECKOUT is sent only once with correct data
+
+  @config_visa_riskdec_auth @visa_test
+  Scenario: Visa Checkou - successful payment with additional request types: RISKDEC, AUTH
+    When RISKDEC, AUTH Visa Checkout mock response is set to SUCCESS
+    And User chooses Visa Checkout as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And RISKDEC, AUTH request for VISA_CHECKOUT is sent only once with correct data
+
+  @config_visa_riskdec_acheck_auth @visa_test
+  Scenario: Visa Checkou - successful payment with additional request types: RISKDEC, ACCOUNTCHECK, AUTH
+    When RISKDEC, ACCOUNTCHECK, AUTH Visa Checkout mock response is set to SUCCESS
+    And User chooses Visa Checkout as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And RISKDEC, ACCOUNTCHECK, AUTH request for VISA_CHECKOUT is sent only once with correct data
+
+  @config_visa_auth_subscription @visa_test
+  Scenario: Visa Checkou - successful payment with additional request types: AUTH, SUBSCRIPTION
+    When AUTH, SUBSCRIPTION Visa Checkout mock response is set to SUCCESS
+    And User chooses Visa Checkout as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And AUTH, SUBSCRIPTION request for VISA_CHECKOUT is sent only once with correct data
+
+  @config_visa_acheck_subscription @visa_test
+  Scenario: Visa Checkou - successful payment with additional request types: ACCOUNTCHECK, SUBSCRIPTION
+    When ACCOUNTCHECK, SUBSCRIPTION Visa Checkout mock response is set to SUCCESS
+    And User chooses Visa Checkout as payment method
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And ACCOUNTCHECK, SUBSCRIPTION request for VISA_CHECKOUT is sent only once with correct data

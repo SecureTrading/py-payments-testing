@@ -40,7 +40,7 @@ Feature: ApplePay
     Then User is redirected to action page
 
   @config_default @apple_test @apple_test_part1
-  Scenario: ApplePay - checking that 'submitOnSuccess' is enabled by default
+  Scenario: ApplePay - successful payment - checking that 'submitOnSuccess' is enabled by default
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
     And User chooses ApplePay as payment method - response is set to "SUCCESS"
     Then User is redirected to action page
@@ -61,7 +61,7 @@ Feature: ApplePay
     And APPLE_PAY or AUTH requests were sent only once with correct data
 
   @config_default @apple_test @apple_test_part1
-  Scenario: ApplePay - checking that 'submitOnError' is disabled by default
+  Scenario: ApplePay - error payment - checking that 'submitOnError' is disabled by default
     When User chooses ApplePay as payment method - response is set to "DECLINE"
     Then User remains on checkout page
     And User will see payment status information: "Decline"
@@ -74,7 +74,7 @@ Feature: ApplePay
     Then User is redirected to action page
 
   @config_default @apple_test @apple_test_part1
-  Scenario: ApplePay - checking that 'submitOnCancel' is disabled by default
+  Scenario: ApplePay - canceled payment - checking that 'submitOnCancel' is disabled by default
     When User chooses ApplePay as payment method - response is set to "CANCEL"
     Then User remains on checkout page
     And User will see payment status information: "Payment has been cancelled"
@@ -122,7 +122,7 @@ Feature: ApplePay
 
   #    ToDo - Last step is blocked by STJS-800
    @config_submit_on_success_true @smoke_test @apple_test @apple_test_part1
-  Scenario: ApplePay - Successful payment with submitOnSuccess and updated JWT
+  Scenario: ApplePay - successful payment with submitOnSuccess and updated JWT
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
     And User calls updateJWT function by filling amount field
     When User chooses ApplePay as payment method - response is set to "SUCCESS"
