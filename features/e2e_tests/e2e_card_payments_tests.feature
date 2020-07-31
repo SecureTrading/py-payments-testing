@@ -37,3 +37,4 @@ Feature: E2E Card Payments
     Then User will see payment status information: "Invalid field"
     And User will see that notification frame has "red" color
     And User will see that "EXPIRATION_DATE" field is highlighted
+    And User will see "Invalid field" message under field: "EXPIRATION_DATE"
