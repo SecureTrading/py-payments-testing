@@ -41,3 +41,16 @@ Feature: E2E Card Payments - redirection
       | baseamount    | 1000    |
       | currencyiso3a | GBP     |
       | errorcode     | 70000   |
+
+  @e2e_config_submit_on_success_security_code
+  Scenario: Successful payment with submitOnSuccess enabled with field to submit securitycode
+    When User fills "SECURITY_CODE" field "123"
+    And User clicks Pay button
+    And User fills V1 authentication modal
+    Then User will not see notification frame
+    And User will be sent to page with url "www.example.com" having params
+      | key           | value                                   |
+      | errormessage  | Payment has been successfully processed |
+      | baseamount    | 1000                                    |
+      | currencyiso3a | GBP                                     |
+      | errorcode     | 0                                       |
