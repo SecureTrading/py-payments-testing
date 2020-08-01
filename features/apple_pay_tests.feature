@@ -215,6 +215,7 @@ Feature: ApplePay
     And User will see that notification frame has "green" color
 
 
+  
 
 #  @base_config @parent_iframe @full_test_part_2 @full_test
 #  Scenario: ApplePay - successful payment when app is embedded in another iframe
