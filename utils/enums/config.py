@@ -59,5 +59,7 @@ config = {
     "e2e_config_submit_on_success": "e2e_config/e2eConfigSubmitOnSuccess.json",
     "e2e_config_submit_on_error": "e2e_config/e2eConfigSubmitOnError.json",
     "e2e_config_request_types": "e2e_config/e2eConfigRequestTypes.json",
-    "e2e_config_for_bypass_cards": "e2e_config/e2eConfigForByPassCards.json"
+    "e2e_config_for_bypass_cards": "e2e_config/e2eConfigForByPassCards.json",
+    "e2e_config_cybertonica_bypass_cards": "e2e_config/e2eConfigCybertonicaWithBypass.json",
+    "e2e_config_cybertonica": "e2e_config/e2eConfigCybertonica.json",
 }
