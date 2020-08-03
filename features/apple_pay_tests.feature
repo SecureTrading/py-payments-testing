@@ -104,7 +104,7 @@ Feature: ApplePay
   @config_update_jwt_true @smoke_test @apple_test @apple_test_part1
   Scenario: ApplePay - Successful payment with updated JWT
     When User calls updateJWT function by filling amount field
-    When User chooses ApplePay as payment method - response is set to "SUCCESS"
+    And User chooses ApplePay as payment method - response is set to "SUCCESS"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And APPLE_PAY or AUTH requests were sent only once with correct data
@@ -114,7 +114,7 @@ Feature: ApplePay
   @config_defer_init @smoke_test @extended_tests_part_2 @apple_test @apple_test_part1
   Scenario: ApplePay - Successful payment with deferInit and updated JWT
     When User calls updateJWT function by filling amount field
-    When User chooses ApplePay as payment method - response is set to "SUCCESS"
+    And User chooses ApplePay as payment method - response is set to "SUCCESS"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And APPLE_PAY or AUTH requests were sent only once with correct data
@@ -133,7 +133,7 @@ Feature: ApplePay
   @config_apple_auth @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: AUTH
     When AUTH ApplePay mock response is set to SUCCESS
-    And User chooses ApplePay as payment method
+    And User chooses APPLE_PAY as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And AUTH request for APPLE_PAY is sent only once with correct data
@@ -141,7 +141,7 @@ Feature: ApplePay
   @config_apple_acheck @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK
     When ACCOUNTCHECK ApplePay mock response is set to SUCCESS
-    And User chooses ApplePay as payment method
+    And User chooses APPLE_PAY as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And ACCOUNTCHECK request for APPLE_PAY is sent only once with correct data
@@ -149,7 +149,7 @@ Feature: ApplePay
   @config_apple_acheck_auth @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK, AUTH
     When ACCOUNTCHECK, AUTH ApplePay mock response is set to SUCCESS
-    And User chooses ApplePay as payment method
+    And User chooses APPLE_PAY as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And ACCOUNTCHECK, AUTH request for APPLE_PAY is sent only once with correct data
@@ -157,7 +157,7 @@ Feature: ApplePay
   @config_apple_riskdec_auth @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: RISKDEC, AUTH
     When RISKDEC, AUTH ApplePay mock response is set to SUCCESS
-    And User chooses ApplePay as payment method
+    And User chooses APPLE_PAY as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And RISKDEC, AUTH request for APPLE_PAY is sent only once with correct data
@@ -165,7 +165,7 @@ Feature: ApplePay
   @config_apple_riskdec_acheck_auth @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: RISKDEC, ACCOUNTCHECK, AUTH
     When RISKDEC, ACCOUNTCHECK, AUTH ApplePay mock response is set to SUCCESS
-    And User chooses ApplePay as payment method
+    And User chooses APPLE_PAY as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And RISKDEC, ACCOUNTCHECK, AUTH request for APPLE_PAY is sent only once with correct data
@@ -173,7 +173,7 @@ Feature: ApplePay
   @config_auth_subscription @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: AUTH, SUBSCRIPTION
     When AUTH, SUBSCRIPTION ApplePay mock response is set to SUCCESS
-    And User chooses ApplePay as payment method
+    And User chooses APPLE_PAY as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And AUTH, SUBSCRIPTION request for APPLE_PAY is sent only once with correct data
@@ -181,7 +181,7 @@ Feature: ApplePay
   @config_acheck_subscription @apple_test @apple_test_part2
   Scenario: ApplePay - successful payment with additional request types: ACCOUNTCHECK, SUBSCRIPTION
     When ACCOUNTCHECK, SUBSCRIPTION ApplePay mock response is set to SUCCESS
-    And User chooses ApplePay as payment method
+    And User chooses APPLE_PAY as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And ACCOUNTCHECK, SUBSCRIPTION request for APPLE_PAY is sent only once with correct data

@@ -223,10 +223,7 @@ def step_impl(context, action_code):
 @when('User chooses (?P<payment_method>.+) as payment method')
 def step_impl(context, payment_method):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if "ApplePay" in payment_method:
-        payment_page.choose_payment_methods(PaymentType.APPLE_PAY.name)
-    elif "Visa Checkout" in payment_method:
-        payment_page.choose_payment_methods(PaymentType.VISA_CHECKOUT.name)
+    payment_page.choose_payment_methods(PaymentType[payment_method].name)
 
 
 @then('User will see that Submit button is "(?P<form_status>.+)" after payment')

@@ -111,7 +111,7 @@ Feature: Visa Checkout
   Scenario: Visa Checkout - with submitOnSuccess and updated JWT
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
     And User calls updateJWT function by filling amount field
-    When User chooses Visa Checkout as payment method - response is set to "SUCCESS"
+    And User chooses Visa Checkout as payment method - response is set to "SUCCESS"
     Then User is redirected to action page
     And VISA_CHECKOUT or AUTH requests were sent only once with correct data
     And VISA_CHECKOUT requests contains updated jwt
@@ -163,57 +163,57 @@ Feature: Visa Checkout
     And User will see that notification frame has "green" color
 
   @config_visa_auth @visa_test
-  Scenario: Visa Checkou - successful payment with additional request types: AUTH
+  Scenario: Visa Checkout - successful payment with additional request types: AUTH
     When AUTH Visa Checkout mock response is set to SUCCESS
-    And User chooses Visa Checkout as payment method
+    And User chooses VISA_CHECKOUT as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And AUTH request for VISA_CHECKOUT is sent only once with correct data
 
   @config_visa_acheck_auth @visa_test
-  Scenario: Visa Checkou - successful payment with additional request types: ACCOUNTCHECK, AUTH
+  Scenario: Visa Checkout - successful payment with additional request types: ACCOUNTCHECK, AUTH
     When ACCOUNTCHECK, AUTH Visa Checkout mock response is set to SUCCESS
-    And User chooses Visa Checkout as payment method
+    And User chooses VISA_CHECKOUT as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And ACCOUNTCHECK, AUTH request for VISA_CHECKOUT is sent only once with correct data
 
   @config_visa_acheck @visa_test
-  Scenario: Visa Checkou - successful payment with additional request types: ACCOUNTCHECK
+  Scenario: Visa Checkout - successful payment with additional request types: ACCOUNTCHECK
     When ACCOUNTCHECK Visa Checkout mock response is set to SUCCESS
-    And User chooses Visa Checkout as payment method
+    And User chooses VISA_CHECKOUT as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And ACCOUNTCHECK request for VISA_CHECKOUT is sent only once with correct data
 
   @config_visa_riskdec_auth @visa_test
-  Scenario: Visa Checkou - successful payment with additional request types: RISKDEC, AUTH
+  Scenario: Visa Checkout - successful payment with additional request types: RISKDEC, AUTH
     When RISKDEC, AUTH Visa Checkout mock response is set to SUCCESS
-    And User chooses Visa Checkout as payment method
+    And User chooses VISA_CHECKOUT as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And RISKDEC, AUTH request for VISA_CHECKOUT is sent only once with correct data
 
   @config_visa_riskdec_acheck_auth @visa_test
-  Scenario: Visa Checkou - successful payment with additional request types: RISKDEC, ACCOUNTCHECK, AUTH
+  Scenario: Visa Checkout - successful payment with additional request types: RISKDEC, ACCOUNTCHECK, AUTH
     When RISKDEC, ACCOUNTCHECK, AUTH Visa Checkout mock response is set to SUCCESS
-    And User chooses Visa Checkout as payment method
+    And User chooses VISA_CHECKOUT as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And RISKDEC, ACCOUNTCHECK, AUTH request for VISA_CHECKOUT is sent only once with correct data
 
   @config_visa_auth_subscription @visa_test
-  Scenario: Visa Checkou - successful payment with additional request types: AUTH, SUBSCRIPTION
+  Scenario: Visa Checkout - successful payment with additional request types: AUTH, SUBSCRIPTION
     When AUTH, SUBSCRIPTION Visa Checkout mock response is set to SUCCESS
-    And User chooses Visa Checkout as payment method
+    And User chooses VISA_CHECKOUT as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And AUTH, SUBSCRIPTION request for VISA_CHECKOUT is sent only once with correct data
 
   @config_visa_acheck_subscription @visa_test
-  Scenario: Visa Checkou - successful payment with additional request types: ACCOUNTCHECK, SUBSCRIPTION
+  Scenario: Visa Checkout - successful payment with additional request types: ACCOUNTCHECK, SUBSCRIPTION
     When ACCOUNTCHECK, SUBSCRIPTION Visa Checkout mock response is set to SUCCESS
-    And User chooses Visa Checkout as payment method
+    And User chooses VISA_CHECKOUT as payment method
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And ACCOUNTCHECK, SUBSCRIPTION request for VISA_CHECKOUT is sent only once with correct data
