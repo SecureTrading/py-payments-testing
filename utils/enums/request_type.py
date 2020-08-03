@@ -19,6 +19,16 @@ request_type_applepay = {
     "ACCOUNTCHECK, SUBSCRIPTION": "appleAcheckSubscription.json"
 }
 
+request_type_visa = {
+    "AUTH": "visaAuthSuccess.json",
+    "ACCOUNTCHECK": "visaAccountcheck.json",
+    "ACCOUNTCHECK, AUTH": "visaAccountcheckAuth.json",
+    "RISKDEC, AUTH": "visaRiskdecAuth.json",
+    "RISKDEC, ACCOUNTCHECK, AUTH": "visaRiskdecAccountcheckAuth.json",
+    "AUTH, SUBSCRIPTION": "visaAuthSubscription.json",
+    "ACCOUNTCHECK, SUBSCRIPTION": "visaAcheckSubscription.json"
+}
+
 class RequestType(Enum):
     THREEDQUERY = 1
     AUTH = 2
