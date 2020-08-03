@@ -8,7 +8,7 @@ Feature: Notification frame
     Given JavaScript configuration is set for scenario based on scenario's @config tag
     And User opens page with payment form
 
-  @config_notifications_false @extended_tests_part_1
+  @config_notifications_true @extended_tests_part_1
   Scenario: Notification frame is not displayed after payment
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"

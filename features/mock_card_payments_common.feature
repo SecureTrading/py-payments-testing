@@ -36,8 +36,8 @@ Feature: Card Payments
 
   @base_config
   Scenario: Verify number of JSINIT requests together with UpdateJWT
-    When User fills amount field
-    And User fills amount field
+    When User calls updateJWT function by filling amount field
+    When User calls updateJWT function by filling amount field
     Then JSINIT request was sent only 2
     And JSINIT requests contains updated jwt
 
