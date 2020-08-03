@@ -374,7 +374,7 @@ Feature: Card Payments
     And AUTH and THREEDQUERY requests were sent only once with correct data
 
   @config_default
-  Scenario: Checking that 'submitOnSuccess' is enabled by default
+  Scenario: Cardinal Commerce - successful payment - checking that 'submitOnSuccess' is enabled by default
     When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "ENROLLED_Y"
     And ACS mock response is set to "OK"
