@@ -10,7 +10,8 @@ Feature: Redirect functionality
 
   @config_default
   Scenario: Cardinal Commerce - successful payment - checking that 'submitOnSuccess' is enabled by default
-    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
+    And User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "ENROLLED_Y"
     And ACS mock response is set to "OK"
     And User clicks Pay button - AUTH response is set to "OK"
@@ -20,7 +21,7 @@ Feature: Redirect functionality
   @config_requestTypes_tdq_submit_on_error
   Scenario: Error payment with request types: THREEDQUERY and submitOnError
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
-    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "INVALID_ACQUIRER"
     And User clicks Pay button
     Then User is redirected to action page
@@ -29,7 +30,7 @@ Feature: Redirect functionality
   @config_submit_on_error_true @smoke_test @extended_tests_part_1
   Scenario: Cardinal Commerce - error payment with enabled 'submit on error' process
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
-    When User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
+    And User fills payment form with credit card number "4111110000000211", expiration date "12/30" and cvv "123"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "DECLINE"
     Then User is redirected to action page
