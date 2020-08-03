@@ -1,7 +1,6 @@
 {
   "bypassCards": [
     "VISA",
-    "MASTERCARD",
     "AMEX",
     "DISCOVER",
     "JCB",

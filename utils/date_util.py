@@ -25,5 +25,5 @@ date_formats = AttrDict({
     'day_month_year': "%d.%m.%Y",
     'day_month_year_hour_minute': "%d.%m.%Y %H:%M",
     'day_month_year_hour_minute_second': "%Y-%m-%d %H:%M:%S",
-    'month_year': "%m/%yy"
+    'month_year': "%m/%y"
 })
