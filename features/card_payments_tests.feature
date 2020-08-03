@@ -223,7 +223,7 @@ Feature: Card Payments
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "<action_code>"
     Then User will see that Submit button is "<form_status>" after payment
-    And User will see that all input fields are "<form_status>"
+    And User will see that ALL input fields are "<form_status>"
     @smoke_test
     Examples:
       | action_code | form_status |

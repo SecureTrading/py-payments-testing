@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class FieldType(Enum):
+    ALL = "all"
     CARD_NUMBER = "st-card-number-iframe"
     EXPIRATION_DATE = "st-expiration-date-iframe"
     SECURITY_CODE = "st-security-code-iframe"

@@ -17,7 +17,7 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And User will see that Submit button is "disabled" after payment
-    And User will see that all input fields are "disabled"
+    And User will see that ALL input fields are "disabled"
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Failed Frictionless Authentication - Visa
@@ -26,7 +26,7 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "Unauthenticated"
     And User will see that notification frame has "red" color
     And User will see that Submit button is "enabled" after payment
-    And User will see that all input fields are "enabled"
+    And User will see that ALL input fields are "enabled"
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Attempts Stand-In Frictionless Authentication - Visa
@@ -35,7 +35,7 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And User will see that Submit button is "disabled" after payment
-    And User will see that all input fields are "disabled"
+    And User will see that ALL input fields are "disabled"
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Unavailable Frictionless Authentication from the Issuer - MasterCard
@@ -44,7 +44,7 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And User will see that Submit button is "disabled" after payment
-    And User will see that all input fields are "disabled"
+    And User will see that ALL input fields are "disabled"
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Rejected Frictionless Authentication by the Issuer - Visa
@@ -114,7 +114,7 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "An error occurred"
     And User will see that notification frame has "red" color
     And User will see that Submit button is "enabled" after payment
-    And User will see that all input fields are "enabled"
+    And User will see that ALL input fields are "enabled"
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Prompt for Whitelist - MasterCard

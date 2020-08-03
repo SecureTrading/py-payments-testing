@@ -18,7 +18,7 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And User will see that Submit button is "disabled" after payment
-    And User will see that all input fields are "disabled"
+    And User will see that ALL input fields are "disabled"
 
   @e2e_cardinal_commerce_v1
   Scenario: Failed Signature
@@ -28,7 +28,7 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "Unauthenticated"
     And User will see that notification frame has "red" color
     And User will see that Submit button is "enabled" after payment
-    And User will see that all input fields are "enabled"
+    And User will see that ALL input fields are "enabled"
 
   @e2e_cardinal_commerce_v1
   Scenario: Failed Authentication
@@ -38,7 +38,7 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "An error occurred"
     And User will see that notification frame has "red" color
     And User will see that Submit button is "enabled" after payment
-    And User will see that all input fields are "enabled"
+    And User will see that ALL input fields are "enabled"
 
   @e2e_cardinal_commerce_v1
   Scenario: Attempts/Non-Participating

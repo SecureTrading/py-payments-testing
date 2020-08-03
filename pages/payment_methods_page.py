@@ -68,6 +68,12 @@ class PaymentMethodsPage(BasePage):
             self.fill_credit_card_field(FieldType.CARD_NUMBER.name, card_number)
             self.fill_credit_card_field(FieldType.EXPIRATION_DATE.name, expiration_date)
 
+    def fill_payment_form_with_only_cvv(self, cvv):
+        if "ie" in ioc_config.CONFIG.resolve('driver').browser:
+            self.fill_credit_card_field_ie_browser(FieldType.SECURITY_CODE.name, cvv)
+        else:
+            self.fill_credit_card_field(FieldType.SECURITY_CODE.name, cvv)
+
     def fill_merchant_input_field(self, field_type, value):
         if field_type == FieldType.NAME.name:
             self._action.send_keys(PaymentMethodsLocators.merchant_name, value)
