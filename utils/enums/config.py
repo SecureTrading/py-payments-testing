@@ -47,6 +47,13 @@ config = {
     "config_apple_acheck_auth": "configAppleAcheckAuth.json",
     "config_apple_riskdec_auth": "configAppleRiskdecAuth.json",
     "config_apple_riskdec_acheck_auth": "configAppleRiskdecAcheckAuth.json",
+    "config_visa_auth": "configVisaAuth.json",
+    "config_visa_acheck_auth": "configVisaAcheckAuth.json",
+    "config_visa_acheck": "configVisaAcheck.json",
+    "config_visa_riskdec_auth": "configVisaRiskdecAuth.json",
+    "config_visa_riskdec_acheck_auth": "configVisaRiskdecAcheckAuth.json",
+    "config_visa_acheck_subscription": "configVisaAcheckSubscription.json",
+    "config_visa_auth_subscription": "configVisaAuthSubscription.json",
     "config_auth_subscription": "configAppleAuthSubscription.json",
     "config_acheck_subscription": "configAppleAcheckSubscription.json",
     "config_apple_network_amex": "configAppleNetworkAmex.json",
@@ -62,4 +69,5 @@ config = {
     "e2e_config_for_bypass_cards": "e2e_config/e2eConfigForByPassCards.json",
     "e2e_config_cybertonica_bypass_cards": "e2e_config/e2eConfigCybertonicaWithBypass.json",
     "e2e_config_cybertonica": "e2e_config/e2eConfigCybertonica.json",
+    "e2e_config_submit_on_success_security_code": "e2e_config/e2eConfigSubmitOnSuccessSecurityCode.json"
 }

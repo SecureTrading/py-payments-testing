@@ -72,6 +72,16 @@ def get_number_of_requests_with_updated_jwt(request_type, url, update_jwt):
     return data['count']
 
 
+def get_number_of_requests_with_updated_jwt_for_visa(walletsource, update_jwt):
+    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+                          json={"url": "/jwt/", "bodyPatterns": [
+                              {"matchesJsonPath": "$.request[:1][?(@.walletsource=='" + walletsource + "')]"},
+                              {"matchesJsonPath": "$.[?(@.jwt=='" + update_jwt + "')]"}
+                          ]}, verify=False)
+    data = json.loads(count.content)
+    return data['count']
+
+
 def get_number_of_requests_without_data(request_type):
     count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
                           json={"url": "/jwt/", "bodyPatterns": [
