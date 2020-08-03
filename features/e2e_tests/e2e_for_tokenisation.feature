@@ -10,7 +10,7 @@ Feature: E2E for tokenisation
 
   @e2e_for_tokenisation @jwt_config_visa_frictionless_with_parenttransaction
   Scenario: Visa Frictionless tokenisation
-    When User fills only security code with defined card VISA_FRICTIONLESS
+    When User fills only security code for saved VISA_FRICTIONLESS card
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
@@ -19,7 +19,7 @@ Feature: E2E for tokenisation
 
   @e2e_for_tokenisation @jwt_config_visa_non_frictionless_with_parenttransaction
   Scenario: Visa Non-Frictionless tokenisation
-    When User fills only security code with defined card VISA_NON_FRICTIONLESS
+    When User fills only security code for saved VISA_NON_FRICTIONLESS card
     And User clicks Pay button
     And User fills V2 authentication modal
     Then User will see payment status information: "Payment has been successfully processed"
@@ -29,7 +29,7 @@ Feature: E2E for tokenisation
 
   @e2e_for_tokenisation @jwt_config_amex_non_frictionless_with_parenttransaction
   Scenario: Amex Non-Frictionless tokenisation
-    When User fills only security code with defined card AMEX_NON_FRICTIONLESS
+    When User fills only security code for saved AMEX_NON_FRICTIONLESS card
     And User clicks Pay button
     And User fills V2 authentication modal
     Then User will see payment status information: "Payment has been successfully processed"
