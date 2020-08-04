@@ -59,6 +59,7 @@ class Card(Enum):
     MASTERCARD_STEP_UP_CARD = '5200 0000 0000 1096', '', CardType.MASTERCARD, 123
     VISA_FRICTIONLESS = '4000 0000 0000 1026', '', CardType.VISA, 123
     VISA_NON_FRICTIONLESS = '4000 0000 0000 1091', '', CardType.VISA, 123
+    AMEX_NON_FRICTIONLESS = '3400 0000 0001 098', '', CardType.AMEX, 1234
 
     @property
     def number(self):

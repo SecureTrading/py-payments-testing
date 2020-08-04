@@ -9,7 +9,7 @@ from utils.enums.config import config
 
 from utils.enums.field_type import FieldType
 from utils.enums.payment_type import PaymentType
-from utils.enums.request_type import RequestType, request_type_response, request_type_applepay
+from utils.enums.request_type import RequestType, request_type_response, request_type_applepay, request_type_visa
 from utils.enums.responses.acs_response import ACSresponse
 from utils.enums.responses.apple_pay_response import ApplePayResponse
 from utils.enums.responses.auth_response import AUTHresponse
@@ -31,7 +31,10 @@ def step_impl(context):
             stub_st_request_type("jsinitTokenizationVisa.json", RequestType.JSINIT.name)
         elif 'config_tokenization_amex' in context.scenario.tags[0]:
             stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
-        elif 'config_auth_subscription' in context.scenario.tags[0] or 'config_acheck_subscription' in context.scenario.tags[0]:
+        elif 'config_auth_subscription' in context.scenario.tags[0] \
+                or 'config_acheck_subscription' in context.scenario.tags[0]\
+                or 'config_visa_auth_subscription' in context.scenario.tags[0]\
+                or 'config_visa_acheck_subscription' in context.scenario.tags[0]:
             stub_st_request_type("jsinitSubscription.json", RequestType.JSINIT.name)
         else:
             stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
@@ -80,6 +83,12 @@ def step_impl(context, request_type):
     stub_st_request_type(ApplePayResponse.SUCCESS.value, RequestType.WALLETVERIFY.name)
     stub_payment_status(MockUrl.APPLEPAY_MOCK_URI.value, ApplePayResponse.SUCCESS.value)
     stub_st_request_type(request_type_applepay[request_type], request_type)
+
+@step("(?P<request_type>.+) Visa Checkout mock response is set to SUCCESS")
+def step_impl(context, request_type):
+    stub_payment_status(MockUrl.VISA_MOCK_URI.value, VisaResponse.SUCCESS.value)
+    stub_st_request_type(request_type_visa[request_type], request_type)
+
 
 
 @step('ACS mock response is set to "(?P<acs_response>.+)"')
@@ -212,10 +221,10 @@ def step_impl(context, action_code):
     payment_page.choose_payment_methods(PaymentType.APPLE_PAY.name)
 
 
-@when('User chooses ApplePay as payment method')
-def step_impl(context):
+@when('User chooses (?P<payment_method>.+) as payment method')
+def step_impl(context, payment_method):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.choose_payment_methods(PaymentType.APPLE_PAY.name)
+    payment_page.choose_payment_methods(PaymentType[payment_method].name)
 
 
 @then('User will see that Submit button is "(?P<form_status>.+)" after payment')
@@ -225,12 +234,16 @@ def step_impl(context, form_status):
     payment_page.validate_form_status(FieldType.SUBMIT_BUTTON.name, form_status)
 
 
-@step('User will see that all input fields are "(?P<form_status>.+)"')
-def step_impl(context, form_status):
+@step('User will see that (?P<field>.+) input fields are "(?P<form_status>.+)"')
+def step_impl(context, field: FieldType, form_status):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
-    payment_page.validate_form_status(FieldType.CARD_NUMBER.name, form_status)
-    payment_page.validate_form_status(FieldType.EXPIRATION_DATE.name, form_status)
+    field = FieldType.__members__[field]
+    if field.name == "ALL":
+        payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
+        payment_page.validate_form_status(FieldType.CARD_NUMBER.name, form_status)
+        payment_page.validate_form_status(FieldType.EXPIRATION_DATE.name, form_status)
+    else:
+        payment_page.validate_form_status(field.name, form_status)
 
 
 @step('(?P<request_type>.+) response is set to "(?P<action_code>.+)"')
@@ -322,7 +335,6 @@ def step_impl(context):
             else:
                 payment_page.validate_if_url_contains_info_about_payment(value)
                 break
-
 
 @step('User will be sent to page with url "(?P<url>.+)" having params')
 def step_impl(context, url: str):
@@ -518,8 +530,8 @@ def step_impl(context, request_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if "WALLETVERIFY" in request_type and "APPLE_PAY" in context.thirdparty:
         payment_page.validate_updated_jwt_in_request(request_type, MockUrl.APPLEPAY_MOCK_URI.value, context.test_data.update_jwt, 1)
-    elif "WALLETVERIFY" in request_type and "VISA_CHECKOUT" in context.thirdparty:
-        payment_page.validate_updated_jwt_in_request(request_type, MockUrl.VISA_MOCK_URI.value, context.test_data.update_jwt, 1)
+    elif "VISA_CHECKOUT" in request_type:
+        payment_page.validate_updated_jwt_in_request_for_visa(PaymentType.VISA_CHECKOUT.value, context.test_data.update_jwt, 1)
     else:
         payment_page.validate_updated_jwt_in_request(request_type, MockUrl.GATEWAY_MOCK_URI.value, context.test_data.update_jwt, 1)
 
