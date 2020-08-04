@@ -23,3 +23,9 @@ def step_impl(context, card: Card):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     card = Card.__members__[card]
     payment_page.fill_payment_form(card.number, card.expiration_date, card.cvv)
+
+@when('User fills only security code for saved (?P<card>.+) card')
+def step_impl(context, card: Card):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    card = Card.__members__[card]
+    payment_page.fill_payment_form_with_only_cvv(card.cvv)
