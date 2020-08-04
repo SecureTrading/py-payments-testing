@@ -122,7 +122,7 @@ Feature: ApplePay
 
   #    ToDo - Last step is blocked by STJS-800
    @config_submit_on_success_true @smoke_test @apple_test @apple_test_part1
-  Scenario: ApplePay - successful payment with updated JWT and submitOnSuccess
+  Scenario: ApplePay - update JWT and submitOnSuccess
     When User fills merchant data with name "John Test", email "test@example", phone "44422224444"
     And User calls updateJWT function by filling amount field
     When User chooses ApplePay as payment method - response is set to "SUCCESS"
