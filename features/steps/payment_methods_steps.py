@@ -114,6 +114,7 @@ def step_impl(context, request_type, action_code):
 @then('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.wait_for_iframe()
     payment_page.validate_payment_status_message(payment_status_message)
 
 

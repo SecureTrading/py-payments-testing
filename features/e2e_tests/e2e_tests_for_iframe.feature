@@ -8,9 +8,8 @@ Feature: E2E tests for iframe
 #    Given JavaScript configuration is set for scenario based on scenario's @config tag
     Given User opens payment page
 
-
-  @e2e_tests_for_iframe @parent_iframe
-  Scenario: App is embedded in another iframe - Cardinal Commerce test
+  @e2e_config_for_iframe @parent_iframe
+  Scenario: Successful frictionless payment on iframe
     When User fills payment form with defined card VISA_FRICTIONLESS
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
@@ -18,8 +17,8 @@ Feature: E2E tests for iframe
     And User will see that Submit button is "disabled" after payment
     And User will see that all input fields are "disabled"
 
-  @e2e_tests_for_iframe @parent_iframe
-  Scenario: Successful Authentication
+  @e2e_config_for_iframe @parent_iframe
+  Scenario: Successful non-frictionless payment on iframe
     When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button
     And User fills V2 authentication modal
