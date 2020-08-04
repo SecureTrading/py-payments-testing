@@ -123,7 +123,6 @@ def step_impl(context, request_type, action_code):
 @then('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.wait_for_iframe()
     payment_page.validate_payment_status_message(payment_status_message)
 
 
@@ -558,6 +557,8 @@ def step_impl(context):
 def step_impl(context, auth_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.fill_cardinal_authentication_code(auth_type)
+    if 'parent_iframe' in context.scenario.tags:
+        payment_page.switch_to_parent_iframe()
 
 
 @step("User will see the same provided data in inputs fields")
