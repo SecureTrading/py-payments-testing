@@ -7,6 +7,8 @@ config = {
     "config_submit_on_success_and_error_true": "configSubmitOnSuccessAndErrorTrue.json",
     "config_submit_on_success_error_cancel_false": "configSubmitOnSuccessErrorCancelFalse.json",
     "config_animated_card_true": "configAnimatedCardTrue.json",
+    "config_animated_card_false": "configAnimatedCardFalse.json",
+    "config_pan_icon_false": "configPanIconFalse.json",
     "config_update_jwt_true": "configUpdateJwtTrue.json",
     "config_field_style": "configFieldStyle.json",
     "config_immediate_payment": "configImmediatePayment.json",
