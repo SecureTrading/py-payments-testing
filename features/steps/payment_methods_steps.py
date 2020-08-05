@@ -31,10 +31,7 @@ def step_impl(context):
             stub_st_request_type("jsinitTokenizationVisa.json", RequestType.JSINIT.name)
         elif 'config_tokenization_amex' in context.scenario.tags[0]:
             stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
-        elif 'config_auth_subscription' in context.scenario.tags[0] \
-                or 'config_acheck_subscription' in context.scenario.tags[0]\
-                or 'config_visa_auth_subscription' in context.scenario.tags[0]\
-                or 'config_visa_acheck_subscription' in context.scenario.tags[0]:
+        elif 'subscription' in context.scenario.tags[0]:
             stub_st_request_type("jsinitSubscription.json", RequestType.JSINIT.name)
         else:
             stub_st_request_type("jsinit.json", RequestType.JSINIT.name)

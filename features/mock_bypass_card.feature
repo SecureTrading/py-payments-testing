@@ -34,18 +34,36 @@ Feature: Bypass Cards config
     And THREEDQUERY request was not sent
     And AUTH request was sent only once
 
-  @config_bypass_cards_tdq_auth
-  Scenario: Successful payment with bypassCard and custom request types: THREEDQUERY, AUTH
-    When User fills payment form with credit card number "4000000000001026", expiration date "12/30" and cvv "123"
+  @config_bypass_cards_auth
+  Scenario: Successful payment with bypassCard and custom request types: AUTH
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And THREEDQUERY request was not sent
     And AUTH ware sent only once in one request
 
+  @config_bypass_cards_tdq_auth
+  Scenario: Successful payment with bypassCard and custom request types: THREEDQUERY, AUTH
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
+    And User clicks Pay button - AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And THREEDQUERY request was not sent
+    And AUTH ware sent only once in one request
+
+  @config_bypass_cards_acheck_tdq_auth_subscription
+  Scenario: Successful payment with bypassCard and custom request types: ACCOUNTCHECK, THREEDQUERY, AUTH, SUBSCRIPTION
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
+    And User clicks Pay button - ACCOUNTCHECK, AUTH, SUBSCRIPTION response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And THREEDQUERY request was not sent
+    And ACCOUNTCHECK, AUTH, SUBSCRIPTION ware sent only once in one request
+
   @config_bypass_cards_acheck_tdq_auth
   Scenario: Successful payment with bypassCard and custom request types: ACCOUNTCHECK, THREEDQUERY, AUTH
-    When User fills payment form with credit card number "4000000000001026", expiration date "12/30" and cvv "123"
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button - ACCOUNTCHECK, AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
@@ -54,7 +72,7 @@ Feature: Bypass Cards config
 
   @config_bypass_cards_riskdec_acheck_tdq_auth @extended_tests_part_2
   Scenario: Successful payment with bypassCard and custom request types: RISKDEC, ACCOUNTCHECK, THREEDQUERY, AUTH
-    When User fills payment form with credit card number "4000000000001026", expiration date "12/30" and cvv "123"
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button - RISKDEC, ACCOUNTCHECK, AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
@@ -63,9 +81,18 @@ Feature: Bypass Cards config
 
   @config_bypass_cards_tdq_auth_riskdec
   Scenario: Successful payment with bypassCard and custom request types: THREEDQUERY, AUTH, RISKDEC
-    When User fills payment form with credit card number "4000000000001026", expiration date "12/30" and cvv "123"
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button - AUTH, RISKDEC response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
     And THREEDQUERY request was not sent
     And AUTH, RISKDEC ware sent only once in one request
+
+  @config_bypass_cards_tdq_acheck_riskdec_auth
+  Scenario: Successful payment with bypassCard and custom request types: THREEDQUERY, ACCOUNTCHECK, RISKDEC, AUTH
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
+    And User clicks Pay button - ACCOUNTCHECK, RISKDEC, AUTH response is set to "OK"
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+    And THREEDQUERY request was not sent
+    And ACCOUNTCHECK, RISKDEC, AUTH ware sent only once in one request
