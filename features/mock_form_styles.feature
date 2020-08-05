@@ -75,7 +75,7 @@ Feature: Payment form styles check
 
   @config_animated_card_false
   Scenario: Checking that animated card is not displayed if 'animatedCard' is false
-    Given User opens page with payment form
+    When User opens page with payment form
     Then User will not see ANIMATED_CARD
 
   @config_pan_icon_false
