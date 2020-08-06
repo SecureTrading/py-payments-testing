@@ -15,7 +15,7 @@ def step_impl(context):
     reactjs_page.wait_for_iframe()
 
 
-@step('Success notification with (?P<payment_status_message>.+) message is displayed')
+@step('Notification message with (?P<payment_status_message>.+) text is displayed')
 def step_impl(context, payment_status_message):
     time.sleep(3)
     reactjs_page = context.page_factory.get_page(page_name='reactjs')
