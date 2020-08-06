@@ -31,10 +31,7 @@ def step_impl(context):
             stub_st_request_type("jsinitTokenizationVisa.json", RequestType.JSINIT.name)
         elif 'config_tokenization_amex' in context.scenario.tags[0]:
             stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
-        elif 'config_auth_subscription' in context.scenario.tags[0] \
-                or 'config_acheck_subscription' in context.scenario.tags[0]\
-                or 'config_visa_auth_subscription' in context.scenario.tags[0]\
-                or 'config_visa_acheck_subscription' in context.scenario.tags[0]:
+        elif 'subscription' in context.scenario.tags[0]:
             stub_st_request_type("jsinitSubscription.json", RequestType.JSINIT.name)
         else:
             stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
@@ -563,6 +560,8 @@ def step_impl(context):
 def step_impl(context, auth_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.fill_cardinal_authentication_code(auth_type)
+    if 'parent_iframe' in context.scenario.tags:
+        payment_page.switch_to_parent_iframe()
 
 
 @step("User will see the same provided data in inputs fields")

@@ -6,7 +6,9 @@ request_type_response = {
     "RISKDEC, ACCOUNTCHECK": "ccRiskdecAcheck.json",
     "AUTH, RISKDEC": "ccAuthRiskdec.json",
     "ACCOUNTCHECK, AUTH": "ccAccountcheckAuth.json",
-    "RISKDEC, ACCOUNTCHECK, AUTH": "ccRiskdecAccountcheckAuth.json"
+    "ACCOUNTCHECK, AUTH, SUBSCRIPTION": "ccAccountcheckAuthSub.json",
+    "RISKDEC, ACCOUNTCHECK, AUTH": "ccRiskdecAccountcheckAuth.json",
+    "ACCOUNTCHECK, RISKDEC, AUTH": "ccAccountcheckRiskdecAuth.json"
 }
 
 request_type_applepay = {
