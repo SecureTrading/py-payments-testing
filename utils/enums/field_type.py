@@ -13,6 +13,7 @@ class FieldType(Enum):
     CARDINAL_IFRAME = "Cardinal-CCA-IFrame"
     PARENT_IFRAME = "st-parent-frame"
     V1_PARENT_IFRAME = "authWindow"
+    VISA_CHECKOUT = 'vcop-src-frame'
     SUBMIT_BUTTON = 1
     NAME = 2
     EMAIL = 3
