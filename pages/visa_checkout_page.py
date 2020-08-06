@@ -31,6 +31,5 @@ class VisaCheckoutPage(BasePage):
         self._action.click(VisaCheckoutLocators.visa_confirm_process)
 
     def fill_one_time_code(self, one_time_code):
-        # self._waits.wait_until_iframe_is_presented_and_switch_to_it(FieldType.VISA_CHECKOUT.value)
         self._executor.wait_for_element_visibility(VisaCheckoutLocators.visa_one_time_code)
         self._action.send_keys(VisaCheckoutLocators.visa_one_time_code, one_time_code)
