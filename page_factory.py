@@ -4,11 +4,11 @@ PageFactory module is responsible for creation of a Page objects
 from pyioc.containers import NamespacedContainer, InstanceLifetime
 from ioc_config import EXECUTOR, EXTENSIONS, REPORTER, CONFIG, WAITS
 
-
 # Register modules here
 from pages.payment_methods_page import PaymentMethodsPage
 from pages.animated_card_page import AnimatedCardPage
 from pages.visa_checkout_page import VisaCheckoutPage
+from pages.reactjs_page import ReactjsPage
 
 MODULES = NamespacedContainer('modules')
 
@@ -26,6 +26,8 @@ PAGES.register_callable_with_deps('payment_methods_page', PaymentMethodsPage,
 PAGES.register_callable_with_deps('animated_card_page', AnimatedCardPage,
                                   lifetime=InstanceLifetime.NewInstancePerCall)
 PAGES.register_callable_with_deps('visa_checkout_page', VisaCheckoutPage,
+                                  lifetime=InstanceLifetime.NewInstancePerCall)
+PAGES.register_callable_with_deps('reactjs_page', ReactjsPage,
                                   lifetime=InstanceLifetime.NewInstancePerCall)
 
 

@@ -135,6 +135,12 @@ def step_impl(context):
     payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
 
 
+@step("User accept success alert")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.accept_alert()
+
+
 @then('User will see validation message "(?P<expected_message>.+)" under all fields')
 def step_impl(context, expected_message):
     payment_page = context.page_factory.get_page(page_name='payment_methods')

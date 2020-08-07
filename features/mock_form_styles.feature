@@ -65,3 +65,21 @@ Feature: Payment form styles check
     When User fills payment form with credit card number "4111110000000211", expiration date "12/23"
     Then User will not see ANIMATED_CARD
     And User will not see CARD_ICON
+
+  @config_default
+  Scenario: Checking that animated card and card icon are not displayed by default
+    Given User opens page with payment form
+    When User fills payment form with defined card VISA_FRICTIONLESS
+    Then User will not see ANIMATED_CARD
+    And User will not see CARD_ICON
+
+  @config_animated_card_false
+  Scenario: Checking that animated card is not displayed if 'animatedCard' is false
+    When User opens page with payment form
+    Then User will not see ANIMATED_CARD
+
+  @config_pan_icon_false
+  Scenario: Checking that card icon is not displayed if 'panIcon' is false
+    Given User opens page with payment form
+    When User fills payment form with defined card VISA_FRICTIONLESS
+    Then User will not see CARD_ICON

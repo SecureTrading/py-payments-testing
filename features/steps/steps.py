@@ -18,7 +18,7 @@ def step_impl(context, page_name):
         f'Invalid page address!\nGiven: {current_url},\nExpected: {expected_url}'
 
 
-@when('User fills payment form with defined card (?P<card>.+)')
+@step('User fills payment form with defined card (?P<card>.+)')
 def step_impl(context, card: Card):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     card = Card.__members__[card]

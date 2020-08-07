@@ -7,6 +7,8 @@ config = {
     "config_submit_on_success_and_error_true": "configSubmitOnSuccessAndErrorTrue.json",
     "config_submit_on_success_error_cancel_false": "configSubmitOnSuccessErrorCancelFalse.json",
     "config_animated_card_true": "configAnimatedCardTrue.json",
+    "config_animated_card_false": "configAnimatedCardFalse.json",
+    "config_pan_icon_false": "configPanIconFalse.json",
     "config_update_jwt_true": "configUpdateJwtTrue.json",
     "config_field_style": "configFieldStyle.json",
     "config_immediate_payment": "configImmediatePayment.json",
@@ -73,6 +75,7 @@ config = {
     "e2e_config_cybertonica_bypass_cards": "e2e_config/e2eConfigCybertonicaWithBypass.json",
     "e2e_config_cybertonica": "e2e_config/e2eConfigCybertonica.json",
     "e2e_config_submit_on_success_security_code": "e2e_config/e2eConfigSubmitOnSuccessSecurityCode.json",
+    "e2e_config_defer_init_true": "e2eConfigWithDeferinitTrue.json",
     "e2e_config_for_iframe": "e2e_config/e2eConfigForIframe.json",
     "e2e_config_for_iframe_start_on_load_true": "e2e_config/e2eConfigForIframeStartOnLoadTrue.json"
 }
