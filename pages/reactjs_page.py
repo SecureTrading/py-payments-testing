@@ -19,6 +19,7 @@ class ReactjsPage(BasePage):
     def click_personal_data_tab(self):
         self._executor.wait_for_element_to_be_clickable(ReactJsAppLocators.personal_data_tab)
         self._action.click(ReactJsAppLocators.personal_data_tab)
+        self._executor.wait_for_element_visibility(ReactJsAppLocators.personal_data_title)
 
     def click_home_tab(self):
         self._executor.wait_for_element_to_be_clickable(ReactJsAppLocators.home_tab)

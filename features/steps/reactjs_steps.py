@@ -17,27 +17,23 @@ def step_impl(context):
 
 @step('Notification message with (?P<payment_status_message>.+) text is displayed')
 def step_impl(context, payment_status_message):
-    time.sleep(3)
     reactjs_page = context.page_factory.get_page(page_name='reactjs')
     reactjs_page.validate_notofication_message(payment_status_message)
 
 
 @step('User switch tab to \'Personal Data\' in reactjs app')
 def step_impl(context):
-    time.sleep(2)
     reactjs_page = context.page_factory.get_page(page_name='reactjs')
     reactjs_page.click_personal_data_tab()
 
 
 @step('User switch tab to \'Home\' in reactjs app')
 def step_impl(context):
-    time.sleep(2)
     reactjs_page = context.page_factory.get_page(page_name='reactjs')
     reactjs_page.click_home_tab()
 
 
 @step('User switch tab to \'Payment\' in reactjs app')
 def step_impl(context):
-    time.sleep(2)
     reactjs_page = context.page_factory.get_page(page_name='reactjs')
     reactjs_page.click_home_tab()
