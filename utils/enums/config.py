@@ -3,6 +3,7 @@ config = {
     "config_default": "configDefault.json",
     "config_submit_on_success_true": "configSubmitOnSuccessTrue.json",
     "config_submit_on_error_true": "configSubmitOnErrorTrue.json",
+    "config_submit_on_error_false": "configSubmitOnErrorFalse.json",
     "config_submit_on_cancel_true": "configSubmitOnCancelTrue.json",
     "config_submit_on_success_and_error_true": "configSubmitOnSuccessAndErrorTrue.json",
     "config_submit_on_success_error_cancel_false": "configSubmitOnSuccessErrorCancelFalse.json",
