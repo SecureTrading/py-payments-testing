@@ -337,6 +337,19 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert actual_translation in expected_translation, assertion_message
 
+    def validate_element_specific_translation(self, field_type, expected_translation):
+        actual_translation = ""
+        if field_type == FieldType.SUBMIT_BUTTON.name:
+            actual_translation = self.get_element_translation(field_type, PaymentMethodsLocators.pay_button_label)
+        elif field_type == FieldType.CARD_NUMBER.name:
+            actual_translation = self.get_element_translation(field_type, PaymentMethodsLocators.card_number_field_validation_message)
+        elif field_type == FieldType.EXPIRATION_DATE.name:
+            actual_translation = self.get_element_translation(field_type, PaymentMethodsLocators.expiration_date_field_validation_message)
+        assertion_message = f"{FieldType[field_type].name} element translation is not correct: " \
+                            f" should be {expected_translation} but is {actual_translation}"
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_translation in actual_translation, assertion_message
+
     def validate_labels_translation(self, language):
         self.validate_element_translation(FieldType.CARD_NUMBER.name, PaymentMethodsLocators.card_number_label,
                                           language,

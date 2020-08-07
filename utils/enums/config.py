@@ -9,6 +9,7 @@ config = {
     "config_animated_card_true": "configAnimatedCardTrue.json",
     "config_update_jwt_true": "configUpdateJwtTrue.json",
     "config_field_style": "configFieldStyle.json",
+    "config_translations": "configTranslation.json",
     "config_immediate_payment": "configImmediatePayment.json",
     "config_immediate_payment_and_submit_on_success": "configImmediatePaymentAndSubmitOnSuccess.json",
     "config_immediate_payment_and_defer_init": "configImmediatePaymentAndDeferInit.json",

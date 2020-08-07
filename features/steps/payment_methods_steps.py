@@ -576,3 +576,13 @@ def step_impl(context):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_base_url(CONFIGURATION.URL.BASE_URL[8:])
+
+
+@then('User will see that (?P<element>.+) is translated into "(?P<expected_value>.+)"')
+def step_impl(context, element, expected_value):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if element in "Pay button":
+        payment_page.validate_element_specific_translation(FieldType.SUBMIT_BUTTON.name, expected_value)
+    else:
+        payment_page.validate_element_specific_translation(FieldType.CARD_NUMBER.name, expected_value)
+        payment_page.validate_element_specific_translation(FieldType.EXPIRATION_DATE.name, expected_value)
