@@ -70,7 +70,7 @@ Feature: Immediate payment
     When THREEDQUERY mock response is set to "ENROLLED_Y"
     And ACS mock response is set to "FAILURE"
     And User opens payment page
-    Then User will see payment status information: "Wystąpił błąd"
+    Then User will see payment status information: "An error occurred"
     And THREEDQUERY request was sent only once with correct data
 
   @config_immediate_payment_and_submit_on_success @smoke_test @extended_tests_part_1

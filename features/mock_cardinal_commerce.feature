@@ -78,7 +78,7 @@ Feature: Cardinal commerce
     And THREEDQUERY mock response is set to "ENROLLED_Y"
     And ACS mock response is set to "FAILURE"
     And User clicks Pay button
-    Then User will see payment status information: "Wystąpił błąd"
+    Then User will see payment status information: "An error occurred"
     And User will see that notification frame has "red" color
     And THREEDQUERY request was sent only once with correct data
     And User will see that Submit button is "enabled" after payment
