@@ -589,7 +589,7 @@ def step_impl(context):
     payment_page.validate_base_url(CONFIGURATION.URL.BASE_URL[8:])
 
 
-@given("(?P<e2e_config>.+) with (?P<jwt_config>.+) is generated")
+@given('JS library is configured with (?P<e2e_config>.+) and (?P<jwt_config>.+)')
 def step_impl(context, e2e_config : e2eConfig, jwt_config : JwtConfig):
     jwt = encode_jwt_for_json(JwtConfig[jwt_config])
     context.inline_config = create_inline_config(e2eConfig[e2e_config], jwt)
@@ -600,6 +600,9 @@ def step_impl(context, example_page : ExamplePage):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     if example_page is None:
         payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{context.inline_config}")
+    elif "IN_IFRAME" in example_page:
+        payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/{ExamplePage[example_page].value}{context.inline_config}")
+        payment_page.switch_to_parent_iframe()
     else:
         payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}{context.inline_config}")
     payment_page.wait_for_iframe()

@@ -4,8 +4,8 @@ Feature: Cardinal Commerce E2E tests
   In order to check Cardinal Commerce integration
 
   Background:
-    Given BYPASS_MASTERCARD_CONFIG with BASE_JWT is generated
-    And User opens example page WITHOUT_SUBMIT_BUTTON
+    Given JS library is configured with BASIC_CONFIG and BASE_JWT
+    And User opens example page
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Successful Frictionless Authentication - MasterCard
@@ -64,7 +64,6 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "Bank System Error"
     And User will see that notification frame has "red" color
 
-  #ToDo - increase timeout
   @base_config @cardinal_commerce_v2.0
   Scenario: Timeout on cmpi_lookup Transaction - Visa
     When User fills payment form with defined card VISA_TIMEOUT_ON_CMPI_LOOKUP_TRANSACTION

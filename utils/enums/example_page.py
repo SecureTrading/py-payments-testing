@@ -7,3 +7,4 @@ class ExamplePage(Enum):
     WITH_UPDATE_JWT = "updateJwt=ToDo&"
     WITH_SPECIFIC_FORM_ID = "formId=test"
     WITH_CALLBACK = "todo"
+    IN_IFRAME = "iframe.html?"

@@ -6,6 +6,7 @@ class e2eConfig(Enum):
     BYPASS_MASTERCARD_CONFIG = "e2eConfigBypassMastercard.json"
     CYBERTONICA_CONFIG = "e2eConfigCybertonica.json"
     CYBERTONICA_WITH_BYPASSCARDS_CONFIG = "e2eConfigCybertonicaWithBypass.json"
+    CYBERTONICA_START_ON_LOAD_CONFIG = "e2eConfigCybertonicaStartOnLoadTrue.json"
     BYPASS_CARDS_CONFIG = "e2eConfigForBypassCards.json"
     START_ON_LOAD_CONFIG = "e2eConfigStartOnLoadTrue.json"
     SUBMIT_ON_ERROR_CONFIG = "e2eConfigSubmitOnError.json"
@@ -13,3 +14,4 @@ class e2eConfig(Enum):
     SUBMIT_ON_SUCCESS_SECURITY_CODE_CONFIG = "e2eConfigSubmitOnSuccessSecurityCode.json"
     DEFER_INIT_CONFIG = "e2eConfigSubmitOnSuccessSecurityCode.json"
     TOKENISATION_CONFIG = "e2eForTokenisation.json"
+    REQUEST_TYPES_CONFIG = "e2eConfigRequestTypes.json"
