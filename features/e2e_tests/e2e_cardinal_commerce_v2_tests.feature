@@ -3,12 +3,9 @@ Feature: Cardinal Commerce E2E tests
   I want to use card payments method
   In order to check Cardinal Commerce integration
 
-  #ToDo - Work in progress
-  #remove sleep before cardinal modal
   Background:
-#    ToDo - Uncomment this line when environment for e2e test will be ready
-#    Given JavaScript configuration is set for scenario based on scenario's @config tag
-    Given User opens page with payment form
+    Given BYPASS_MASTERCARD_CONFIG with BASE_JWT is generated
+    And User opens example page WITHOUT_SUBMIT_BUTTON
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Successful Frictionless Authentication - MasterCard

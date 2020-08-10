@@ -4,10 +4,15 @@ from assertpy import soft_assertions
 from behave import *
 
 from configuration import CONFIGURATION
+from utils.configurations.inline_config_generator import create_inline_config
+from utils.configurations.jwt_generator import encode_jwt_for_json
 from utils.dict.url_after_redirection import url_after_redirection
 from utils.enums.config import config
+from utils.enums.e2e_config import e2eConfig
+from utils.enums.example_page import ExamplePage
 
 from utils.enums.field_type import FieldType
+from utils.enums.jwt_config import JwtConfig
 from utils.enums.payment_type import PaymentType
 from utils.enums.request_type import RequestType, request_type_response, request_type_applepay, request_type_visa
 from utils.enums.responses.acs_response import ACSresponse
@@ -582,3 +587,19 @@ def step_impl(context):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_base_url(CONFIGURATION.URL.BASE_URL[8:])
+
+
+@given("(?P<e2e_config>.+) with (?P<jwt_config>.+) is generated")
+def step_impl(context, e2e_config : e2eConfig, jwt_config : JwtConfig):
+    jwt = encode_jwt_for_json(JwtConfig[jwt_config])
+    context.inline_config = create_inline_config(e2eConfig[e2e_config], jwt)
+
+
+@step("User opens (?:example page|example page (?P<example_page>.+))")
+def step_impl(context, example_page : ExamplePage):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if example_page is None:
+        payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{context.inline_config}")
+    else:
+        payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}{context.inline_config}")
+    payment_page.wait_for_iframe()
