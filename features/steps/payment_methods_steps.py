@@ -606,3 +606,13 @@ def step_impl(context, example_page : ExamplePage):
     else:
         payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}{context.inline_config}")
     payment_page.wait_for_iframe()
+
+    
+@then('User will see that (?P<element>.+) is translated into "(?P<expected_value>.+)"')
+def step_impl(context, element, expected_value):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if element in "Pay button":
+        payment_page.validate_element_specific_translation(FieldType.SUBMIT_BUTTON.name, expected_value)
+    else:
+        payment_page.validate_element_specific_translation(FieldType.CARD_NUMBER.name, expected_value)
+        payment_page.validate_element_specific_translation(FieldType.EXPIRATION_DATE.name, expected_value)
