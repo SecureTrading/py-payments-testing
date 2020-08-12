@@ -14,8 +14,7 @@ ENV JAVA_HOME  /usr/lib/jvm/java-11-openjdk-amd64/
 
 # Latest versions of python tools via pip
 RUN pip install poetry
-COPY pyproject.toml /app/
-COPY poetry.lock /app/
+COPY . /app/
 WORKDIR /app
 RUN poetry install
 
