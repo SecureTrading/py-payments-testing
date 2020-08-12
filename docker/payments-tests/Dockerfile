@@ -16,7 +16,9 @@ ENV JAVA_HOME  /usr/lib/jvm/java-11-openjdk-amd64/
 RUN pip install poetry
 COPY . /app/
 WORKDIR /app
-RUN poetry install
+RUN python3 -m venv venv \
+    && . venv/bin/activate \
+    && poetry install
 
 # Get framework into docker
 ENV PATH "$PATH:/app"
