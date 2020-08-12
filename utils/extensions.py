@@ -145,6 +145,10 @@ class WebElementsExtensions(Waits):
         element = self.find_element(locator)
         element.send_keys(Keys.RETURN)
 
+    def delete_on_input(self, locator):
+        element = self.find_element(locator)
+        element.send_keys(Keys.BACK_SPACE)
+
     def switch_to_iframe_and_press_enter(self, iframe_name, locator):
         self.switch_to_iframe(iframe_name)
         element = self.find_element(locator)
