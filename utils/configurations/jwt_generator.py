@@ -6,8 +6,6 @@ import jwt
 
 from utils.enums.jwt_config import JwtConfig
 
-JWT_JSON_CONFIG_FILES_BESEDIR = os.path.abspath('jwt_config_files')
-
 SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'you_will_never_guess'
 ISS_KEY = os.environ.get('JWT_ISS_KEY') or 'you_will_never_guess'
 
