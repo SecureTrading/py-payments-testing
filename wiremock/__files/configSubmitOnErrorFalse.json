@@ -6,6 +6,7 @@
   "fieldsToSubmit": ["pan", "expirydate", "securitycode"],
   "buttonId": "merchant-submit-button",
   "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU3MTY0NzEyMC4xNzQzNDk1LCJwYXlsb2FkIjp7ImJhc2VhbW91bnQiOiIxMDAwIiwiYWNjb3VudHR5cGVkZXNjcmlwdGlvbiI6IkVDT00iLCJjdXJyZW5jeWlzbzNhIjoiR0JQIiwic2l0ZXJlZmVyZW5jZSI6InRlc3QxIiwibG9jYWxlIjoiZW5fR0IifX0._VTiUjM-op-4KUoVGtqA92HwgwTNi_XckqP8pdcyKFc",
+  "disableNotification": false,
   "panIcon": true,
   "styles": {
     "defaultStyles": {
@@ -18,8 +19,13 @@
       "color-error": "#3358FF"
     }
   },
-  "submitOnSuccess": false,
+  "submitOnSuccess": true,
+  "submitOnError": false,
+  "submitOnCancel": true,
   "submitCallback": "",
+  "translations": {
+    "An error occurred": "Wystąpił błąd"
+  },
   "components": {
   },
   "applePay": {
@@ -52,6 +58,5 @@
     "settings": {
       "displayName": "My Test Site"
     }
-  },
-  "cybertonicaApiKey": ""
+  }
 }

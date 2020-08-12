@@ -19,6 +19,12 @@
     }
   },
   "submitOnSuccess": false,
+    "translations": {
+    "An error occurred": "Wystąpił błąd",
+    "Pay": "Kup teraz!",
+    "Payment has been successfully processed": "Victory",
+    "Field is required" : "This is wrong"
+  },
   "submitCallback": "",
   "components": {
   },

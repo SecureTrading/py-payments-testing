@@ -36,3 +36,4 @@ Feature: E2E for tokenisation
     And User will see that notification frame has "green" color
     And User will see that Submit button is "disabled" after payment
     And User will see that SECURITY_CODE input fields are "disabled"
+    

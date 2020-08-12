@@ -20,7 +20,7 @@ Feature: Visa Checkout
     Examples:
       | action_code | payment_status_message     | color  |
       | CANCEL      | Payment has been cancelled | yellow |
-      | ERROR       | Wystąpił błąd              | red    |
+      | ERROR       | An error occurred          | red    |
 
   @config_submit_on_success_true @extended_tests_part_2 @visa_test
   Scenario: Visa Checkout - successful payment with enabled 'submitOnSuccess' process
@@ -136,7 +136,7 @@ Feature: Visa Checkout
     And User will see that notification frame has "green" color
     And VISA_CHECKOUT or AUTH requests were sent only once with correct data
 
-  @base_config @visa_test @translations
+  @config_translations @visa_test @translations
   Scenario Outline: Visa Checkout - check translation overwriting mechanism
     When User changes page language to "<language>"
     And User chooses Visa Checkout as payment method - response is set to "ERROR"
