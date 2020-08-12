@@ -10,19 +10,17 @@ def step_impl(context):
     visa_checkout_page.click_visa_checkout_button()
 
 
-@step('User fills visa checkout EMAIL_ADDRESS')
+@step('User fills visa checkout email address')
 def step_impl(context):
     visa_checkout_page = context.page_factory.get_page(page_name='visa_checkout')
-    field = VisaCheckoutField.EMAIL_ADDRESS
-    visa_checkout_page.fill_selected_field(field.name)
+    visa_checkout_page.fill_selected_field(VisaCheckoutField.EMAIL_ADDRESS.name)
     visa_checkout_page.click_continue_checkout_process()
 
 
-@step('User fills visa checkout ONE_TIME_PASSWORD')
+@step('User fills visa checkout one time password')
 def step_impl(context):
     visa_checkout_page = context.page_factory.get_page(page_name='visa_checkout')
-    field = VisaCheckoutField.ONE_TIME_PASSWORD
-    visa_checkout_page.fill_selected_field(field.name)
+    visa_checkout_page.fill_selected_field(VisaCheckoutField.ONE_TIME_PASSWORD.name)
 
 
 @step("User confirm displayed card with data")

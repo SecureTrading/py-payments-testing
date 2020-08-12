@@ -13,8 +13,8 @@ Feature: Visa checkout E2E tests
   @base_config
   Scenario: Successful Authentication by Visa checkout
     When User clicks on Visa Checkout button
-    And User fills visa checkout EMAIL_ADDRESS
-    And User fills visa checkout ONE_TIME_PASSWORD
+    And User fills visa checkout email address
+    And User fills visa checkout one time password
     And User confirm displayed card with data
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
