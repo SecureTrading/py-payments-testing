@@ -60,6 +60,7 @@ class Card(Enum):
     VISA_FRICTIONLESS = '4000 0000 0000 1026', '', CardType.VISA, 123
     VISA_NON_FRICTIONLESS = '4000 0000 0000 1091', '', CardType.VISA, 123
     AMEX_NON_FRICTIONLESS = '3400 0000 0001 098', '', CardType.AMEX, 1234
+    VISA_DECLINED_CARD = '4242 4242 4242 4242', '', CardType.VISA, 123
 
     @property
     def number(self):

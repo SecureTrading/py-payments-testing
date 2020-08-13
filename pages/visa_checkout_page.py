@@ -6,7 +6,7 @@ from utils.helpers import gmail_service
 from utils.enums.visa_checkout_field import VisaCheckoutField
 
 
-class VisaCheckoutPage(BasePage):
+class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
 
     def click_visa_checkout_button(self):
         self._action.click(VisaCheckoutLocators.visa_checkout_button)
@@ -42,3 +42,8 @@ class VisaCheckoutPage(BasePage):
         while self._action.get_element_attribute(VisaCheckoutLocators.visa_one_time_code, 'value') != '':
             self._action.delete_on_input(VisaCheckoutLocators.visa_one_time_code)
         self._action.send_keys(VisaCheckoutLocators.visa_one_time_code, one_time_code)
+
+    def select_card_by_ending_number(self, card_number):
+        self.visa_card_with_ending_number = card_number
+        self._executor.wait_for_element_visibility(self.visa_card_with_ending_number)
+        self._action.click(self.visa_card_with_ending_number)

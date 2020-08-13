@@ -1,5 +1,6 @@
 from behave import step, use_step_matcher
 
+from utils.enums.card import Card
 from utils.enums.visa_checkout_field import VisaCheckoutField
 
 use_step_matcher("re")
@@ -27,3 +28,10 @@ def step_impl(context):
 def step_impl(context):
     visa_checkout_page = context.page_factory.get_page(page_name='visa_checkout')
     visa_checkout_page.click_continue_visa_payment_process()
+
+
+@step('User select (?P<card>.+) card on visa checkout popup')
+def step_impl(context, card: Card):
+    visa_checkout_page = context.page_factory.get_page(page_name='visa_checkout')
+    card = Card.__members__[card]
+    visa_checkout_page.select_card_by_ending_number(card.formatted_number[-4:])
