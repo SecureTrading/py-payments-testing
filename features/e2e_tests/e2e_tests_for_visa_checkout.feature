@@ -41,7 +41,7 @@ Feature: Visa checkout E2E tests
     And User will see that notification frame has "green" color
 
   @base_config
-  Scenario: Successful Authentication by Visa checkout using non-frictionless card
+  Scenario: Declined Authentication by Visa checkout using declined visa card
     Given User clicks on Visa Checkout button
     And User fills visa checkout email address
     And User fills visa checkout one time password
