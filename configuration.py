@@ -16,7 +16,7 @@ def load_config():
         'URL': AttrDict({"BASE_URL": get_from_env("BASE_URL", "https://merchant.securetrading.net"), "REACT_APP": get_from_env("REACT_APP", "https://localhost:3000")}),
         'REPORTS_PATH': get_path_from_env('AUTOMATION_REPORTS', 'reports'),
         'BROWSER': get_from_env('AUTOMATION_BROWSER', 'chrome'),
-        'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 200), # TODO change after test to 20
+        'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 20),
         'REMOTE': strtobool(get_from_env('REMOTE', 'false')),
         'COMMAND_EXECUTOR': get_from_env('AUTOMATION_COMMAND_EXECUTOR',
                                 "https://"+str(get_from_env('BS_USERNAME'))+":"+
