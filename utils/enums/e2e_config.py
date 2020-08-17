@@ -9,6 +9,8 @@ class e2eConfig(Enum):
     CYBERTONICA_START_ON_LOAD_CONFIG = "e2eConfigCybertonicaStartOnLoadTrue.json"
     BYPASS_CARDS_CONFIG = "e2eConfigForBypassCards.json"
     START_ON_LOAD_CONFIG = "e2eConfigStartOnLoadTrue.json"
+    START_ON_LOAD_REQUEST_TYPES_CONFIG = "e2eConfigStartOnLoadRequestTypes.json"
+    START_ON_LOAD_REQUEST_TYPES_SUB_CONFIG = "e2eConfigStartOnLoadRequestTypesSub.json"
     SUBMIT_ON_ERROR_CONFIG = "e2eConfigSubmitOnError.json"
     SUBMIT_ON_SUCCESS_CONFIG = "e2eConfigSubmitOnSuccess.json"
     SUBMIT_ON_SUCCESS_SECURITY_CODE_CONFIG = "e2eConfigSubmitOnSuccessSecurityCode.json"
