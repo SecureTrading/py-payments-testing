@@ -616,3 +616,9 @@ def step_impl(context, element, expected_value):
     else:
         payment_page.validate_element_specific_translation(FieldType.CARD_NUMBER.name, expected_value)
         payment_page.validate_element_specific_translation(FieldType.EXPIRATION_DATE.name, expected_value)
+
+
+@step('"(?P<callback_popup>.+)" callback is called only once')
+def step_impl(context, callback_popup):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_number_in_callback_counter_popup(callback_popup)

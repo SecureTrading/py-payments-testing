@@ -39,6 +39,11 @@ class PaymentMethodsLocators:
     callback_error_popup: By = (By.ID, 'error-popup')
     callback_cancel_popup: By = (By.ID, 'cancel-popup')
     callback_data_popup: By = (By.ID, 'data-popup')
+    callback_success_counter: By = (By.ID, 'success-callback-counter')
+    callback_error_counter: By = (By.ID, 'error-callback-counter')
+    callback_cancel_counter: By = (By.ID, 'cancel-callback-counter')
+    callback_submit_counter: By = (By.ID, 'submit-callback-counter')
+
     card_icon_in_input_field: By = (By.ID, 'card-icon')
 
     cardinal_v2_authentication_code_field: By = (By.CLASS_NAME, 'input-field')

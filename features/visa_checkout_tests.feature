@@ -79,15 +79,23 @@ Feature: Visa Checkout
   Scenario Outline: Visa Checkout - checking <callback> callback functionality
     When User chooses Visa Checkout as payment method - response is set to "<action_code>"
     Then User will see "<callback>" popup
+    And "<callback>" callback is called only once
+
     @extended_tests_part_2
     Examples:
       | action_code | callback |
       | SUCCESS     | success  |
+
     Examples:
       | action_code | callback |
       | ERROR       | error    |
       | CANCEL      | cancel   |
 
+  @base_config @visa_test
+  Scenario: Checking data type passing to callback function
+    When User chooses Visa Checkout as payment method - response is set to "SUCCESS"
+    Then User will see correct error code displayed in popup
+    And "submit" callback is called only once
 
   @config_update_jwt_true @extended_tests_part_2 @visa_test
   Scenario: Visa Checkout - successful payment with updated JWT
