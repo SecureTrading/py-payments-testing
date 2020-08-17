@@ -201,7 +201,7 @@ def step_impl(context, action_code):
     else:
         stub_st_request_type(VisaResponse.VISA_AUTH_SUCCESS.value, RequestType.AUTH.name)
         stub_payment_status(MockUrl.VISA_MOCK_URI.value, VisaResponse[action_code].value)
-    time.sleep(200)
+    time.sleep(10000)
     payment_page.choose_payment_methods(PaymentType.VISA_CHECKOUT.name)
 
 
