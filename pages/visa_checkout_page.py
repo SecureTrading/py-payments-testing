@@ -1,3 +1,5 @@
+import time
+
 from locators.visa_checkout_locators import VisaCheckoutLocators
 from pages.base_page import BasePage
 from utils.enums.field_type import FieldType
@@ -13,14 +15,24 @@ class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
 
     def fill_selected_field(self, field):
         if field == VisaCheckoutField.EMAIL_ADDRESS.value:
-            self.fill_email_address("securetestpgs@gmail.com")
+            self.fill_email_address("securetestpgs1@gmail.com")
         elif field == VisaCheckoutField.ONE_TIME_PASSWORD.value:
-            mail_ids = gmail_service.get_mail_ids_with_wiat(5)
-            while self._action.is_element_displayed(VisaCheckoutLocators.visa_one_time_code):
-                for mail_id in reversed(mail_ids):
-                    code = gmail_service.get_verification_code_from_email_subject(mail_id)
-                    self.fill_one_time_code(code)
-                    self.click_continue_checkout_process()
+            self._executor.wait_for_element_visibility(VisaCheckoutLocators.visa_one_time_code)
+            mail_ids = gmail_service.get_unseen_mail_ids_with_wait(5)
+            self.fill_one_time_password_with_wait(mail_ids)
+            if self._action.is_element_displayed(VisaCheckoutLocators.visa_one_time_code):
+                mail_ids = gmail_service.get_last_five_mail_ids_with_wait(3)
+                self.fill_one_time_password_with_wait(mail_ids)
+
+
+    def fill_one_time_password_with_wait(self, mail_ids):
+        mail_index = len(mail_ids)
+        while mail_index and self._action.is_element_displayed(VisaCheckoutLocators.visa_one_time_code):
+            code = gmail_service.get_verification_code_from_email_subject(mail_ids[mail_index - 1])
+            self.fill_one_time_code(code)
+            self.click_continue_checkout_process()
+            mail_index -= 1
+            time.sleep(1)
 
 
     def fill_email_address(self, email):

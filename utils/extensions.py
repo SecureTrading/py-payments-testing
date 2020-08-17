@@ -65,8 +65,11 @@ class WebElementsExtensions(Waits):
         return element
 
     def is_element_displayed(self, locator):
-        element = self._browser.find_element(*locator)
-        return element is not None
+        try:
+            element = self._browser.find_element(*locator).is_displayed()
+            return element is not None
+        except:
+            return False
 
     def is_iframe_displayed(self, iframe_name):
         try:
