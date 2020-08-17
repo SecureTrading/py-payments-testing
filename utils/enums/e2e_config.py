@@ -17,3 +17,4 @@ class e2eConfig(Enum):
     DEFER_INIT_CONFIG = "e2eConfigSubmitOnSuccessSecurityCode.json"
     TOKENISATION_CONFIG = "e2eForTokenisation.json"
     REQUEST_TYPES_CONFIG = "e2eConfigRequestTypes.json"
+    BUTTON_ID_CONFIG = "e2eButtonIdConfig.json"
