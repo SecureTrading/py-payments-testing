@@ -3,12 +3,9 @@ Feature: Cardinal Commerce E2E tests
   I want to use card payments method
   In order to check Cardinal Commerce integration
 
-  #ToDo - Work in progress
-  #remove sleep before cardinal modal
   Background:
-#    ToDo - Uncomment this line when environment for e2e test will be ready
-#    Given JavaScript configuration is set for scenario based on scenario's @config tag
-    Given User opens page with payment form
+    Given JS library is configured with BASIC_CONFIG and BASE_JWT
+    And User opens example page
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Successful Frictionless Authentication - MasterCard
@@ -67,7 +64,6 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "Bank System Error"
     And User will see that notification frame has "red" color
 
-  #ToDo - increase timeout
   @base_config @cardinal_commerce_v2.0
   Scenario: Timeout on cmpi_lookup Transaction - Visa
     When User fills payment form with defined card VISA_TIMEOUT_ON_CMPI_LOOKUP_TRANSACTION
