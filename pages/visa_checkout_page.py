@@ -15,7 +15,7 @@ class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
 
     def fill_selected_field(self, field):
         if field == VisaCheckoutField.EMAIL_ADDRESS.value:
-            self.fill_email_address("securetestpgs1@gmail.com")
+            self.fill_email_address("securetestpgs@gmail.com")
         elif field == VisaCheckoutField.ONE_TIME_PASSWORD.value:
             self._executor.wait_for_element_visibility(VisaCheckoutLocators.visa_one_time_code)
             mail_ids = gmail_service.get_unseen_mail_ids_with_wait(5)

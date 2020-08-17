@@ -22,9 +22,8 @@ def gmail_login():
         return None
 
 
-def get_email_ids():
+def get_unseen_email_ids():
     mail = gmail_login()
-    # to see unseen mails use: '(UNSEEN)' for all (ALL)
     type, data = mail.search(None, 'UNSEEN')
     mail_ids = data[0]
     if mail_ids:
@@ -33,6 +32,18 @@ def get_email_ids():
     else:
         gmail_logout(mail)
         raise Exception('Lack of Unseen emails')
+
+
+def get_last_five_email_ids():
+    mail = gmail_login()
+    type, data = mail.search(None, 'ALL')
+    mail_ids = data[0]
+    if mail_ids:
+        id_list = mail_ids.split()
+        return id_list[5]
+    else:
+        gmail_logout(mail)
+        raise Exception('Gmail inbox is empty')
 
 
 def get_verification_code_from_email_subject(mail_id):
@@ -45,15 +56,26 @@ def get_verification_code_from_email_subject(mail_id):
     gmail_logout(mail)
     return code
 
-def get_mail_ids_with_wiat(max_seconds):
+def get_unseen_mail_ids_with_wait(max_seconds):
     while max_seconds:
         try:
-            return get_email_ids()
+            return get_unseen_email_ids()
         except Exception as e:
             print(str(e) + ' - trying again')
             time.sleep(1)
             max_seconds -=1
     raise Exception('Lack of Unseen emails - searching over')
+
+
+def get_last_five_mail_ids_with_wait(max_seconds):
+    while max_seconds:
+        try:
+            return get_last_five_email_ids()
+        except Exception as e:
+            print(str(e) + ' - trying again')
+            time.sleep(1)
+            max_seconds -=1
+    raise Exception('Lack of emails - searching over')
 
 
 def gmail_logout(mail):
