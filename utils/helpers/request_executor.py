@@ -99,7 +99,7 @@ def get_number_of_wallet_verify_requests(url):
 
 
 def get_number_of_thirdparty_requests(request_type, walletsource):
-    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+    count = requests.post("https://thirdparty.example.com:8443/__admin/requests/count",
                           json={"url": "/jwt/", "bodyPatterns": [
                               {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==["+request_type+"])]"},
                               {"matchesJsonPath": "$.request[:1][?(@.walletsource=='" + walletsource + "')]"}]},
