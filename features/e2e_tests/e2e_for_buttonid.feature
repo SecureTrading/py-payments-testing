@@ -3,12 +3,10 @@ Feature: E2E for buttonID
   I want to use config with button id
   In order to check payment
 
-  Background:
-    Given JS library is configured with BUTTON_ID_CONFIG and BASE_JWT
-    And User opens example page
-
   @e2e_button_id_config
   Scenario: Successful Authentication
+    Given JS library is configured with BUTTON_ID_CONFIG and BASE_JWT
+    And User opens example page
     When User fills payment form with defined card MASTERCARD_SUCCESSFUL_AUTH_CARD
     And User clicks Pay button
     And User fills V1 authentication modal
