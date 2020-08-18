@@ -596,16 +596,22 @@ def step_impl(context, e2e_config : e2eConfig, jwt_config : JwtConfig):
 
 
 @step("User opens (?:example page|example page (?P<example_page>.+))")
-def step_impl(context, example_page : ExamplePage):
+def step_impl(context, example_page: ExamplePage):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     jwt = str(encode_jwt_for_json(JwtConfig.BASE_UPDATED_JWT), "utf-8")
+
+    # setting url specific params accordingly to example page
     if example_page is None:
-        payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{context.inline_config}")
+        url = f"{CONFIGURATION.URL.BASE_URL}/?{context.inline_config}"
     elif "IN_IFRAME" in example_page:
-        payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/{ExamplePage[example_page].value}{context.inline_config}")
-        payment_page.switch_to_parent_iframe()
+        url = f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}&{context.inline_config}"
     else:
-        payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value % jwt}{context.inline_config}")
+        url = f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value % jwt}&{context.inline_config}"
+    url = url.replace("??", "?").replace("&&", "&")  # just making sure some elements are not duplicated
+
+    payment_page.open_page(url)
+    if "IN_IFRAME" in example_page:
+        payment_page.switch_to_parent_iframe()
     payment_page.wait_for_iframe()
 
     

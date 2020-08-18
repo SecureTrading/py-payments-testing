@@ -59,3 +59,17 @@ Feature: E2E Card Payments - redirection
       | baseamount    | 1000                                    |
       | currencyiso3a | GBP                                     |
       | errorcode     | 0                                       |
+
+  @e2e_config_submit_on_success_callback
+  Scenario: Successful payment with submitOnSuccess enabled and success callback set
+    Given JS library is configured with SUBMIT_ON_SUCCESS_CONFIG_CALLBACK and BASE_JWT
+    When User opens example page SUCCESS_CALLBACK
+    When User fills payment form with defined card VISA_FRICTIONLESS
+    And User clicks Pay button
+    Then User will not see notification frame
+    And User will be sent to page with url "example.org" having params
+      | key           | value                                   |
+      | errormessage  | Payment has been successfully processed |
+      | baseamount    | 1000                                    |
+      | currencyiso3a | GBP                                     |
+      | errorcode     | 0                                       |

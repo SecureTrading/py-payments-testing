@@ -13,6 +13,7 @@ class e2eConfig(Enum):
     START_ON_LOAD_REQUEST_TYPES_SUB_CONFIG = "e2eConfigStartOnLoadRequestTypesSub.json"
     SUBMIT_ON_ERROR_CONFIG = "e2eConfigSubmitOnError.json"
     SUBMIT_ON_SUCCESS_CONFIG = "e2eConfigSubmitOnSuccess.json"
+    SUBMIT_ON_SUCCESS_CONFIG_CALLBACK = "e2eConfigSubmitOnSuccessCallback.json"
     SUBMIT_ON_SUCCESS_SECURITY_CODE_CONFIG = "e2eConfigSubmitOnSuccessSecurityCode.json"
     DEFER_INIT_CONFIG = "e2eConfigWithDeferinitTrue.json"
     TOKENISATION_CONFIG = "e2eForTokenisation.json"
