@@ -1,7 +1,6 @@
 version: "3.6"
 services:
-
-  app-library:
+  app:
     image: securetrading1/${APP_REPO}:${APP_BRANCH}
     ports:
       - 80:80
@@ -10,15 +9,6 @@ services:
       securetrading:
         aliases:
           - library.securetrading.net
-
-  app-merchant:
-    image: securetrading1/${APP_REPO}:${APP_BRANCH}
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-      securetrading:
-        aliases:
           - merchant.securetrading.net
 
   tests:
@@ -29,7 +19,7 @@ services:
     networks:
       - securetrading
 
-  wiremock-webservices:
+  wiremock:
     image: rodolpheche/wiremock:2.26.3
     volumes:
       - ./wiremock/__files:/home/wiremock/__files
@@ -42,19 +32,6 @@ services:
       securetrading:
         aliases:
           - webservices.securetrading.net
-
-  wiremock-thirdparty:
-    image: rodolpheche/wiremock:2.26.3
-    volumes:
-      - ./wiremock/__files:/home/wiremock/__files
-      - ./wiremock/mappings:/home/wiremock/mappings
-      - ./wiremock/keystore:/home/wiremock/keystore
-    command: --https-port 8443 --https-keystore /home/wiremock/keystore
-    ports:
-      - 8443:8443
-    networks:
-      securetrading:
-        aliases:
           - thirdparty.example.com
 
 networks:
