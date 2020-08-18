@@ -48,6 +48,7 @@ class PaymentMethodsLocators:
 
     cardinal_v2_authentication_code_field: By = (By.CLASS_NAME, 'input-field')
     cardinal_v2_authentication_submit_btn: By = (By.CLASS_NAME, 'primary')
+    additional_button: By = (By.ID, 'additional-button')
 
     cardinal_v1_authentication_code_field: By = (By.ID, 'password')
     cardinal_v1_authentication_submit_btn: By = (By.NAME, 'UsernamePasswordEntry')
