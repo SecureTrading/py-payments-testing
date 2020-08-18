@@ -121,3 +121,4 @@ def get_number_of_requests(request_type, pan, expiry_date, cvv):
 
 def remove_item_from_request_journal():
     requests.delete("https://webservices.securetrading.net:8443/__admin/requests", verify=False)
+    requests.delete("https://thirdparty.example.com:8443/__admin/requests", verify=False)
