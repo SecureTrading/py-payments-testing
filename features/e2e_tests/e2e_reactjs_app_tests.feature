@@ -29,8 +29,9 @@ Feature: E2E Successfull payments on reactjs app
     And User clicks Pay button
     Then Notification message with Payment has been successfully processed text is displayed
 
-  @e2e_config_update_jwt_true
+  @base_config
   Scenario: React app - successfully processed payments with tabs change and update JWT
+    Given User calls updateJWT function by filling amount field
     And User fills payment form with defined card VISA_CARD
     And User clicks Pay button
     And Notification message with Payment has been successfully processed text is displayed
