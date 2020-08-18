@@ -43,6 +43,10 @@ def configure_for_local_host():
     Config.base_url = f'{MockUrl.WEBSERVICES_DOMAIN.value}/__admin'
     Config.requests_verify = False
 
+def configure_for_thirdparty_host():
+    Config.base_url = f'{MockUrl.THIRDPARTY_URL.value}/__admin'
+    Config.requests_verify = False
+
 
 def stub_config(config_json):
     mapping = Mapping(
@@ -102,6 +106,7 @@ def stub_st_request_type_server_error(mock_json, request_type):
 
 
 def stub_payment_status(mock_url, mock_json):
+    configure_for_thirdparty_host()
     mapping = Mapping(
         priority=100,
         request=MappingRequest(

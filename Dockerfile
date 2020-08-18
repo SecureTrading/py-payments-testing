@@ -1,3 +1,8 @@
+#####
+# NOTE!
+# This is legacy file to keep working travis and docker-compose while migration phase
+# New version is located under docker/payments-tests/Dockerfile
+#####
 FROM python:latest
 
 # Get up to date
