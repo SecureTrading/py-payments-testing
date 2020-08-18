@@ -18,7 +18,7 @@ def gmail_login():
         mail.select('inbox')
         return mail
     except Exception as e:
-        print('User cannot login to gmail: ' + e)
+        print('User cannot login to gmail: ' + str(e))
         return None
 
 
