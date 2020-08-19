@@ -15,6 +15,7 @@ class e2eConfig(Enum):
     SUBMIT_ON_SUCCESS_CONFIG = "e2eConfigSubmitOnSuccess.json"
     SUBMIT_ON_SUCCESS_SECURITY_CODE_CONFIG = "e2eConfigSubmitOnSuccessSecurityCode.json"
     DEFER_INIT_CONFIG = "e2eConfigWithDeferinitTrue.json"
+    DEFER_INIT_AND_SUBMIT_ON_SUCCESS_CONFIG = "e2eConfigWithDeferinitTrueAndSumitOnSuccess.json"
     TOKENISATION_CONFIG = "e2eForTokenisation.json"
     REQUEST_TYPES_CONFIG = "e2eConfigRequestTypes.json"
     VISA_CHECKOUT_CONFIG = "e2eConfigVisaCheckout.json"
