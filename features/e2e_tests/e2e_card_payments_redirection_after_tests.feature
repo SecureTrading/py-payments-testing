@@ -62,8 +62,22 @@ Feature: E2E Card Payments - redirection
 
   @e2e_config_submit_on_success_callback
   Scenario: Successful payment with submitOnSuccess enabled and success callback set
-    Given JS library is configured with SUBMIT_ON_SUCCESS_CONFIG_CALLBACK and BASE_JWT
+    Given JS library is configured with SUBMIT_ON_SUCCESS_CONFIG_SUCCESS_CALLBACK and BASE_JWT
     When User opens example page SUCCESS_CALLBACK
+    When User fills payment form with defined card VISA_FRICTIONLESS
+    And User clicks Pay button
+    Then User will not see notification frame
+    And User will be sent to page with url "example.org" having params
+      | key           | value                                   |
+      | errormessage  | Payment has been successfully processed |
+      | baseamount    | 1000                                    |
+      | currencyiso3a | GBP                                     |
+      | errorcode     | 0                                       |
+
+  @e2e_config_submit_on_success_callback_submit
+  Scenario: Successful payment with submitOnSuccess enabled and submit callback set
+    Given JS library is configured with SUBMIT_ON_SUCCESS_CONFIG_SUBMIT_CALLBACK and BASE_JWT
+    When User opens example page SUBMIT_CALLBACK
     When User fills payment form with defined card VISA_FRICTIONLESS
     And User clicks Pay button
     Then User will not see notification frame
@@ -76,8 +90,22 @@ Feature: E2E Card Payments - redirection
 
   @e2e_config_submit_on_error_callback
   Scenario: Unsuccessful payment with submitOnError enabled and error callback set
-    Given JS library is configured with SUBMIT_ON_ERROR_CONFIG_CALLBACK and BASE_JWT
+    Given JS library is configured with SUBMIT_ON_ERROR_CONFIG_ERROR_CALLBACK and BASE_JWT
     When User opens example page ERROR_CALLBACK
+    When User fills payment form with defined card VISA_DECLINED_CARD
+    And User clicks Pay button
+    Then User will not see notification frame
+    And User will be sent to page with url "example.org" having params
+      | key           | value   |
+      | errormessage  | Decline |
+      | baseamount    | 1000    |
+      | currencyiso3a | GBP     |
+      | errorcode     | 70000   |
+
+  @e2e_config_submit_on_error_callback
+  Scenario: Unsuccessful payment with submitOnError enabled and submit callback set
+    Given JS library is configured with SUBMIT_ON_ERROR_CONFIG_SUBMIT_CALLBACK and BASE_JWT
+    When User opens example page SUBMIT_CALLBACK
     When User fills payment form with defined card VISA_DECLINED_CARD
     And User clicks Pay button
     Then User will not see notification frame
@@ -90,7 +118,7 @@ Feature: E2E Card Payments - redirection
 
   @e2e_config_submit_on_cancel_callback
   Scenario: Unsuccessful payment with submitOnCancel enabled and cancel callback set
-    Given JS library is configured with SUBMIT_ON_CANCEL_CONFIG_CALLBACK and BASE_JWT
+    Given JS library is configured with SUBMIT_ON_CANCEL_CONFIG_CANCEL_CALLBACK and BASE_JWT
     When User opens example page CANCEL_CALLBACK
     And User clicks on Visa Checkout button
     And User closes the visa checkout popup
