@@ -1,21 +1,21 @@
-Feature: E2E for buttonID
+Feature: Mock for button id
   As a user
-  I want to use config with button id
-  In order to check payment
+  I want to open page with two buttons
+  In order to check payment process for two buttons
 
   Background:
     Given JavaScript configuration is set for scenario based on scenario's @config tag
     And User opens prepared payment form page WITH_ADDITIONAL_BUTTON
 
   @base_config
-  Scenario: Request was sent
+  Scenario: Click on button configured as button id
     When User fills payment form with defined card VISA_CARD
     And THREEDQUERY mock response is set to "ENROLLED_Y"
     And User clicks Pay button - AUTH response is set to "OK"
     Then THREEDQUERY request was sent only once with correct data
 
   @base_config
-  Scenario: Request was not sent
+  Scenario: Click on button configured as additional button
     When User fills payment form with defined card VISA_CARD
     And User clicks Additional button
     Then AUTH and THREEDQUERY requests were not sent
