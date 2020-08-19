@@ -11,3 +11,9 @@ class ExamplePage(Enum):
     SUCCESS_CALLBACK = "extraSuccessFunction=(function callback(data)" \
                        "{const form=document.getElementById('st-form');" \
                        "form.action='https://example.org';form.submit();})()"
+    ERROR_CALLBACK = "extraErrorFunction=(function callback(data)" \
+                     "{const form=document.getElementById('st-form');" \
+                     "form.action='https://example.org';form.submit();})()"
+    CANCEL_CALLBACK = "extraCancelFunction=(function callback(data)" \
+                      "{const form=document.getElementById('st-form');" \
+                      "form.action='https://example.org';form.submit();})()"
