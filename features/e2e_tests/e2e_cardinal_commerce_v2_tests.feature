@@ -27,7 +27,7 @@ Feature: Cardinal Commerce E2E tests
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Attempts Stand-In Frictionless Authentication - Visa
-    When User fills payment form with defined card VISA_ATTEMPTS_STAND_IN_FRICTIONLESS_AUTH
+    When User fills payment form with defined card VISA_FRICTIONLESS
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
@@ -80,7 +80,7 @@ Feature: Cardinal Commerce E2E tests
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Successful Step Up Authentication - Visa
-    When User fills payment form with defined card VISA_SUCCESSFUL_STEP_UP_AUTH
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button
     And User fills V2 authentication modal
     Then User will see payment status information: "Payment has been successfully processed"
