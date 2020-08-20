@@ -38,6 +38,8 @@ def step_impl(context):
             stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
         elif 'subscription' in context.scenario.tags[0]:
             stub_st_request_type("jsinitSubscription.json", RequestType.JSINIT.name)
+        elif 'start_on_load' in context.scenario.tags[0]:
+            stub_st_request_type("jsInitStartOnLoad.json", RequestType.JSINIT.name)
         else:
             stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
     config_tag = context.scenario.tags[0]

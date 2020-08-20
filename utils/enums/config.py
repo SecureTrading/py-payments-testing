@@ -80,5 +80,7 @@ config = {
     "e2e_config_defer_init_true": "e2eConfigWithDeferinitTrue.json",
     "e2e_config_for_iframe": "e2e_config/e2eConfigForIframe.json",
     "e2e_config_for_iframe_start_on_load_true": "e2e_config/e2eConfigForIframeStartOnLoadTrue.json",
-    "e2e_button_id_config": "e2e_config/e2eButtonIdConfig.json"
+    "e2e_button_id_config": "e2e_config/e2eButtonIdConfig.json",
+    "config_requestTypes_tdq_start_on_load": "configRequestTypesTdqStartOnLoad.json",
+    "config_requestTypes_tdq_auth_start_on_load": "configRequestTypesTdqAuthStartOnLoad.json"
 }

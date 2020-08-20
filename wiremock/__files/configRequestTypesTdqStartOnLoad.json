@@ -1,0 +1,10 @@
+{
+  "components": {
+    "defaultPaymentType": "",
+    "requestTypes": [
+      "THREEDQUERY"
+    ],
+    "paymentTypes": [],
+    "startOnLoad": true
+  }
+}

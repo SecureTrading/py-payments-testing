@@ -1,0 +1,12 @@
+{
+  "components": {
+    "defaultPaymentType": "",
+    "requestTypes": [
+      "ACCOUNTCHECK",
+      "THREEDQUERY",
+      "AUTH"
+    ],
+    "paymentTypes": [],
+    "startOnLoad": true
+  }
+}
