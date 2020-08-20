@@ -24,6 +24,9 @@ class Waits:
     def wait_for_element_visibility(self, locator):
         return self._wait.until(ec.visibility_of_element_located(locator))
 
+    def wait_for_element_invisibility(self, locator):
+        return self._wait.until(ec.invisibility_of_element_located(locator))
+
     def wait_for_text_to_be_present_in_element(self, locator, text_):
         return self._wait.until(ec.text_to_be_present_in_element(*locator, text_))
 
