@@ -3,7 +3,7 @@ Feature: E2E tests for iframe
   I want to use iframe page
   To make payment
 
-
+  @reactJS
   @e2e_config_for_iframe @parent_iframe
   Scenario: Successful frictionless payment on iframe
     Given JS library is configured with BASIC_CONFIG and BASE_JWT

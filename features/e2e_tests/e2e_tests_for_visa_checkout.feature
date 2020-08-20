@@ -4,6 +4,7 @@ Feature: Visa checkout E2E tests
   I want to use visa checkout
   To use defined card
 
+  @reactJS
   Scenario Outline: Successful Authentication by Visa checkout
     Given JS library is configured with VISA_CHECKOUT_CONFIG and BASE_JWT
     And User opens example page
@@ -93,6 +94,7 @@ Feature: Visa checkout E2E tests
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
 
+  @switch_to_parent_iframe
   Scenario: Successful Authentication by Visa checkout with iFrame
     Given JS library is configured with VISA_CHECKOUT_CONFIG and BASE_JWT
     And User opens example page IN_IFRAME

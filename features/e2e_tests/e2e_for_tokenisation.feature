@@ -3,6 +3,7 @@ Feature: E2E for tokenisation
   I want to use predefined jwt config files
   To execute payment with only cvv
 
+  @reactJS
   @e2e_for_tokenisation @jwt_config_visa_frictionless_with_parenttransaction
   Scenario: Visa Frictionless tokenisation
     Given JS library is configured with TOKENISATION_CONFIG and JWT_VISA_FRICTIONLESS_PARENT_TRANSACTION

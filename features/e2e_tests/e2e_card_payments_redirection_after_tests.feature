@@ -3,6 +3,7 @@ Feature: E2E Card Payments - redirection
   I want to be redirected to page matching my payment status
   So that my payment is handled appropriately
 
+  @reactJS
   @e2e_config_submit_on_success
   Scenario: Successful payment with submitOnSuccess enabled
     Given JS library is configured with SUBMIT_ON_SUCCESS_CONFIG and BASE_JWT
@@ -31,6 +32,7 @@ Feature: E2E Card Payments - redirection
       | currencyiso3a | GBP                                     |
       | errorcode     | 0                                       |
 
+  @reactJS
   @e2e_config_submit_on_error
   Scenario: Unsuccessful payment with submitOnError enabled
     Given JS library is configured with SUBMIT_ON_ERROR_CONFIG and BASE_JWT

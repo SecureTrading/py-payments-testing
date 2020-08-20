@@ -4,6 +4,7 @@ Feature: E2E Cybertonica
   I want to use card payments method with cybertonica config
   In order to check full payment functionality
 
+  @reactJS
   @e2e_config_cybertonica
   Scenario: Cybertonica - successfull payment
     Given JS library is configured with CYBERTONICA_CONFIG and BASE_JWT

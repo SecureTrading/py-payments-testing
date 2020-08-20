@@ -7,6 +7,7 @@ Feature: Cardinal Commerce E2E tests
     Given JS library is configured with BASIC_CONFIG and BASE_JWT
     And User opens example page
 
+  @reactJS
   @base_config @cardinal_commerce_v2.0
   Scenario: Successful Frictionless Authentication - MasterCard
     When User fills payment form with defined card MASTERCARD_SUCCESSFUL_FRICTIONLESS_AUTH

@@ -279,8 +279,7 @@ class PaymentMethodsPage(BasePage):
         assert expected_message in input_value, assertion_message
 
     def validate_payment_status_message(self, expected_message):
-        if CONFIGURATION.REMOTE_DEVICE.strip():
-            self.scroll_to_top()
+        self.scroll_to_top()
         actual_message = self.get_payment_status_message()
         assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
         add_to_shared_dict("assertion_message", assertion_message)

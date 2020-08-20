@@ -4,6 +4,7 @@ Feature: E2E Card Payments with updated jwt
   I want to use card payments method
   In order to check full payment functionality with updated jwt
 
+  @reactJS
   Scenario: Successful payment with updated jwt
     Given JS library is configured with DEFER_INIT_CONFIG and BASE_JWT
     And User opens example page WITH_UPDATE_JWT

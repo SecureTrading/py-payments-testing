@@ -7,6 +7,7 @@ Feature: Cardinal Commerce E2E tests
     Given JS library is configured with BASIC_CONFIG and BASE_JWT
     And User opens example page
 
+  @reactJS
   @e2e_cardinal_commerce_v1
   Scenario: Successful Authentication
     When User fills payment form with defined card MASTERCARD_SUCCESSFUL_AUTH_CARD

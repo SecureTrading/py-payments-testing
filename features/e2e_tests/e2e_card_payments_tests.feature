@@ -3,6 +3,7 @@ Feature: E2E Card Payments
   I want to use card payments method
   In order to check full payment functionality
 
+  @reactJS
   @e2e_config_bypass_mastercard
   Scenario: Successful payment with bypassCard using Mastercard
     Given JS library is configured with BYPASS_MASTERCARD_CONFIG and BASE_JWT
@@ -12,6 +13,7 @@ Feature: E2E Card Payments
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
 
+  @reactJS
   @e2e_config_for_bypass_cards
   Scenario: Successful payment bypass cards without 3d secure
     Given JS library is configured with BYPASS_CARDS_CONFIG and BASE_JWT
@@ -41,3 +43,21 @@ Feature: E2E Card Payments
     And User will see that notification frame has "red" color
     And User will see that "EXPIRATION_DATE" field is highlighted
     And User will see "Invalid field" message under field: "EXPIRATION_DATE"
+
+  @reactJS
+  Scenario: Successful payment with frictionless card
+    Given JS library is configured with BASIC_CONFIG and BASE_JWT
+    And User opens example page
+    When User fills payment form with defined card VISA_FRICTIONLESS
+    And User clicks Pay button
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+
+  @reactJS
+  Scenario: Successful payment with non-frictionless card
+    Given JS library is configured with BASIC_CONFIG and BASE_JWT
+    And User opens example page
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
+    And User clicks Pay button
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
