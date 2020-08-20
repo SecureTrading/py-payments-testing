@@ -90,6 +90,7 @@ Feature: E2E Card Payments - redirection
       | currencyiso3a | GBP                                     |
       | errorcode     | 0                                       |
 
+  @reactJS
   @e2e_config_submit_on_error_callback
   Scenario: Unsuccessful payment with submitOnError enabled and error callback set
     Given JS library is configured with SUBMIT_ON_ERROR_CONFIG_ERROR_CALLBACK and BASE_JWT

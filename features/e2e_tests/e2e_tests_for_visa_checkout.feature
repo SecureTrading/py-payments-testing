@@ -38,8 +38,8 @@ Feature: Visa checkout E2E tests
     And User clicks on Visa Checkout button
     And User fills visa checkout email address
     And User fills visa checkout one time password
-    When User select VISA_CARD card on visa checkout popup
-    And User confirm displayed card with data
+    When User selects VISA_CARD card on visa checkout popup
+    And User confirms displayed card with data
     Then User will be sent to page with url "www.example.com" having params
       | key           | value                                   |
       | errormessage  | Payment has been successfully processed |
@@ -53,8 +53,8 @@ Feature: Visa checkout E2E tests
     And User clicks on Visa Checkout button
     And User fills visa checkout email address
     And User fills visa checkout one time password
-    When User select VISA_DECLINED_CARD card on visa checkout popup
-    And User confirm displayed card with data
+    When User selects VISA_DECLINED_CARD card on visa checkout popup
+    And User confirms displayed card with data
     Then User will see payment status information: "Decline"
     And User will see "error" popup
 
@@ -64,8 +64,8 @@ Feature: Visa checkout E2E tests
     And User clicks on Visa Checkout button
     And User fills visa checkout email address
     And User fills visa checkout one time password
-    When User select VISA_CARD card on visa checkout popup
-    And User confirm displayed card with data
+    When User selects VISA_CARD card on visa checkout popup
+    And User confirms displayed card with data
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
 
@@ -78,8 +78,8 @@ Feature: Visa checkout E2E tests
     And User clicks on Visa Checkout button
     And User fills visa checkout email address
     And User fills visa checkout one time password
-    When User select VISA_CARD card on visa checkout popup
-    And User confirm displayed card with data
+    When User selects VISA_CARD card on visa checkout popup
+    And User confirms displayed card with data
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
 
@@ -89,8 +89,8 @@ Feature: Visa checkout E2E tests
     And User clicks on Visa Checkout button
     And User fills visa checkout email address
     And User fills visa checkout one time password
-    When User select VISA_CARD card on visa checkout popup
-    And User confirm displayed card with data
+    When User selects VISA_CARD card on visa checkout popup
+    And User confirms displayed card with data
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
 
@@ -101,7 +101,7 @@ Feature: Visa checkout E2E tests
     And User clicks on Visa Checkout button
     And User fills visa checkout email address
     And User fills visa checkout one time password
-    When User select VISA_FRICTIONLESS card on visa checkout popup
-    And User confirm displayed card with data
+    When User selects VISA_FRICTIONLESS card on visa checkout popup
+    And User confirms displayed card with data
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color

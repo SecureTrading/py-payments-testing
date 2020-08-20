@@ -61,12 +61,3 @@ Feature: E2E Card Payments
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
-
-  @e2e_config_requesttypes_invalid_order
-  Scenario: Unsuccessful payment with config's requestTypes param having values in invalid order
-    Given JS library is configured with REQUEST_TYPES_CONFIG_INVALID_ORDER and BASE_JWT
-    And User opens example page
-    When User fills payment form with defined card MASTERCARD_CARD
-    And User clicks Pay button
-    Then User will see payment status information: "Invalid field"
-    And User will see that notification frame has "red" color
