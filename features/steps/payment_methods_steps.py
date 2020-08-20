@@ -18,7 +18,7 @@ from utils.enums.responses.tdq_response import TDQresponse
 from utils.enums.responses.visa_response import VisaResponse
 from utils.helpers.request_executor import remove_item_from_request_journal
 from utils.mock_handler import stub_config, stub_st_request_type, MockUrl, stub_payment_status, \
-    stub_st_request_type_server_error
+    stub_st_request_type_server_error, stub_st_request_type_acheck_tdq
 
 use_step_matcher("re")
 
@@ -72,6 +72,10 @@ def step_impl(context, tdq_response):
 
 @step("(?P<request_type>.+) mock response is set to OK")
 def step_impl(context, request_type):
+    if "ACCOUNTCHECK, THREEDQUERY" in request_type and 'config_immediate_payment_acheck_tdq_auth_riskdec' in context.scenario.tags[0]:
+        stub_st_request_type_acheck_tdq(request_type_response[request_type], request_type)
+    else:
+        stub_st_request_type(request_type_response[request_type], request_type)
     stub_st_request_type(request_type_response[request_type], request_type)
 
 
