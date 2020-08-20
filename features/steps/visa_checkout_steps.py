@@ -24,14 +24,20 @@ def step_impl(context):
     visa_checkout_page.fill_selected_field(VisaCheckoutField.ONE_TIME_PASSWORD.name)
 
 
-@step("User confirm displayed card with data")
+@step("User confirms displayed card with data")
 def step_impl(context):
     visa_checkout_page = context.page_factory.get_page(page_name='visa_checkout')
     visa_checkout_page.click_continue_visa_payment_process()
 
 
-@step('User select (?P<card>.+) card on visa checkout popup')
+@step('User selects (?P<card>.+) card on visa checkout popup')
 def step_impl(context, card: Card):
     visa_checkout_page = context.page_factory.get_page(page_name='visa_checkout')
     card = Card.__members__[card]
     visa_checkout_page.select_card_by_ending_number(card.formatted_number[-4:])
+
+
+@step('User closes the visa checkout popup')
+def step_impl(context):
+    visa_checkout_page = context.page_factory.get_page(page_name='visa_checkout')
+    visa_checkout_page.click_visa_checkout_close_button()

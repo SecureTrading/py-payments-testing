@@ -114,6 +114,9 @@ class PaymentMethodsPage(BasePage):
     def click_cardinal_submit_btn(self):
         self._action.click(PaymentMethodsLocators.cardinal_v2_authentication_submit_btn)
 
+    def click_additional_btn(self):
+        self._action.click(PaymentMethodsLocators.additional_button)
+
     def press_enter_button_on_security_code_field(self):
         self._action.switch_to_iframe_and_press_enter(FieldType.SECURITY_CODE.value,
                                                                    PaymentMethodsLocators.security_code_input_field)

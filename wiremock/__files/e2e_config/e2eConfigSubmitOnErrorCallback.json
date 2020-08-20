@@ -1,0 +1,15 @@
+{
+  "bypassCards": [
+    "MASTERCARD"
+  ],
+  "components": {
+    "defaultPaymentType": "",
+    "requestTypes": [
+    ],
+    "paymentTypes": [],
+    "startOnLoad": false
+  },
+  "panIcon": true,
+  "submitOnError": true,
+  "errorCallback": "callback"
+}
