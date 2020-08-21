@@ -627,7 +627,7 @@ def step_impl(context, example_page: ExamplePage):
     url = url.replace("??", "?").replace("&&", "&")  # just making sure some elements are not duplicated
 
     payment_page.open_page(url)
-    #ToDo Check this code
+
     if example_page is not None and "IN_IFRAME" in example_page:
         payment_page.switch_to_parent_iframe()
     payment_page.wait_for_iframe()
