@@ -1,0 +1,16 @@
+{
+  "styles": {
+    "defaultStyles": {
+      "background-color-input": "AliceBlue"
+    },
+    "cardNumber": {
+      "background-color-input": "blue"
+    },
+    "expirationDate": {
+      "background-color-input": "red"
+    },
+    "securityCode": {
+      "background-color-input": "red"
+    }
+  }
+}

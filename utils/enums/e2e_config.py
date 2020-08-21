@@ -30,3 +30,8 @@ class e2eConfig(Enum):
     VISA_CHECKOUT_WITH_DEFERINIT_TRUE_CONFIG = "e2eConfigVisaCheckoutWithDeferInitTrue.json"
     VISA_CHECKOUT_WITH_REQUEST_TYPES_CONFIG = "e2eConfigVisaCheckoutWithRequestTypes.json"
     BUTTON_ID_CONFIG = "e2eButtonIdConfig.json"
+    ANIMATED_CARD_PAN_ICON_CONFIG = "ConfigAnimatedCardAndPanIcon.json"
+    PLACEHOLDERS_CONFIG = "ConfigPlaceholders.json"
+    STYLES_CONFIG = "ConfigStyles.json"
+    CUSTOM_TRANSLATION_CONFIG = "ConfigCustomTranslation.json"
+    DISABLE_NOTIFICATION_CONFIG = "ConfigDisableNotification.json"

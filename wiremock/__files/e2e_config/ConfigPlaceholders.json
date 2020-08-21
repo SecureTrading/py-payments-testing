@@ -1,0 +1,7 @@
+{
+  "placeholders": {
+    "pan": "Number",
+    "expirydate": "Expiration",
+    "securitycode": "CVV"
+  }
+}
