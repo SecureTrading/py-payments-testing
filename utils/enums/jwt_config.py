@@ -13,3 +13,5 @@ class JwtConfig(Enum):
     JWT_WITH_NON_FRICTIONLESS_CARD = "jwt_config_non_frictionless_card.json"
     JWT_WITH_FRICTIONLESS_CARD = "jwt_config_frictionless_card.json"
     JWT_NON_FRICTIONLESS_CARD_SUBSCRIPTION = "jwt_config_non_frictionless_card_subscription.json"
+    JWT_WITHOUT_LOCALE = "jwt_config_without_locale.json"
+    JWT_WITHOUT_LOCALE_AND_UPDATED_AMOUNT_AND_CURRENCY = "jwt_config_without_locale_and_updated_amount_and_currency.json"

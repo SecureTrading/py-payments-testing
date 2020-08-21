@@ -71,6 +71,8 @@ Feature: Visa checkout E2E tests
   Scenario: Successful Authentication by Visa checkout with updateJwt and deferinit true
     Given JS library is configured with VISA_CHECKOUT_WITH_DEFERINIT_TRUE_CONFIG and BASE_JWT
     And User opens example page WITH_UPDATE_JWT
+      | jwtName          |
+      | BASE_UPDATED_JWT |
     And User calls updateJWT function by filling amount field
     And User clicks on Visa Checkout button
     And User fills visa checkout email address
@@ -97,7 +99,7 @@ Feature: Visa checkout E2E tests
     And User clicks on Visa Checkout button
     And User fills visa checkout email address
     And User fills visa checkout one time password
-    When User select VISA_CARD card on visa checkout popup
+    When User select VISA_FRICTIONLESS card on visa checkout popup
     And User confirm displayed card with data
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color

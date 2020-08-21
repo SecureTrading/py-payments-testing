@@ -79,3 +79,6 @@ class Browser(Waits):
 
     def get_session_id(self):
         return self._browser.session_id
+
+    def wait_for_url(self, page_url):
+        self._browser.wait_for_url(page_url)

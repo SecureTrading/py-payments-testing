@@ -3,8 +3,7 @@
   "payload": {
     "baseamount": "2000",
     "accounttypedescription": "ECOM",
-    "currencyiso3a": "USD",
-    "sitereference": "test_james38641",
-    "locale": "en_GB"
+    "currencyiso3a": "EUR",
+    "sitereference": "test_james38641"
   }
 }
