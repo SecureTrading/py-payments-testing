@@ -30,3 +30,4 @@ class e2eConfig(Enum):
     VISA_CHECKOUT_WITH_DEFERINIT_TRUE_CONFIG = "e2eConfigVisaCheckoutWithDeferInitTrue.json"
     VISA_CHECKOUT_WITH_REQUEST_TYPES_CONFIG = "e2eConfigVisaCheckoutWithRequestTypes.json"
     BUTTON_ID_CONFIG = "e2eButtonIdConfig.json"
+    CHANGED_FORM_ID_CONFIG = "e2eFormIdConfig.json"

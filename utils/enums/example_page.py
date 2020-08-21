@@ -7,6 +7,7 @@ class ExamplePage(Enum):
     WITH_UPDATE_JWT = "updatedJwt=%s&"
     WITH_SPECIFIC_FORM_ID = "formId=test"
     WITH_CALLBACK = "todo"
+    WITH_CHANGED_FORM_ID = "formId=testForm&"
     IN_IFRAME = "iframe.html?"
     SUCCESS_CALLBACK = "extraSuccessFunction=(function callback()" \
                        "{const form=document.getElementById('st-form');" \
