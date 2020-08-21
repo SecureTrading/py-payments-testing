@@ -29,16 +29,13 @@ Feature: Payment form styles check
   @inline_config
   Scenario: Check translation overwriting mechanism for Pay button and validation message
     Given JS library is configured with CUSTOM_TRANSLATION_CONFIG and BASE_JWT
-    And JSINIT response is set
     When User opens example page
     Then User will see that Pay button is translated into "KupTeraz!"
 
   @inline_config
   Scenario: Notification frame is not displayed after payment
     Given JS library is configured with DISABLE_NOTIFICATION_CONFIG and BASE_JWT
-    And JSINIT response is set
     When User opens example page
     And User fills payment form with defined card MASTERCARD_CARD
-    And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
-    And User clicks Pay button - AUTH response is set to "OK"
+    And User clicks Pay button
     Then User will not see notification frame
