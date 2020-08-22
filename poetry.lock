@@ -171,8 +171,8 @@ category = "main"
 description = "Wiremock Admin API Client"
 name = "wiremock"
 optional = false
-python-versions = ">=3.4"
-version = "2.1.2"
+python-versions = "*"
+version = "2.0.0"
 
 [package.dependencies]
 requests = ">=2.20.0"
@@ -183,7 +183,7 @@ develop = ["Sphinx (>=2.4.3,<2.5.0)", "black (>=19.10b0,<20.0.0)", "coverage (>=
 docs = ["Sphinx (>=2.4.3)", "sphinx-rtd-theme (>=0.4.3)", "watchdog (>=0.10.2)"]
 
 [metadata]
-content-hash = "f1838bcff0d7db1df988c2518b98279288052213e8fb8b8bd32bee1e58f99b67"
+content-hash = "e75abc8ead5294c39f97ff1505617399c9889adf04b4ac1e8ea296978341bb86"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -247,6 +247,6 @@ urllib3 = [
     {file = "urllib3-1.25.6.tar.gz", hash = "sha256:9a107b99a5393caf59c7aa3c1249c16e6879447533d0887f4336dde834c7be86"},
 ]
 wiremock = [
-    {file = "wiremock-2.1.2-py3-none-any.whl", hash = "sha256:54e0623cbf59db7e2c86820c1fb99107e605f9409e161524b1b0d2be4c1d04f4"},
-    {file = "wiremock-2.1.2.tar.gz", hash = "sha256:b4f287fbe31ad5926e3efcc782f01142f23dd7ee51ba01136390ef5a72d49f6f"},
+    {file = "wiremock-2.0.0-py3-none-any.whl", hash = "sha256:a9b7c91e015675c572bc55974d7d8da8a12f29ab8a8e3a9ebfcc18ce3a2cebca"},
+    {file = "wiremock-2.0.0.tar.gz", hash = "sha256:8fcb1e9deb7795b29a883ddfa688298ccb6d15c4bc05e09805cc2a1f9d176284"},
 ]
