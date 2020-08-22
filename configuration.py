@@ -105,7 +105,7 @@ class DriverConfig:
                          "ie.ensureCleanSession": 'true',
                          "ie.forceCreateProcessApi": 'true',
                          # "browserstack.sendKeys": send_keys,
-                         # "browserstack.idleTimeout": 30000
+                         # "browserstack.idleTimeout": 3000
                          }
         capabilities = {}
         for key, value in possible_caps.items():
