@@ -43,6 +43,10 @@ def configure_for_local_host():
     Config.base_url = f'{MockUrl.WEBSERVICES_DOMAIN.value}/__admin'
     Config.requests_verify = False
 
+def configure_for_thirdparty_host():
+    Config.base_url = f'{MockUrl.THIRDPARTY_URL.value}/__admin'
+    Config.requests_verify = False
+
 
 def stub_config(config_json):
     mapping = Mapping(
@@ -81,6 +85,25 @@ def stub_st_request_type(mock_json, request_type):
     Mappings.create_mapping(mapping)
 
 
+def stub_st_request_type_acheck_tdq(mock_json, request_type):
+    stub_url_options_for_cors(MockUrl.GATEWAY_MOCK_URI.value)
+    configure_for_local_host()
+    mapping = Mapping(
+        priority=100,
+        request=MappingRequest(
+            method=HttpMethods.POST,
+            url=MockUrl.GATEWAY_MOCK_URI.value
+        ),
+        response=MappingResponse(
+            status=200,
+            headers={'Access-Control-Allow-Headers': 'Content-Type',
+                     'Access-Control-Allow-Methods': "GET, POST"},
+            json_body=get_mock_response_from_json(mock_json)
+        ),
+        persistent=False)
+    Mappings.create_mapping(mapping)
+
+
 def stub_st_request_type_server_error(mock_json, request_type):
     stub_url_options_for_cors(MockUrl.GATEWAY_MOCK_URI.value)
     configure_for_local_host()
@@ -102,6 +125,7 @@ def stub_st_request_type_server_error(mock_json, request_type):
 
 
 def stub_payment_status(mock_url, mock_json):
+    configure_for_thirdparty_host()
     mapping = Mapping(
         priority=100,
         request=MappingRequest(
