@@ -20,9 +20,6 @@
   },
   "submitOnSuccess": false,
   "submitCallback": "",
-  "translations": {
-    "An error occurred": "Wystąpił błąd"
-  },
   "components": {
   },
   "applePay": {

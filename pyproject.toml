@@ -13,6 +13,8 @@ selenium = "^3.141"
 pyioc = "^0.3.0"
 attrdict = "^2.0.1"
 wiremock = "^2.0"
+assertpy = "^1.1"
+PyJWT = "^1.7.1"
 
 
 [build-system]

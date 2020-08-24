@@ -1,14 +1,20 @@
 import time
 
-import requests
+from assertpy import soft_assertions
 from behave import *
 
 from configuration import CONFIGURATION
+from utils.configurations.inline_config_generator import create_inline_config
+from utils.configurations.jwt_generator import encode_jwt_for_json
+from utils.dict.url_after_redirection import url_after_redirection
 from utils.enums.config import config
+from utils.enums.e2e_config import e2eConfig
+from utils.enums.example_page import ExamplePage
 
 from utils.enums.field_type import FieldType
+from utils.enums.jwt_config import JwtConfig
 from utils.enums.payment_type import PaymentType
-from utils.enums.request_type import RequestType, request_type_response, request_type_applepay
+from utils.enums.request_type import RequestType, request_type_response, request_type_applepay, request_type_visa
 from utils.enums.responses.acs_response import ACSresponse
 from utils.enums.responses.apple_pay_response import ApplePayResponse
 from utils.enums.responses.auth_response import AUTHresponse
@@ -17,7 +23,7 @@ from utils.enums.responses.tdq_response import TDQresponse
 from utils.enums.responses.visa_response import VisaResponse
 from utils.helpers.request_executor import remove_item_from_request_journal
 from utils.mock_handler import stub_config, stub_st_request_type, MockUrl, stub_payment_status, \
-    stub_st_request_type_server_error
+    stub_st_request_type_server_error, stub_st_request_type_acheck_tdq
 
 use_step_matcher("re")
 
@@ -26,10 +32,12 @@ use_step_matcher("re")
 def step_impl(context):
     remove_item_from_request_journal()
     if 'config_skip_jsinit' not in context.scenario.tags:
-        if 'config_tokenization_visa' in context.scenario.tags[0]:
+        if 'config_tokenization_visa' in context.scenario.tags[0] or 'config_tokenization_bypass_cards_visa' in context.scenario.tags[0]:
             stub_st_request_type("jsinitTokenizationVisa.json", RequestType.JSINIT.name)
         elif 'config_tokenization_amex' in context.scenario.tags[0]:
             stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
+        elif 'subscription' in context.scenario.tags[0]:
+            stub_st_request_type("jsinitSubscription.json", RequestType.JSINIT.name)
         else:
             stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
     config_tag = context.scenario.tags[0]
@@ -69,6 +77,10 @@ def step_impl(context, tdq_response):
 
 @step("(?P<request_type>.+) mock response is set to OK")
 def step_impl(context, request_type):
+    if "ACCOUNTCHECK, THREEDQUERY" in request_type and 'config_immediate_payment_acheck_tdq_auth_riskdec' in context.scenario.tags[0]:
+        stub_st_request_type_acheck_tdq(request_type_response[request_type], request_type)
+    else:
+        stub_st_request_type(request_type_response[request_type], request_type)
     stub_st_request_type(request_type_response[request_type], request_type)
 
 
@@ -77,6 +89,12 @@ def step_impl(context, request_type):
     stub_st_request_type(ApplePayResponse.SUCCESS.value, RequestType.WALLETVERIFY.name)
     stub_payment_status(MockUrl.APPLEPAY_MOCK_URI.value, ApplePayResponse.SUCCESS.value)
     stub_st_request_type(request_type_applepay[request_type], request_type)
+
+@step("(?P<request_type>.+) Visa Checkout mock response is set to SUCCESS")
+def step_impl(context, request_type):
+    stub_payment_status(MockUrl.VISA_MOCK_URI.value, VisaResponse.SUCCESS.value)
+    stub_st_request_type(request_type_visa[request_type], request_type)
+
 
 
 @step('ACS mock response is set to "(?P<acs_response>.+)"')
@@ -108,9 +126,11 @@ def step_impl(context, request_type, action_code):
         payment_page.scroll_to_top()
 
 
-@then('User will see payment status information: "(?P<payment_status_message>.+)"')
+@step('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if 'switch_to_parent_iframe' in context.scenario.tags:
+        payment_page.switch_to_parent_iframe()
     payment_page.validate_payment_status_message(payment_status_message)
 
 
@@ -124,6 +144,18 @@ def step_impl(context, color):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
+
+
+@step("User clicks Additional button")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.click_additional_btn()
+
+
+@step("User accept success alert")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.accept_alert()
 
 
 @then('User will see validation message "(?P<expected_message>.+)" under all fields')
@@ -208,10 +240,10 @@ def step_impl(context, action_code):
     payment_page.choose_payment_methods(PaymentType.APPLE_PAY.name)
 
 
-@when('User chooses ApplePay as payment method')
-def step_impl(context):
+@when('User chooses (?P<payment_method>.+) as payment method')
+def step_impl(context, payment_method):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.choose_payment_methods(PaymentType.APPLE_PAY.name)
+    payment_page.choose_payment_methods(PaymentType[payment_method].name)
 
 
 @then('User will see that Submit button is "(?P<form_status>.+)" after payment')
@@ -221,12 +253,16 @@ def step_impl(context, form_status):
     payment_page.validate_form_status(FieldType.SUBMIT_BUTTON.name, form_status)
 
 
-@step('User will see that all input fields are "(?P<form_status>.+)"')
-def step_impl(context, form_status):
+@step('User will see that (?P<field>.+) input fields are "(?P<form_status>.+)"')
+def step_impl(context, field: FieldType, form_status):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
-    payment_page.validate_form_status(FieldType.CARD_NUMBER.name, form_status)
-    payment_page.validate_form_status(FieldType.EXPIRATION_DATE.name, form_status)
+    field = FieldType.__members__[field]
+    if field.name == "ALL":
+        payment_page.validate_form_status(FieldType.SECURITY_CODE.name, form_status)
+        payment_page.validate_form_status(FieldType.CARD_NUMBER.name, form_status)
+        payment_page.validate_form_status(FieldType.EXPIRATION_DATE.name, form_status)
+    else:
+        payment_page.validate_form_status(field.name, form_status)
 
 
 @step('(?P<request_type>.+) response is set to "(?P<action_code>.+)"')
@@ -309,30 +345,23 @@ def step_impl(context):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     time.sleep(1)
-    if "Visa Checkout - successful" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_success_url)
-    elif "Visa Checkout - error" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_error_url)
-    elif "Visa Checkout - canceled" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_visa_cancel_url)
-    elif "ApplePay - successful" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_success_url)
-    elif "ApplePay - error" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_error_url)
-    elif "ApplePay - canceled" in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_apple_pay_cancel_url)
-    elif "Cardinal Commerce - successful" in context.scenario.name:
-        if 'IE' in CONFIGURATION.REMOTE_BROWSER:
-            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url_IE)
-        else:
-            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_success_url)
-    elif "Cardinal Commerce - error" in context.scenario.name:
-        if 'ie' in context.browser:
-            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_error_url_IE)
-        else:
-            payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_cardinal_error_url)
-    elif "Immediate payment with submitOnSuccess " in context.scenario.name:
-        payment_page.validate_if_url_contains_info_about_payment(context.test_data.step_payment_immediate_payment_url)
+    for key, value in url_after_redirection.items():
+        if key in context.scenario.name:
+            if "Cardinal Commerce - successful" in key and 'IE' in CONFIGURATION.REMOTE_BROWSER:
+                payment_page.validate_if_url_contains_info_about_payment(url_after_redirection['IE - success'])
+            elif "Cardinal Commerce - error" in key and 'IE' in CONFIGURATION.REMOTE_BROWSER:
+                payment_page.validate_if_url_contains_info_about_payment(url_after_redirection['IE - error'])
+            else:
+                payment_page.validate_if_url_contains_info_about_payment(value)
+                break
+
+@step('User will be sent to page with url "(?P<url>.+)" having params')
+def step_impl(context, url: str):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    with soft_assertions():
+        payment_page.validate_base_url(url)
+        for param in context.table:
+            payment_page.validate_if_url_contains_param(param['key'], param['value'])
 
 
 @when('User fills payment form with credit card number "(?P<card_number>.+)", expiration date "(?P<exp_date>.+)"')
@@ -341,7 +370,7 @@ def step_impl(context, card_number, exp_date):
     payment_page.fill_payment_form_without_cvv(card_number, exp_date)
 
 
-@step("User fills amount field")
+@step("User calls updateJWT function by filling amount field")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.fill_amount_field('1')
@@ -409,8 +438,7 @@ def step_impl(context):
 @step("AUTH and THREEDQUERY requests were sent only once")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'config_immediate_payment' in context.scenario.tags or ('config_defer_init_and_start_on_load_true' in context.scenario.tags)\
-        or ('config_immediate_payment_and_submit_on_success' in context.scenario.tags):
+    if 'config_immediate_payment' in context.scenario.tags[0] or ('config_defer_init_and_start_on_load_true' in context.scenario.tags):
         payment_page.validate_number_of_requests_without_data(RequestType.THREEDQUERY.name, 1)
         payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 1)
     else:
@@ -443,6 +471,12 @@ def step_impl(context):
         payment_page.validate_number_of_requests_with_data(RequestType.AUTH.name, context.pan, context.exp_date, context.cvv, 1)
 
 
+@step("AUTH request was sent only once")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 1)
+
+
 @step("AUTH and THREEDQUERY requests were not sent")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
@@ -453,6 +487,7 @@ def step_impl(context):
 @step("(?P<thirdparty>.+) or AUTH requests were sent only once with correct data")
 def step_impl(context, thirdparty):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    context.thirdparty = thirdparty
     if "VISA_CHECKOUT" in thirdparty:
         payment_page.validate_number_of_wallet_verify_requests(MockUrl.VISA_MOCK_URI.value, 1)
     elif "APPLE_PAY" in thirdparty:
@@ -512,7 +547,12 @@ def step_impl(context, name, email, phone):
 @step("(?P<request_type>.+) requests contains updated jwt")
 def step_impl(context, request_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_updated_jwt_in_request(request_type, context.test_data.update_jwt, 1)
+    if "WALLETVERIFY" in request_type and "APPLE_PAY" in context.thirdparty:
+        payment_page.validate_updated_jwt_in_request(request_type, MockUrl.APPLEPAY_MOCK_URI.value, context.test_data.update_jwt, 1)
+    elif "VISA_CHECKOUT" in request_type:
+        payment_page.validate_updated_jwt_in_request_for_visa(PaymentType.VISA_CHECKOUT.value, context.test_data.update_jwt, 1)
+    else:
+        payment_page.validate_updated_jwt_in_request(request_type, MockUrl.GATEWAY_MOCK_URI.value, context.test_data.update_jwt, 1)
 
 
 @then("User will not see (?P<field_type>.+)")
@@ -526,3 +566,100 @@ def step_impl(context, request_type, thirdparty):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_number_of_thirdparty_requests(request_type, PaymentType[thirdparty].value, 1)
 
+
+@step("User press enter button")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.press_enter_button_on_security_code_field()
+
+
+@step("User fills (?P<auth_type>.+) authentication modal")
+def step_impl(context, auth_type):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.fill_cardinal_authentication_code(auth_type)
+    if 'parent_iframe' in context.scenario.tags:
+        payment_page.switch_to_parent_iframe()
+
+
+@step("User will see the same provided data in inputs fields")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_value_of_input_field(FieldType.CARD_NUMBER.name, "5200 0000 0000 1005")
+    payment_page.validate_value_of_input_field(FieldType.EXPIRATION_DATE.name, context.exp_date)
+    payment_page.validate_value_of_input_field(FieldType.SECURITY_CODE.name, context.cvv)
+
+
+@step("User will see correct error code displayed in popup")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_callback_with_data_type("Error code: OK")
+
+
+@then("User remains on checkout page")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_base_url(CONFIGURATION.URL.BASE_URL[8:])
+
+
+@given('JS library is configured with (?P<e2e_config>.+) and (?P<jwt_config>.+)')
+def step_impl(context, e2e_config : e2eConfig, jwt_config : JwtConfig):
+    jwt = encode_jwt_for_json(JwtConfig[jwt_config])
+    context.inline_config = create_inline_config(e2eConfig[e2e_config], jwt)
+
+
+@step("User opens prepared payment form page (?P<example_page>.+)")
+def step_impl(context, example_page : ExamplePage):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}")
+    payment_page.wait_for_iframe()
+
+
+@step("User opens (?:example page|example page (?P<example_page>.+))")
+def step_impl(context, example_page: ExamplePage):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    # setting url specific params accordingly to example page
+    if example_page is None:
+        url = f"{CONFIGURATION.URL.BASE_URL}/?{context.inline_config}"
+    elif "IN_IFRAME" in example_page:
+        url = f"{CONFIGURATION.URL.BASE_URL}/{ExamplePage[example_page].value}{context.inline_config}"
+    elif "WITH_UPDATE_JWT" in example_page:
+        jwt = ''
+        for row in context.table:
+            jwt = str(encode_jwt_for_json(JwtConfig[f"{row['jwtName']}"]), "utf-8")
+        url = f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value % jwt}{context.inline_config}"
+    else:
+        url = f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}&{context.inline_config}"
+    url = url.replace("??", "?").replace("&&", "&")  # just making sure some elements are not duplicated
+
+    payment_page.open_page(url)
+
+    if example_page is not None and "IN_IFRAME" in example_page:
+        payment_page.switch_to_parent_iframe()
+    payment_page.wait_for_iframe()
+
+    
+@then('User will see that (?P<element>.+) is translated into "(?P<expected_value>.+)"')
+def step_impl(context, element, expected_value):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if element in "Pay button":
+        payment_page.validate_element_specific_translation(FieldType.SUBMIT_BUTTON.name, expected_value)
+    else:
+        payment_page.validate_element_specific_translation(FieldType.CARD_NUMBER.name, expected_value)
+        payment_page.validate_element_specific_translation(FieldType.EXPIRATION_DATE.name, expected_value)
+
+
+@step('"(?P<callback_popup>.+)" callback is called only once')
+def step_impl(context, callback_popup):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_number_in_callback_counter_popup(callback_popup)
+
+
+@step("JSINIT response is set")
+def step_impl(context):
+    stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
+
+
+@then('User will see that (?P<field_type>.+) field has (?P<rgb_color>.+) color')
+def step_impl(context, field_type, rgb_color):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_css_style(FieldType[field_type].name, "background-color", rgb_color)

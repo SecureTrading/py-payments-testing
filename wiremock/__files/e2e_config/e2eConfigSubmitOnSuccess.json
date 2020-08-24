@@ -1,0 +1,12 @@
+{
+  "bypassCards": [
+  ],
+  "components": {
+    "requestTypes": [
+    ],
+    "paymentTypes": [],
+    "startOnLoad": false
+  },
+  "panIcon": true,
+  "submitOnSuccess": true
+}

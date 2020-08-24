@@ -5,12 +5,13 @@ from selenium.webdriver.common.by import By
 @dataclass
 class PaymentMethodsLocators:
     # merchant input fields
-    merchant_name: By = (By.ID, 'example-form-name')
-    merchant_email: By = (By.ID, 'example-form-email')
-    merchant_phone: By = (By.ID, 'example-form-phone')
+    merchant_name: By = (By.ID, 'st-form-last-name')
+    merchant_email: By = (By.ID, 'st-form-email')
+    merchant_phone: By = (By.ID, 'st-form-phone')
     amount_field: By = (By.ID, 'example-form-amount')
 
     # Credit card form
+    secure_trade_form: By = (By.ID, "st-control-frame-iframe")
     card_number_input_field: By = (By.ID, 'st-card-number-input')
     expiration_date_input_field: By = (By.ID, 'st-expiration-date-input')
     security_code_input_field: By = (By.ID, 'st-security-code-input')
@@ -21,7 +22,7 @@ class PaymentMethodsLocators:
     security_code_field_validation_message: By = (By.ID, 'st-security-code-message')
 
     # Notification frame
-    notification_frame: By = (By.ID, 'st-notification-frame')
+    notification_frame: By = (By.CSS_SELECTOR, '.st-form__group.notification-frame')
 
     # payment methods
     pay_mock_button: By = (By.ID, 'merchant-submit-button')
@@ -37,6 +38,19 @@ class PaymentMethodsLocators:
     callback_success_popup: By = (By.ID, 'success-popup')
     callback_error_popup: By = (By.ID, 'error-popup')
     callback_cancel_popup: By = (By.ID, 'cancel-popup')
+    callback_data_popup: By = (By.ID, 'data-popup')
+    callback_success_counter: By = (By.ID, 'success-callback-counter')
+    callback_error_counter: By = (By.ID, 'error-callback-counter')
+    callback_cancel_counter: By = (By.ID, 'cancel-callback-counter')
+    callback_submit_counter: By = (By.ID, 'submit-callback-counter')
+
     card_icon_in_input_field: By = (By.ID, 'card-icon')
+
+    cardinal_v2_authentication_code_field: By = (By.CLASS_NAME, 'input-field')
+    cardinal_v2_authentication_submit_btn: By = (By.CLASS_NAME, 'primary')
+    additional_button: By = (By.ID, 'additional-button')
+
+    cardinal_v1_authentication_code_field: By = (By.ID, 'password')
+    cardinal_v1_authentication_submit_btn: By = (By.NAME, 'UsernamePasswordEntry')
 
     not_private_connection_text: By = (By.XPATH, "//*[contains(text(),'This Connection Is Not Private')]")

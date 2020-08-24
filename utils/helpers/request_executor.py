@@ -62,11 +62,21 @@ def get_number_of_requests_with_fraudcontroltransactionid_flag(request_type):
     return data['count']
 
 
-def get_number_of_requests_with_updated_jwt(request_type, update_jwt):
+def get_number_of_requests_with_updated_jwt(request_type, url, update_jwt):
     count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
-                          json={"url": "/jwt/", "bodyPatterns": [
+                          json={"url": url, "bodyPatterns": [
                               {"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==['" + request_type + "'])]"},
                               {"matchesJsonPath": "$.[?(@.jwt=='"+update_jwt+"')]"}
+                          ]}, verify=False)
+    data = json.loads(count.content)
+    return data['count']
+
+
+def get_number_of_requests_with_updated_jwt_for_visa(walletsource, update_jwt):
+    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+                          json={"url": "/jwt/", "bodyPatterns": [
+                              {"matchesJsonPath": "$.request[:1][?(@.walletsource=='" + walletsource + "')]"},
+                              {"matchesJsonPath": "$.[?(@.jwt=='" + update_jwt + "')]"}
                           ]}, verify=False)
     data = json.loads(count.content)
     return data['count']
@@ -82,7 +92,7 @@ def get_number_of_requests_without_data(request_type):
 
 
 def get_number_of_wallet_verify_requests(url):
-    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+    count = requests.post("https://thirdparty.example.com:8443/__admin/requests/count",
                           json={"url": url}, verify=False)
     data = json.loads(count.content)
     return data['count']
@@ -111,3 +121,4 @@ def get_number_of_requests(request_type, pan, expiry_date, cvv):
 
 def remove_item_from_request_journal():
     requests.delete("https://webservices.securetrading.net:8443/__admin/requests", verify=False)
+    requests.delete("https://thirdparty.example.com:8443/__admin/requests", verify=False)

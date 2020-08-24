@@ -1,9 +1,14 @@
 import time
+from urllib.parse import urlparse, parse_qs
+
+from assertpy import assert_that
 
 import ioc_config
 from configuration import CONFIGURATION
 from locators.payment_methods_locators import PaymentMethodsLocators
 from pages.base_page import BasePage
+from utils.enums.auth_data import AuthData
+from utils.enums.auth_type import AuthType
 from utils.enums.field_type import FieldType
 from utils.enums.payment_type import PaymentType
 import json
@@ -11,7 +16,8 @@ import json
 from utils.helpers.request_executor import add_to_shared_dict, get_number_of_requests_with_data, \
     get_number_of_wallet_verify_requests, get_number_of_thirdparty_requests, get_number_of_requests_without_data, \
     get_number_of_requests_with_fraudcontroltransactionid_flag, \
-    get_number_of_requests_with_data_and_fraudcontroltransactionid_flag, get_number_of_requests_with_updated_jwt, get_number_of_requests
+    get_number_of_requests_with_data_and_fraudcontroltransactionid_flag, get_number_of_requests_with_updated_jwt, \
+    get_number_of_requests, get_number_of_requests_with_updated_jwt_for_visa
 
 
 class PaymentMethodsPage(BasePage):
@@ -63,6 +69,12 @@ class PaymentMethodsPage(BasePage):
             self.fill_credit_card_field(FieldType.CARD_NUMBER.name, card_number)
             self.fill_credit_card_field(FieldType.EXPIRATION_DATE.name, expiration_date)
 
+    def fill_payment_form_with_only_cvv(self, cvv):
+        if "ie" in ioc_config.CONFIG.resolve('driver').browser:
+            self.fill_credit_card_field_ie_browser(FieldType.SECURITY_CODE.name, cvv)
+        else:
+            self.fill_credit_card_field(FieldType.SECURITY_CODE.name, cvv)
+
     def fill_merchant_input_field(self, field_type, value):
         if field_type == FieldType.NAME.name:
             self._action.send_keys(PaymentMethodsLocators.merchant_name, value)
@@ -79,14 +91,52 @@ class PaymentMethodsPage(BasePage):
     def fill_amount_field(self, value):
         self._action.send_keys(PaymentMethodsLocators.amount_field, value)
 
+    def fill_cardinal_authentication_code(self, auth_type):
+        auth = AuthType.__members__[auth_type].name
+        self.select_proper_cardinal_authentication(auth)
+
+    def select_proper_cardinal_authentication(self, auth):
+        self._executor.wait_for_element(PaymentMethodsLocators.secure_trade_form)
+        self._action.switch_to_iframe(FieldType.CONTROL_IFRAME.value)
+        self._action.switch_to_iframe(FieldType.CARDINAL_IFRAME.value)
+
+        if auth == AuthType.V1.value:
+            self._action.switch_to_iframe(FieldType.V1_PARENT_IFRAME.value)
+            self._executor.wait_for_element(PaymentMethodsLocators.cardinal_v1_authentication_code_field)
+            self._action.send_keys(PaymentMethodsLocators.cardinal_v1_authentication_code_field, AuthData.PASSWORD.value)
+            self._action.click(PaymentMethodsLocators.cardinal_v1_authentication_submit_btn)
+            self._action.switch_to_parent_iframe()
+        else:
+            self._executor.wait_for_element(PaymentMethodsLocators.cardinal_v2_authentication_code_field)
+            self._action.send_keys(PaymentMethodsLocators.cardinal_v2_authentication_code_field, AuthData.PASSWORD.value)
+            self._action.click(PaymentMethodsLocators.cardinal_v2_authentication_submit_btn)
+
+    def click_cardinal_submit_btn(self):
+        self._action.click(PaymentMethodsLocators.cardinal_v2_authentication_submit_btn)
+
+    def click_additional_btn(self):
+        self._action.click(PaymentMethodsLocators.additional_button)
+
+    def press_enter_button_on_security_code_field(self):
+        self._action.switch_to_iframe_and_press_enter(FieldType.SECURITY_CODE.value,
+                                                                   PaymentMethodsLocators.security_code_input_field)
+
     def get_payment_status_message(self):
         status_message = self._action.get_text_with_wait(PaymentMethodsLocators.notification_frame)
         return status_message
+
+    def get_text_from_status_callback(self):
+        text = self._action.get_text_with_wait(PaymentMethodsLocators.callback_data_popup)
+        return text
 
     def get_color_of_notification_frame(self):
         frame_color = self._action.get_element_attribute(PaymentMethodsLocators.notification_frame,
                                                          "data-notification-color")
         return frame_color
+
+    def get_value_of_input_field(self, field):
+        input_value = self.get_element_attribute(field, "value")
+        return input_value
 
     def is_field_enabled(self, field_type):
         is_enabled = False
@@ -124,6 +174,7 @@ class PaymentMethodsPage(BasePage):
                 self._executor.wait_for_javascript()
                 self._action.click_by_javascript(PaymentMethodsLocators.pay_mock_button)
             else:
+                self._executor.wait_for_element_to_be_clickable(PaymentMethodsLocators.pay_mock_button)
                 self._action.click(PaymentMethodsLocators.pay_mock_button)
         self._executor.wait_for_javascript()
 
@@ -223,13 +274,22 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_message in actual_message, assertion_message
 
+    def validate_value_of_input_field(self, field_type, expected_message):
+        input_value = self.get_value_of_input_field(field_type)
+        assertion_message = f'{FieldType[field_type].name} input value is not correct, ' \
+                            f'should be: "{expected_message}" but is: "{input_value}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_message in input_value, assertion_message
+
     def validate_payment_status_message(self, expected_message):
-        if CONFIGURATION.REMOTE_DEVICE is not None:
-            self.scroll_to_top()
+        self.scroll_to_top()
         actual_message = self.get_payment_status_message()
-        if len(actual_message) == 0:
-            time.sleep(2)
-            actual_message = self.get_payment_status_message()
+        assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_message in actual_message, assertion_message
+
+    def validate_callback_with_data_type(self, expected_message):
+        actual_message = self.get_text_from_status_callback()
         assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_message in actual_message, assertion_message
@@ -279,6 +339,19 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert actual_translation in expected_translation, assertion_message
 
+    def validate_element_specific_translation(self, field_type, expected_translation):
+        actual_translation = ""
+        if field_type == FieldType.SUBMIT_BUTTON.name:
+            actual_translation = self.get_element_translation(field_type, PaymentMethodsLocators.pay_button_label)
+        elif field_type == FieldType.CARD_NUMBER.name:
+            actual_translation = self.get_element_translation(field_type, PaymentMethodsLocators.card_number_field_validation_message)
+        elif field_type == FieldType.EXPIRATION_DATE.name:
+            actual_translation = self.get_element_translation(field_type, PaymentMethodsLocators.expiration_date_field_validation_message)
+        assertion_message = f"{FieldType[field_type].name} element translation is not correct: " \
+                            f" should be {expected_translation} but is {actual_translation}"
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_translation in actual_translation, assertion_message
+
     def validate_labels_translation(self, language):
         self.validate_element_translation(FieldType.CARD_NUMBER.name, PaymentMethodsLocators.card_number_label,
                                           language,
@@ -325,6 +398,22 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_url in actual_url, assertion_message
 
+    def validate_base_url(self, url: str):
+        self._executor.wait_for_javascript()
+        self._executor.wait_until_url_contains(url)
+        actual_url = self._executor.get_page_url()
+        parsed_url = urlparse(actual_url)
+        assertion_message = f'Url is not correct, should be: "{url}" but is: "{actual_url}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert_that(parsed_url.hostname).is_equal_to(url)
+
+    def validate_if_url_contains_param(self, key, value):
+        self._executor.wait_for_javascript()
+        actual_url = self._executor.get_page_url()
+        parsed_url = urlparse(actual_url)
+        parsed_query_from_url = parse_qs(parsed_url.query)
+        assert_that(parsed_query_from_url[key][0]).is_equal_to(value)
+
     def validate_form_status(self, field_type, form_status):
         if 'enabled' in form_status:
             self.validate_if_field_is_enabled(field_type)
@@ -342,6 +431,21 @@ class PaymentMethodsPage(BasePage):
         assertion_message = f'{callback_popup} callback popup is not displayed but should be'
         add_to_shared_dict("assertion_message", assertion_message)
         assert is_displayed is True, assertion_message
+
+    def validate_number_in_callback_counter_popup(self, callback_popup):
+        counter = ""
+        if 'success' in callback_popup:
+            counter = self._action.get_text_with_wait(PaymentMethodsLocators.callback_success_counter)
+        elif 'error' in callback_popup:
+            counter = self._action.get_text_with_wait(PaymentMethodsLocators.callback_error_counter)
+        elif 'cancel' in callback_popup:
+            counter = self._action.get_text_with_wait(PaymentMethodsLocators.callback_cancel_counter)
+        elif 'submit' in callback_popup:
+            counter = self._action.get_text_with_wait(PaymentMethodsLocators.callback_submit_counter)
+        counter = counter[-1]
+        assertion_message = f'Number of {callback_popup} callback is not correct but should be 1 but is {counter}'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert '1' in counter, assertion_message
 
     def validate_placeholders(self, card_number, exp_date, cvv):
         self.validate_placeholder(FieldType.CARD_NUMBER.name, card_number)
@@ -416,8 +520,15 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_number_of_requests == actual_number_of_requests, assertion_message
 
-    def validate_updated_jwt_in_request(self, request_type, update_jwt, expected_number_of_requests):
-        actual_number_of_requests = get_number_of_requests_with_updated_jwt(request_type, update_jwt)
+    def validate_updated_jwt_in_request(self, request_type, url, update_jwt, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests_with_updated_jwt(request_type, url, update_jwt)
+        assertion_message = f'Number of {request_type} with updated jwt is not correct, ' \
+                            f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_number_of_requests == actual_number_of_requests, assertion_message
+
+    def validate_updated_jwt_in_request_for_visa(self, request_type, update_jwt, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_requests_with_updated_jwt_for_visa(request_type, update_jwt)
         assertion_message = f'Number of {request_type} with updated jwt is not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
         add_to_shared_dict("assertion_message", assertion_message)

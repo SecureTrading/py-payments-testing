@@ -65,8 +65,11 @@ class WebElementsExtensions(Waits):
         return element
 
     def is_element_displayed(self, locator):
-        element = self._browser.find_element(*locator)
-        return element is not None
+        try:
+            element = self._browser.find_element(*locator).is_displayed()
+            return element is not None
+        except:
+            return False
 
     def is_iframe_displayed(self, iframe_name):
         try:
@@ -144,6 +147,16 @@ class WebElementsExtensions(Waits):
     def enter(self, locator):
         element = self.find_element(locator)
         element.send_keys(Keys.RETURN)
+
+    def delete_on_input(self, locator):
+        element = self.find_element(locator)
+        element.send_keys(Keys.BACK_SPACE)
+
+    def switch_to_iframe_and_press_enter(self, iframe_name, locator):
+        self.switch_to_iframe(iframe_name)
+        element = self.find_element(locator)
+        element.send_keys(Keys.RETURN)
+        self.switch_to_default_iframe()
 
     def select_element_from_list(self, locator, element_number):
         select = Select(self._browser.find_elements(*locator))

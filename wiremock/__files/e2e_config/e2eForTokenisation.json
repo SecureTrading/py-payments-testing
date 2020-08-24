@@ -1,0 +1,6 @@
+{
+  "fieldsToSubmit": [
+    "securitycode"
+  ],
+  "submitOnSuccess": false
+}

@@ -1,0 +1,17 @@
+{
+  "iat": 1595513452,
+  "payload": {
+    "baseamount": "1000",
+    "accounttypedescription": "ECOM",
+    "currencyiso3a": "GBP",
+    "sitereference": "test_james38641",
+    "locale": "en_GB",
+    "subscriptiontype": "RECURRING",
+    "subscriptionunit": "MONTH",
+    "subscriptionfrequency": "1",
+    "subscriptionnumber": "1",
+    "subscriptionfinalnumber": "12",
+    "subscriptionbegindate": "2028-01-01",
+    "credentialsonfile": "1"
+  }
+}

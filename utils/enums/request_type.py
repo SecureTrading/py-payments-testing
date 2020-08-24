@@ -6,7 +6,9 @@ request_type_response = {
     "RISKDEC, ACCOUNTCHECK": "ccRiskdecAcheck.json",
     "AUTH, RISKDEC": "ccAuthRiskdec.json",
     "ACCOUNTCHECK, AUTH": "ccAccountcheckAuth.json",
-    "RISKDEC, ACCOUNTCHECK, AUTH": "ccRiskdecAccountcheckAuth.json"
+    "ACCOUNTCHECK, AUTH, SUBSCRIPTION": "ccAccountcheckAuthSub.json",
+    "RISKDEC, ACCOUNTCHECK, AUTH": "ccRiskdecAccountcheckAuth.json",
+    "ACCOUNTCHECK, RISKDEC, AUTH": "ccAccountcheckRiskdecAuth.json"
 }
 
 request_type_applepay = {
@@ -15,6 +17,18 @@ request_type_applepay = {
     "ACCOUNTCHECK, AUTH": "appleAccountcheckAuth.json",
     "RISKDEC, AUTH": "appleRiskdecAuth.json",
     "RISKDEC, ACCOUNTCHECK, AUTH": "appleRiskdecAccountcheckAuth.json",
+    "AUTH, SUBSCRIPTION": "appleAuthSubscription.json",
+    "ACCOUNTCHECK, SUBSCRIPTION": "appleAcheckSubscription.json"
+}
+
+request_type_visa = {
+    "AUTH": "visaAuthSuccess.json",
+    "ACCOUNTCHECK": "visaAccountcheck.json",
+    "ACCOUNTCHECK, AUTH": "visaAccountcheckAuth.json",
+    "RISKDEC, AUTH": "visaRiskdecAuth.json",
+    "RISKDEC, ACCOUNTCHECK, AUTH": "visaRiskdecAccountcheckAuth.json",
+    "AUTH, SUBSCRIPTION": "visaAuthSubscription.json",
+    "ACCOUNTCHECK, SUBSCRIPTION": "visaAcheckSubscription.json"
 }
 
 class RequestType(Enum):

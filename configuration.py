@@ -13,10 +13,10 @@ def load_config():
     Set config env variables
     """
     config = {
-        'URL': AttrDict({"BASE_URL": get_from_env("BASE_URL", "https://merchant.securetrading.net")}),
+        'URL': AttrDict({"BASE_URL": get_from_env("BASE_URL", "https://merchant.securetrading.net"), "REACT_APP": get_from_env("REACT_APP", "https://localhost:3000")}),
         'REPORTS_PATH': get_path_from_env('AUTOMATION_REPORTS', 'reports'),
         'BROWSER': get_from_env('AUTOMATION_BROWSER', 'chrome'),
-        'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 10),
+        'TIMEOUT': get_from_env('AUTOMATION_TIMEOUT', 20),
         'REMOTE': strtobool(get_from_env('REMOTE', 'false')),
         'COMMAND_EXECUTOR': get_from_env('AUTOMATION_COMMAND_EXECUTOR',
                                 "https://"+str(get_from_env('BS_USERNAME'))+":"+
@@ -105,7 +105,7 @@ class DriverConfig:
                          "ie.ensureCleanSession": 'true',
                          "ie.forceCreateProcessApi": 'true',
                          # "browserstack.sendKeys": send_keys,
-                         # "browserstack.idleTimeout": 300
+                         # "browserstack.idleTimeout": 3000
                          }
         capabilities = {}
         for key, value in possible_caps.items():
