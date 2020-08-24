@@ -35,3 +35,4 @@ class e2eConfig(Enum):
     STYLES_CONFIG = "ConfigStyles.json"
     CUSTOM_TRANSLATION_CONFIG = "ConfigCustomTranslation.json"
     DISABLE_NOTIFICATION_CONFIG = "ConfigDisableNotification.json"
+    CHANGED_FORM_ID_CONFIG = "e2eFormIdConfig.json"
