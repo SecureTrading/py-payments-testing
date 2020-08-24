@@ -91,14 +91,23 @@ Feature: ApplePay
   Scenario Outline: ApplePay - checking <callback> callback functionality
     When User chooses ApplePay as payment method - response is set to "<action_code>"
     Then User will see "<callback>" popup
+    And "<callback>" callback is called only once
+
     @smoke_test @extended_tests_part_2
     Examples:
       | action_code | callback |
       | SUCCESS     | success  |
+    
     Examples:
       | action_code | callback |
       | DECLINE     | error    |
       | CANCEL      | cancel   |
+
+  @base_config @apple_test @apple_test_part1
+  Scenario: ApplePay - checking data type passing to callback function
+    When User chooses ApplePay as payment method - response is set to "SUCCESS"
+    Then User will see correct error code displayed in popup
+    And "submit" callback is called only once
 
 #    ToDo - Last step is blocked by STJS-800
   @config_update_jwt_true @smoke_test @apple_test @apple_test_part1

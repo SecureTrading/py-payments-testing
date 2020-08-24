@@ -4,10 +4,15 @@ from assertpy import soft_assertions
 from behave import *
 
 from configuration import CONFIGURATION
+from utils.configurations.inline_config_generator import create_inline_config
+from utils.configurations.jwt_generator import encode_jwt_for_json
 from utils.dict.url_after_redirection import url_after_redirection
 from utils.enums.config import config
+from utils.enums.e2e_config import e2eConfig
+from utils.enums.example_page import ExamplePage
 
 from utils.enums.field_type import FieldType
+from utils.enums.jwt_config import JwtConfig
 from utils.enums.payment_type import PaymentType
 from utils.enums.request_type import RequestType, request_type_response, request_type_applepay, request_type_visa
 from utils.enums.responses.acs_response import ACSresponse
@@ -18,7 +23,7 @@ from utils.enums.responses.tdq_response import TDQresponse
 from utils.enums.responses.visa_response import VisaResponse
 from utils.helpers.request_executor import remove_item_from_request_journal
 from utils.mock_handler import stub_config, stub_st_request_type, MockUrl, stub_payment_status, \
-    stub_st_request_type_server_error
+    stub_st_request_type_server_error, stub_st_request_type_acheck_tdq
 
 use_step_matcher("re")
 
@@ -72,6 +77,10 @@ def step_impl(context, tdq_response):
 
 @step("(?P<request_type>.+) mock response is set to OK")
 def step_impl(context, request_type):
+    if "ACCOUNTCHECK, THREEDQUERY" in request_type and 'config_immediate_payment_acheck_tdq_auth_riskdec' in context.scenario.tags[0]:
+        stub_st_request_type_acheck_tdq(request_type_response[request_type], request_type)
+    else:
+        stub_st_request_type(request_type_response[request_type], request_type)
     stub_st_request_type(request_type_response[request_type], request_type)
 
 
@@ -117,9 +126,11 @@ def step_impl(context, request_type, action_code):
         payment_page.scroll_to_top()
 
 
-@then('User will see payment status information: "(?P<payment_status_message>.+)"')
+@step('User will see payment status information: "(?P<payment_status_message>.+)"')
 def step_impl(context, payment_status_message):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
+    if 'switch_to_parent_iframe' in context.scenario.tags:
+        payment_page.switch_to_parent_iframe()
     payment_page.validate_payment_status_message(payment_status_message)
 
 
@@ -133,6 +144,12 @@ def step_impl(context, color):
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.choose_payment_methods(PaymentType.CARDINAL_COMMERCE.name)
+
+
+@step("User clicks Additional button")
+def step_impl(context):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.click_additional_btn()
 
 
 @step("User accept success alert")
@@ -584,6 +601,43 @@ def step_impl(context):
     payment_page.validate_base_url(CONFIGURATION.URL.BASE_URL[8:])
 
 
+@given('JS library is configured with (?P<e2e_config>.+) and (?P<jwt_config>.+)')
+def step_impl(context, e2e_config : e2eConfig, jwt_config : JwtConfig):
+    jwt = encode_jwt_for_json(JwtConfig[jwt_config])
+    context.inline_config = create_inline_config(e2eConfig[e2e_config], jwt)
+
+
+@step("User opens prepared payment form page (?P<example_page>.+)")
+def step_impl(context, example_page : ExamplePage):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}")
+    payment_page.wait_for_iframe()
+
+
+@step("User opens (?:example page|example page (?P<example_page>.+))")
+def step_impl(context, example_page: ExamplePage):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    # setting url specific params accordingly to example page
+    if example_page is None:
+        url = f"{CONFIGURATION.URL.BASE_URL}/?{context.inline_config}"
+    elif "IN_IFRAME" in example_page:
+        url = f"{CONFIGURATION.URL.BASE_URL}/{ExamplePage[example_page].value}{context.inline_config}"
+    elif "WITH_UPDATE_JWT" in example_page:
+        jwt = ''
+        for row in context.table:
+            jwt = str(encode_jwt_for_json(JwtConfig[f"{row['jwtName']}"]), "utf-8")
+        url = f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value % jwt}{context.inline_config}"
+    else:
+        url = f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}&{context.inline_config}"
+    url = url.replace("??", "?").replace("&&", "&")  # just making sure some elements are not duplicated
+
+    payment_page.open_page(url)
+
+    if example_page is not None and "IN_IFRAME" in example_page:
+        payment_page.switch_to_parent_iframe()
+    payment_page.wait_for_iframe()
+
+    
 @then('User will see that (?P<element>.+) is translated into "(?P<expected_value>.+)"')
 def step_impl(context, element, expected_value):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
@@ -592,3 +646,20 @@ def step_impl(context, element, expected_value):
     else:
         payment_page.validate_element_specific_translation(FieldType.CARD_NUMBER.name, expected_value)
         payment_page.validate_element_specific_translation(FieldType.EXPIRATION_DATE.name, expected_value)
+
+
+@step('"(?P<callback_popup>.+)" callback is called only once')
+def step_impl(context, callback_popup):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_number_in_callback_counter_popup(callback_popup)
+
+
+@step("JSINIT response is set")
+def step_impl(context):
+    stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
+
+
+@then('User will see that (?P<field_type>.+) field has (?P<rgb_color>.+) color')
+def step_impl(context, field_type, rgb_color):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_css_style(FieldType[field_type].name, "background-color", rgb_color)

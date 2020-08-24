@@ -58,3 +58,9 @@ class Waits:
     def wait_for_javascript(self):
         time.sleep(1)
         self._wait.until(lambda driver: self._browser.execute_script('return document.readyState') == 'complete')
+
+    def wait_until_url_contains(self, page_url):
+        try:
+            return self._wait.until(ec.url_to_be(page_url))
+        except TimeoutException:
+            print('Timed out waiting for page url')

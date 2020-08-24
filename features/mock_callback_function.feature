@@ -14,6 +14,7 @@ Feature: Callback functionality
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "<action_code>"
     Then User will see "<callback_popup>" popup
+    And "<callback_popup>" callback is called only once
 
     @smoke_test
     Examples:
@@ -28,6 +29,7 @@ Feature: Callback functionality
   Scenario: Checking callback function for in-browser validation
     When User clicks Pay button
     Then User will see "error" popup
+    And "error" callback is called only once
 
   @base_config
   Scenario: Checking data type passing to callback function
@@ -35,3 +37,4 @@ Feature: Callback functionality
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see correct error code displayed in popup
+    And "submit" callback is called only once

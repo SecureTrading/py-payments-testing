@@ -79,5 +79,6 @@ config = {
     "e2e_config_submit_on_success_security_code": "e2e_config/e2eConfigSubmitOnSuccessSecurityCode.json",
     "e2e_config_defer_init_true": "e2eConfigWithDeferinitTrue.json",
     "e2e_config_for_iframe": "e2e_config/e2eConfigForIframe.json",
-    "e2e_config_for_iframe_start_on_load_true": "e2e_config/e2eConfigForIframeStartOnLoadTrue.json"
+    "e2e_config_for_iframe_start_on_load_true": "e2e_config/e2eConfigForIframeStartOnLoadTrue.json",
+    "e2e_button_id_config": "e2e_config/e2eButtonIdConfig.json"
 }

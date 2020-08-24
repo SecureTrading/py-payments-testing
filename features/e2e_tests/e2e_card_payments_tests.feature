@@ -3,27 +3,31 @@ Feature: E2E Card Payments
   I want to use card payments method
   In order to check full payment functionality
 
-  Background:
-#    Given JavaScript configuration is set for scenario based on scenario's @config tag
-#    And JWT token is prepared
-    Given User opens page with payment form
-
+  @reactJS
   @e2e_config_bypass_mastercard
   Scenario: Successful payment with bypassCard using Mastercard
+    Given JS library is configured with BYPASS_MASTERCARD_CONFIG and BASE_JWT
+    And User opens example page
     When User fills payment form with defined card MASTERCARD_CARD
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
 
+  @reactJS
   @e2e_config_for_bypass_cards
   Scenario: Successful payment bypass cards without 3d secure
-    When User fills payment form with defined card VISA_STEP_UP_CARD
+    Given JS library is configured with BYPASS_CARDS_CONFIG and BASE_JWT
+    And User opens example page
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button
+    And User fills V2 authentication modal
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
 
   @e2e_config_for_bypass_cards
   Scenario: Successful payment bypass cards with 3d secure
+    Given JS library is configured with BYPASS_CARDS_CONFIG and BASE_JWT
+    And User opens example page
     When User fills payment form with defined card MASTERCARD_SUCCESSFUL_AUTH_CARD
     And User clicks Pay button
     And User fills V1 authentication modal
@@ -32,9 +36,30 @@ Feature: E2E Card Payments
 
   @e2e_config_bypass_mastercard
   Scenario: Unsuccessful payment with bypassCard using Mastercard - invalid expiration date
+    Given JS library is configured with BYPASS_MASTERCARD_CONFIG and BASE_JWT
+    And User opens example page
     When User fills payment form with defined card MASTERCARD_INVALID_EXP_DATE_CARD
     And User clicks Pay button
     Then User will see payment status information: "Invalid field"
     And User will see that notification frame has "red" color
     And User will see that "EXPIRATION_DATE" field is highlighted
     And User will see "Invalid field" message under field: "EXPIRATION_DATE"
+
+  @reactJS
+  Scenario: Successful payment with frictionless card
+    Given JS library is configured with BASIC_CONFIG and BASE_JWT
+    And User opens example page
+    When User fills payment form with defined card VISA_FRICTIONLESS
+    And User clicks Pay button
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
+
+  @reactJS
+  Scenario: Successful payment with non-frictionless card
+    Given JS library is configured with BASIC_CONFIG and BASE_JWT
+    And User opens example page
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
+    And User clicks Pay button
+    And User fills V2 authentication modal
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color

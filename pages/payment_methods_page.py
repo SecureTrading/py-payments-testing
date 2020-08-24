@@ -114,6 +114,9 @@ class PaymentMethodsPage(BasePage):
     def click_cardinal_submit_btn(self):
         self._action.click(PaymentMethodsLocators.cardinal_v2_authentication_submit_btn)
 
+    def click_additional_btn(self):
+        self._action.click(PaymentMethodsLocators.additional_button)
+
     def press_enter_button_on_security_code_field(self):
         self._action.switch_to_iframe_and_press_enter(FieldType.SECURITY_CODE.value,
                                                                    PaymentMethodsLocators.security_code_input_field)
@@ -279,8 +282,7 @@ class PaymentMethodsPage(BasePage):
         assert expected_message in input_value, assertion_message
 
     def validate_payment_status_message(self, expected_message):
-        if CONFIGURATION.REMOTE_DEVICE.strip():
-            self.scroll_to_top()
+        self.scroll_to_top()
         actual_message = self.get_payment_status_message()
         assertion_message = f'Payment status is not correct, should be: "{expected_message}" but is: "{actual_message}"'
         add_to_shared_dict("assertion_message", assertion_message)
@@ -398,6 +400,7 @@ class PaymentMethodsPage(BasePage):
 
     def validate_base_url(self, url: str):
         self._executor.wait_for_javascript()
+        self._executor.wait_until_url_contains(url)
         actual_url = self._executor.get_page_url()
         parsed_url = urlparse(actual_url)
         assertion_message = f'Url is not correct, should be: "{url}" but is: "{actual_url}"'
@@ -428,6 +431,21 @@ class PaymentMethodsPage(BasePage):
         assertion_message = f'{callback_popup} callback popup is not displayed but should be'
         add_to_shared_dict("assertion_message", assertion_message)
         assert is_displayed is True, assertion_message
+
+    def validate_number_in_callback_counter_popup(self, callback_popup):
+        counter = ""
+        if 'success' in callback_popup:
+            counter = self._action.get_text_with_wait(PaymentMethodsLocators.callback_success_counter)
+        elif 'error' in callback_popup:
+            counter = self._action.get_text_with_wait(PaymentMethodsLocators.callback_error_counter)
+        elif 'cancel' in callback_popup:
+            counter = self._action.get_text_with_wait(PaymentMethodsLocators.callback_cancel_counter)
+        elif 'submit' in callback_popup:
+            counter = self._action.get_text_with_wait(PaymentMethodsLocators.callback_submit_counter)
+        counter = counter[-1]
+        assertion_message = f'Number of {callback_popup} callback is not correct but should be 1 but is {counter}'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert '1' in counter, assertion_message
 
     def validate_placeholders(self, card_number, exp_date, cvv):
         self.validate_placeholder(FieldType.CARD_NUMBER.name, card_number)

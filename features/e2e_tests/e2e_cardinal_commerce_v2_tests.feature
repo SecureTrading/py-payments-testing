@@ -3,13 +3,11 @@ Feature: Cardinal Commerce E2E tests
   I want to use card payments method
   In order to check Cardinal Commerce integration
 
-  #ToDo - Work in progress
-  #remove sleep before cardinal modal
   Background:
-#    ToDo - Uncomment this line when environment for e2e test will be ready
-#    Given JavaScript configuration is set for scenario based on scenario's @config tag
-    Given User opens page with payment form
+    Given JS library is configured with BASIC_CONFIG and BASE_JWT
+    And User opens example page
 
+  @reactJS
   @base_config @cardinal_commerce_v2.0
   Scenario: Successful Frictionless Authentication - MasterCard
     When User fills payment form with defined card MASTERCARD_SUCCESSFUL_FRICTIONLESS_AUTH
@@ -30,7 +28,7 @@ Feature: Cardinal Commerce E2E tests
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Attempts Stand-In Frictionless Authentication - Visa
-    When User fills payment form with defined card VISA_ATTEMPTS_STAND_IN_FRICTIONLESS_AUTH
+    When User fills payment form with defined card VISA_FRICTIONLESS
     And User clicks Pay button
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
@@ -67,7 +65,6 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "Bank System Error"
     And User will see that notification frame has "red" color
 
-  #ToDo - increase timeout
   @base_config @cardinal_commerce_v2.0
   Scenario: Timeout on cmpi_lookup Transaction - Visa
     When User fills payment form with defined card VISA_TIMEOUT_ON_CMPI_LOOKUP_TRANSACTION
@@ -84,7 +81,7 @@ Feature: Cardinal Commerce E2E tests
 
   @base_config @cardinal_commerce_v2.0
   Scenario: Successful Step Up Authentication - Visa
-    When User fills payment form with defined card VISA_SUCCESSFUL_STEP_UP_AUTH
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button
     And User fills V2 authentication modal
     Then User will see payment status information: "Payment has been successfully processed"

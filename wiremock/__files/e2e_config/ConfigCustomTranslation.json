@@ -1,0 +1,8 @@
+{
+  "translations": {
+    "An error occurred": "Wystąpił błąd",
+    "Pay": "KupTeraz!",
+    "Payment has been successfully processed": "Victory",
+    "Field is required" : "Incorrect"
+  }
+}

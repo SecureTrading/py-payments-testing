@@ -10,7 +10,6 @@ class ReactJsAppLocators:
     personal_data_tab: By = (By.ID, 'personal-data')
     contact_data_tab: By = (By.ID, 'contact-data')
     payment_tab: By = (By.ID, 'payment')
-    success_notification: By = (By.ID, 'st-notification-frame')
 
     #personal_data_tab
     personal_data_title: By = (By.ID, 'st-form-title')
