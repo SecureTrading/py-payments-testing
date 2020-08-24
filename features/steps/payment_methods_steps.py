@@ -38,6 +38,10 @@ def step_impl(context):
             stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
         elif 'subscription' in context.scenario.tags[0]:
             stub_st_request_type("jsinitSubscription.json", RequestType.JSINIT.name)
+        elif 'start_on_load_sub' in context.scenario.tags[0]:
+            stub_st_request_type("jsinitStartOnLoadSubscription.json", RequestType.JSINIT.name)
+        elif 'start_on_load' in context.scenario.tags[0]:
+            stub_st_request_type("jsinitStartOnLoad.json", RequestType.JSINIT.name)
         else:
             stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
     config_tag = context.scenario.tags[0]
@@ -464,7 +468,7 @@ def step_impl(context):
 @step("AUTH request was sent only once with correct data")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'config_immediate_payment' in context.scenario.tags[0]:
+    if 'config_immediate_payment' in context.scenario.tags[0] or 'config_start_on_load' in context.scenario.tags[0]:
         payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 1)
     else:
         payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 0)
@@ -502,7 +506,7 @@ def step_impl(context, thirdparty):
 @step("(?P<request_type>.+) ware sent only once in one request")
 def step_impl(context, request_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'config_immediate_payment' in context.scenario.tags[0]:
+    if 'config_immediate_payment' in context.scenario.tags[0] or 'config_start_on_load' in context.scenario.tags[0]:
         payment_page.validate_number_of_requests(request_type, "", "", "", 1)
     else:
         payment_page.validate_number_of_requests(request_type, context.pan, context.exp_date, context.cvv, 1)
