@@ -24,6 +24,7 @@ class e2eConfig(Enum):
     TOKENISATION_CONFIG = "e2eForTokenisation.json"
     REQUEST_TYPES_CONFIG = "e2eConfigRequestTypes.json"
     REQUEST_TYPES_CONFIG_INVALID_ORDER = "e2eConfigRequestTypesInvalidOrder.json"
+    REQUEST_TYPE_ACC_TDQ_AUTH_RISK_CONFIG = "e2eConfigRequestTypesAccTdqAuthRisk.json"
     VISA_CHECKOUT_CONFIG = "e2eConfigVisaCheckout.json"
     VISA_CHECKOUT_WITH_SUBMIT_ON_SUCCESS_CONFIG = "e2eConfigVisaCheckoutWithSubmitOnSuccess.json"
     VISA_CHECKOUT_WITH_CYBERTONICA_CONFIG = "e2eConfigVisaCheckoutWithCybertonica.json"

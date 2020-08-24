@@ -6,7 +6,7 @@ Feature: E2E Card Payments with request types in config
 
   @reactJS
   Scenario: Successful payment with config's requestTypes param having values in valid order
-    Given JS library is configured with VISA_CHECKOUT_WITH_REQUEST_TYPES_CONFIG and BASE_JWT
+    Given JS library is configured with REQUEST_TYPE_ACC_TDQ_AUTH_RISK_CONFIG and BASE_JWT
     And User opens example page
     When User fills payment form with defined card MASTERCARD_CARD
     And User clicks Pay button
