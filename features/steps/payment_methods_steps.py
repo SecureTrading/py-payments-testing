@@ -628,6 +628,7 @@ def step_impl(context, example_page: ExamplePage):
     url = url.replace("??", "?").replace("&&", "&")  # just making sure some elements are not duplicated
 
     payment_page.open_page(url)
+
     if example_page is not None and "IN_IFRAME" in example_page:
         payment_page.switch_to_parent_iframe()
     payment_page.wait_for_iframe()
@@ -647,3 +648,14 @@ def step_impl(context, element, expected_value):
 def step_impl(context, callback_popup):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_number_in_callback_counter_popup(callback_popup)
+
+
+@step("JSINIT response is set")
+def step_impl(context):
+    stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
+
+
+@then('User will see that (?P<field_type>.+) field has (?P<rgb_color>.+) color')
+def step_impl(context, field_type, rgb_color):
+    payment_page = context.page_factory.get_page(page_name='payment_methods')
+    payment_page.validate_css_style(FieldType[field_type].name, "background-color", rgb_color)
