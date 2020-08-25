@@ -68,7 +68,7 @@ Feature: Successfull payments with various configurations
     And AUTH and THREEDQUERY requests were sent only once with correct data
     And JSINIT requests contains updated jwt
 
-  @config_submit_cvv_only @extended_tests_part_2 @tag
+  @config_submit_cvv_only @extended_tests_part_2
   Scenario: Successful payment when cvv field is selected to submit
     Given User opens page with payment form
     When User fills "SECURITY_CODE" field "123"
@@ -79,7 +79,7 @@ Feature: Successfull payments with various configurations
     And User will not see EXPIRATION_DATE
     And AUTH and THREEDQUERY requests were sent only once
 
-  @config_submit_cvv_for_amex @tag
+  @config_submit_cvv_for_amex
   Scenario: Successful payment by AMEX when cvv field is selected to submit
     Given User opens page with payment form
     When User fills "SECURITY_CODE" field "1234"
@@ -90,7 +90,7 @@ Feature: Successfull payments with various configurations
     And User will not see EXPIRATION_DATE
     And AUTH and THREEDQUERY requests were sent only once
 
-  @config_cvvToSubmit_and_submitOnSuccess @tag
+  @config_cvvToSubmit_and_submitOnSuccess
   Scenario: Successful payment with fieldToSubmit and submitOnSuccess
     Given User opens page with payment form
     When User fills "SECURITY_CODE" field "123"
