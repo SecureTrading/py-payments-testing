@@ -14,7 +14,8 @@ from utils.enums.example_page import ExamplePage
 from utils.enums.field_type import FieldType
 from utils.enums.jwt_config import JwtConfig
 from utils.enums.payment_type import PaymentType
-from utils.enums.request_type import RequestType, request_type_response, request_type_applepay, request_type_visa
+from utils.enums.request_type import RequestType, request_type_response, request_type_applepay, request_type_visa, \
+    request_type_tokenisation_response
 from utils.enums.responses.acs_response import ACSresponse
 from utils.enums.responses.apple_pay_response import ApplePayResponse
 from utils.enums.responses.auth_response import AUTHresponse
@@ -32,12 +33,17 @@ use_step_matcher("re")
 def step_impl(context):
     remove_item_from_request_journal()
     if 'config_skip_jsinit' not in context.scenario.tags:
-        if 'config_tokenization_visa' in context.scenario.tags[0] or 'config_tokenization_bypass_cards_visa' in context.scenario.tags[0]:
-            stub_st_request_type("jsinitTokenizationVisa.json", RequestType.JSINIT.name)
-        elif 'config_tokenization_amex' in context.scenario.tags[0]:
-            stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
+        if 'config_tokenisation_visa' in context.scenario.tags[0] or 'config_tokenisation_bypass_cards_visa' in context.scenario.tags[0]\
+            or 'config_tokenisation_visa_request_types' in context.scenario.tags[0]:
+            stub_st_request_type("jsinitTokenisationVisa.json", RequestType.JSINIT.name)
+        elif 'config_tokenisation_amex' in context.scenario.tags[0]:
+            stub_st_request_type("jsinitTokenisationAmex.json", RequestType.JSINIT.name)
         elif 'subscription' in context.scenario.tags[0]:
             stub_st_request_type("jsinitSubscription.json", RequestType.JSINIT.name)
+        elif 'start_on_load_sub' in context.scenario.tags[0]:
+            stub_st_request_type("jsinitStartOnLoadSubscription.json", RequestType.JSINIT.name)
+        elif 'start_on_load' in context.scenario.tags[0]:
+            stub_st_request_type("jsinitStartOnLoad.json", RequestType.JSINIT.name)
         else:
             stub_st_request_type("jsinit.json", RequestType.JSINIT.name)
     config_tag = context.scenario.tags[0]
@@ -464,7 +470,7 @@ def step_impl(context):
 @step("AUTH request was sent only once with correct data")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'config_immediate_payment' in context.scenario.tags[0]:
+    if 'config_immediate_payment' in context.scenario.tags[0] or 'config_start_on_load' in context.scenario.tags[0]:
         payment_page.validate_number_of_requests_without_data(RequestType.AUTH.name, 1)
     else:
         payment_page.validate_number_of_requests_with_data(RequestType.THREEDQUERY.name, context.pan, context.exp_date, context.cvv, 0)
@@ -502,8 +508,10 @@ def step_impl(context, thirdparty):
 @step("(?P<request_type>.+) ware sent only once in one request")
 def step_impl(context, request_type):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    if 'config_immediate_payment' in context.scenario.tags[0]:
+    if 'config_immediate_payment' in context.scenario.tags[0] or 'config_start_on_load' in context.scenario.tags[0]:
         payment_page.validate_number_of_requests(request_type, "", "", "", 1)
+    elif 'config_tokenisation' in context.scenario.tags[0]:
+        payment_page.validate_number_of_tokenisation_requests(request_type, context.cvv, 1)
     else:
         payment_page.validate_number_of_requests(request_type, context.pan, context.exp_date, context.cvv, 1)
 
@@ -663,3 +671,8 @@ def step_impl(context):
 def step_impl(context, field_type, rgb_color):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.validate_css_style(FieldType[field_type].name, "background-color", rgb_color)
+
+
+@step("(?P<request_type>.+) mock response for tokenisation is set to OK")
+def step_impl(context, request_type):
+    stub_st_request_type(request_type_tokenisation_response[request_type], request_type)
