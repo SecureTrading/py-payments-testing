@@ -18,4 +18,5 @@ def get_data_from_json(jwt_config):
 
 def encode_jwt_for_json(jwt_config: JwtConfig):
     data = get_data_from_json(jwt_config.value)
-    return jwt.encode({"iat": int(time.time()), "iss": ISS_KEY, "payload": data["payload"]}, SECRET_KEY, algorithm='HS256')
+    jwt_token = jwt.encode({"iat": int(time.time()), "iss": ISS_KEY, "payload": data["payload"]}, SECRET_KEY, algorithm='HS256')
+    return str(jwt_token, "utf-8")

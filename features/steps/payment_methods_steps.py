@@ -618,7 +618,14 @@ def step_impl(context, e2e_config : e2eConfig, jwt_config : JwtConfig):
 @step("User opens prepared payment form page (?P<example_page>.+)")
 def step_impl(context, example_page : ExamplePage):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}")
+    if "WITH_UPDATE_JWT" in example_page:
+        jwt = ''
+        for row in context.table:
+            jwt = encode_jwt_for_json(JwtConfig[f"{row['jwtName']}"])
+        payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value % jwt}")
+        context.test_data.update_jwt = jwt #test data replaced to check required value in assertion
+    else:
+        payment_page.open_page(f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}")
     payment_page.wait_for_iframe()
 
 
@@ -633,7 +640,7 @@ def step_impl(context, example_page: ExamplePage):
     elif "WITH_UPDATE_JWT" in example_page:
         jwt = ''
         for row in context.table:
-            jwt = str(encode_jwt_for_json(JwtConfig[f"{row['jwtName']}"]), "utf-8")
+            jwt = encode_jwt_for_json(JwtConfig[f"{row['jwtName']}"])
         url = f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value % jwt}{context.inline_config}"
     else:
         url = f"{CONFIGURATION.URL.BASE_URL}/?{ExamplePage[example_page].value}&{context.inline_config}"
