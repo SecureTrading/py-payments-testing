@@ -19,14 +19,13 @@ Feature: Mock for formId negative scenarios
 
   @form_id_config_visa_checkout
   Scenario: Cancel payment with Visa checkout
-    Given User opens prepared payment form page WITH_SPECIFIC_FORM_ID
-    When User chooses Visa Checkout as payment method - response is set to "CANCEL"
+    When User opens prepared payment form page WITH_SPECIFIC_FORM_ID
+    And User chooses Visa Checkout as payment method - response is set to "CANCEL"
     Then User will see payment status information: "Payment has been cancelled"
     And User will see that notification frame has "yellow" color
     And VISA_CHECKOUT or AUTH requests were sent only once with correct data
 
   @form_id_config
-  Scenario: Decline payment
-    And User opens example page WITH_CHANGED_FORM_ID
-    And User opens prepared payment form page WITH_CHANGED_FORM_ID
+  Scenario: Different form id
+    When User opens prepared payment form page WITH_CHANGED_FORM_ID
     Then User will see that application is not fully loaded
