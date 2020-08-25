@@ -7,6 +7,7 @@ request_type_response = {
     "AUTH, RISKDEC": "ccAuthRiskdec.json",
     "ACCOUNTCHECK, AUTH": "ccAccountcheckAuth.json",
     "ACCOUNTCHECK, AUTH, SUBSCRIPTION": "ccAccountcheckAuthSub.json",
+    "AUTH, SUBSCRIPTION": "ccAuthSub.json",
     "RISKDEC, ACCOUNTCHECK, AUTH": "ccRiskdecAccountcheckAuth.json",
     "ACCOUNTCHECK, RISKDEC, AUTH": "ccAccountcheckRiskdecAuth.json"
 }
