@@ -107,6 +107,15 @@ def get_number_of_thirdparty_requests(request_type, walletsource):
     data = json.loads(count.content)
     return data['count']
 
+def get_number_of_tokenisation_requests(request_type, cvv):
+    count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",
+                          json={"url": "/jwt/", "bodyPatterns": [
+                              { "matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==[" + request_type + "])]"},
+                              {"matchesJsonPath": "$.request[:1][?(@.securitycode=='" + cvv + "')]"}
+                          ]}, verify=False)
+    data = json.loads(count.content)
+    return data['count']
+
 
 def get_number_of_requests(request_type, pan, expiry_date, cvv):
     count = requests.post("https://webservices.securetrading.net:8443/__admin/requests/count",

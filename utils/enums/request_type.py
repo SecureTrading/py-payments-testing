@@ -11,6 +11,10 @@ request_type_response = {
     "ACCOUNTCHECK, RISKDEC, AUTH": "ccAccountcheckRiskdecAuth.json"
 }
 
+request_type_tokenisation_response = {
+    "RISKDEC, ACCOUNTCHECK, THREEDQUERY": "tokenizationRiskdecAcheckTdq.json",
+}
+
 request_type_applepay = {
     "AUTH": "appleAuth.json",
     "ACCOUNTCHECK": "appleAccountcheck.json",

@@ -17,7 +17,7 @@ from utils.helpers.request_executor import add_to_shared_dict, get_number_of_req
     get_number_of_wallet_verify_requests, get_number_of_thirdparty_requests, get_number_of_requests_without_data, \
     get_number_of_requests_with_fraudcontroltransactionid_flag, \
     get_number_of_requests_with_data_and_fraudcontroltransactionid_flag, get_number_of_requests_with_updated_jwt, \
-    get_number_of_requests, get_number_of_requests_with_updated_jwt_for_visa
+    get_number_of_requests, get_number_of_requests_with_updated_jwt_for_visa, get_number_of_tokenisation_requests
 
 
 class PaymentMethodsPage(BasePage):
@@ -475,6 +475,13 @@ class PaymentMethodsPage(BasePage):
 
     def validate_number_of_requests_without_data(self, request_type, expected_number_of_requests):
         actual_number_of_requests = get_number_of_requests_without_data(request_type)
+        assertion_message = f'Number of {request_type} requests is not correct, ' \
+                            f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
+        add_to_shared_dict("assertion_message", assertion_message)
+        assert expected_number_of_requests == actual_number_of_requests, assertion_message
+
+    def validate_number_of_tokenisation_requests(self, request_type, cvv, expected_number_of_requests):
+        actual_number_of_requests = get_number_of_tokenisation_requests(request_type, cvv)
         assertion_message = f'Number of {request_type} requests is not correct, ' \
                             f'should be: "{expected_number_of_requests}" but is: "{actual_number_of_requests}"'
         add_to_shared_dict("assertion_message", assertion_message)
