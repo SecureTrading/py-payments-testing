@@ -1,7 +1,7 @@
-Feature: Tokenization
+Feature: Tokenisation
 
   As a user
-  I want to use card payments method with tokenization config
+  I want to use card payments method with tokenisation config
   In order to check full payment functionality
 
   Background:

@@ -35,9 +35,9 @@ def step_impl(context):
     if 'config_skip_jsinit' not in context.scenario.tags:
         if 'config_tokenisation_visa' in context.scenario.tags[0] or 'config_tokenisation_bypass_cards_visa' in context.scenario.tags[0]\
             or 'config_tokenisation_visa_request_types' in context.scenario.tags[0]:
-            stub_st_request_type("jsinitTokenizationVisa.json", RequestType.JSINIT.name)
+            stub_st_request_type("jsinitTokenisationVisa.json", RequestType.JSINIT.name)
         elif 'config_tokenisation_amex' in context.scenario.tags[0]:
-            stub_st_request_type("jsinitTokenizationAmex.json", RequestType.JSINIT.name)
+            stub_st_request_type("jsinitTokenisationAmex.json", RequestType.JSINIT.name)
         elif 'subscription' in context.scenario.tags[0]:
             stub_st_request_type("jsinitSubscription.json", RequestType.JSINIT.name)
         else:

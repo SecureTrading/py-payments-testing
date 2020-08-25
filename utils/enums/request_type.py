@@ -12,7 +12,7 @@ request_type_response = {
 }
 
 request_type_tokenisation_response = {
-    "RISKDEC, ACCOUNTCHECK, THREEDQUERY": "tokenizationRiskdecAcheckTdq.json",
+    "RISKDEC, ACCOUNTCHECK, THREEDQUERY": "tokenisationRiskdecAcheckTdq.json",
 }
 
 request_type_applepay = {
