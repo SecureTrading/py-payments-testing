@@ -40,6 +40,8 @@ config = {
     "config_requestTypes_tdq_submit_on_success": "configRequestTypesTDQSubmitOnSuccess.json",
     "config_requestTypes_tdq_submit_on_error": "configRequestTypesTDQSubmitOnError.json",
     "config_requestTypes_tdq_auth": "configRequestTypesTdqAuth.json",
+    "config_requestTypes_acheck_tdq_auth_subs": "configRequestTypesAcheckTdqAuthSubs.json",
+    "config_requestTypes_tdq_acheck_riskdec_auth": "configRequestTypesTdqAcheckRiskdecAuth.json",
     "config_immediate_payment_riskdec_acheck_tdq_auth": "configImmediatePaymentRiskdecAcheckTdqAuth.json",
     "config_immediate_payment_tdq": "configImmediatePaymentTDQ.json",
     "config_immediate_payment_tdq_auth": "configImmediatePaymentTdqAuth.json",

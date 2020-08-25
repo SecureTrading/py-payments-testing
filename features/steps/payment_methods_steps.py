@@ -546,7 +546,7 @@ def step_impl(context, request_type):
     payment_page.validate_number_of_requests_without_data(request_type, 0)
 
 
-@when('User fills merchant data with name "(?P<name>.+)", email "(?P<email>.+)", phone "(?P<phone>.+)"')
+@step('User fills merchant data with name "(?P<name>.+)", email "(?P<email>.+)", phone "(?P<phone>.+)"')
 def step_impl(context, name, email, phone):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
     payment_page.fill_merchant_form(name, email, phone)
