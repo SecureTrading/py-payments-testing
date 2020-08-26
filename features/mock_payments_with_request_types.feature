@@ -77,24 +77,22 @@ Feature: Successfull payments with various request types configurations
     Then User is redirected to action page
     And THREEDQUERY request was sent only once with correct data
 
-  @config_requestTypes_acheck_tdq_auth_subs
+  @config_requestTypes_acheck_tdq_auth_subscription
   Scenario: Successful payment with additional request types: ACCOUNTCHECK, THREEDQUERY, AUTH, SUBSCRIPTION
-    Given User opens prepared payment form page WITH_UPDATE_JWT
-      | jwtName          |
-      | JWT_WITH_SUBSCRIPTION |
-    When User fills payment form with defined card MASTERCARD_SUCCESSFUL_FRICTIONLESS_AUTH
+    Given User opens page with payment form
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And ACCOUNTCHECK, THREEDQUERY mock response is set to OK
-    And User clicks Pay button - AUTH, RISKDEC response is set to "OK"
+    And User clicks Pay button - AUTH, SUBSCRIPTION response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
-    And AUTH, RISKDEC ware sent only once in one request
+    And AUTH, SUBSCRIPTION ware sent only once in one request
 
   @config_requestTypes_tdq_acheck_riskdec_auth
   Scenario: Successful payment with additional request types: THREEDQUERY, ACCOUNTCHECK, RISKDEC, AUTH
     Given User opens page with payment form
-    When User fills payment form with defined card MASTERCARD_SUCCESSFUL_FRICTIONLESS_AUTH
-    And ACCOUNTCHECK, THREEDQUERY mock response is set to OK
-    And User clicks Pay button - AUTH, RISKDEC response is set to "OK"
+    When User fills payment form with defined card VISA_NON_FRICTIONLESS
+    And THREEDQUERY mock response is set to OK
+    And User clicks Pay button - ACCOUNTCHECK, RISKDEC, AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
-    And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
-    And AUTH, RISKDEC ware sent only once in one request
+    And THREEDQUERY ware sent only once in one request
+    And ACCOUNTCHECK, RISKDEC, AUTH ware sent only once in one request
