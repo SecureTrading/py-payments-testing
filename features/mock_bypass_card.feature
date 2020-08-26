@@ -70,7 +70,7 @@ Feature: Bypass Cards config
     And THREEDQUERY request was not sent
     And ACCOUNTCHECK, AUTH ware sent only once in one request
 
-  @config_bypass_cards_riskdec_acheck_tdq_auth @extended_tests_part_2
+  @config_bypass_cards_riskdec_acheck_tdq_auth
   Scenario: Successful payment with bypassCard and custom request types: RISKDEC, ACCOUNTCHECK, THREEDQUERY, AUTH
     When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button - RISKDEC, ACCOUNTCHECK, AUTH response is set to "OK"
