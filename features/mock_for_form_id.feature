@@ -26,6 +26,6 @@ Feature: Mock for formId negative scenarios
     And VISA_CHECKOUT or AUTH requests were sent only once with correct data
 
   @form_id_config
-  Scenario: Different form id
+  Scenario: Payment for form using different formId in config
     When User opens prepared payment form page WITH_CHANGED_FORM_ID
     Then User will see that application is not fully loaded

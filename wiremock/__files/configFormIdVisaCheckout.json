@@ -1,8 +1,7 @@
 {
   "formId": "test",
   "submitOnSuccess": false,
-
-   "visaCheckout": {
+  "visaCheckout": {
     "buttonSettings": {
       "size": "154",
       "color": "neutral"
