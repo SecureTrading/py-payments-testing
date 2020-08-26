@@ -6,6 +6,14 @@ Feature: Successfull payments with start on load configuration
 
   Background:
     Given JavaScript configuration is set for scenario based on scenario's @config tag
+    
+  @config_start_on_load_requestTypes_tdq
+  Scenario: Successful payment with startOnLoad and request types THREEDQUERY
+    When THREEDQUERY mock response is set to "NOT_ENROLLED_N"
+    And AUTH response is set to "OK"
+    And User opens prepared payment form page WITHOUT_SUBMIT_BUTTON
+    Then User will see payment status information: "Payment has been successfully processed"
+    And THREEDQUERY ware sent only once in one request
 
   @config_start_on_load_sub_acheck_tdq_aut
   Scenario: Successful payment with startOnLoad and request types ACCOUNTCHECK, THREEDQUERY, AUTH, SUBSCRIPTION
@@ -14,14 +22,6 @@ Feature: Successfull payments with start on load configuration
     And User opens prepared payment form page WITHOUT_SUBMIT_BUTTON
     Then User will see payment status information: "Payment has been successfully processed"
     And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
-
-  @config_start_on_load_requestTypes_tdq
-  Scenario: Successful payment with startOnLoad and request types THREEDQUERY
-    When THREEDQUERY mock response is set to "NOT_ENROLLED_N"
-    And AUTH response is set to "OK"
-    And User opens prepared payment form page WITHOUT_SUBMIT_BUTTON
-    Then User will see payment status information: "Payment has been successfully processed"
-    And THREEDQUERY ware sent only once in one request
 
   @config_start_on_load_requestTypes_tdq_auth
   Scenario: Successful payment with startOnLoad request types: THREEDQUERY, AUTH
