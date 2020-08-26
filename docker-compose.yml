@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   app:
-    image: securetrading1/${APP_REPO}:${APP_BRANCH}
+    image: ${APP_REPO}:${APP_TAG}
     ports:
       - 80:80
       - 443:443
