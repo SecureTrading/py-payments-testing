@@ -8,7 +8,7 @@ Feature: Mock for formId negative scenarios
     Given JavaScript configuration is set for scenario based on scenario's @config tag
 
   @form_id_config
-  Scenario: Decline payment
+  Scenario: Form id - decline payment
     Given AUTH response is set to "DECLINE"
     And THREEDQUERY mock response is set to "NOT_ENROLLED_U"
     When User opens prepared payment form page WITH_SPECIFIC_FORM_ID
@@ -18,7 +18,7 @@ Feature: Mock for formId negative scenarios
     And User will see that notification frame has "red" color
 
   @form_id_config_visa_checkout
-  Scenario: Cancel payment with Visa checkout
+  Scenario: Form id - cancel payment with Visa checkout
     When User opens prepared payment form page WITH_SPECIFIC_FORM_ID
     And User chooses Visa Checkout as payment method - response is set to "CANCEL"
     Then User will see payment status information: "Payment has been cancelled"
