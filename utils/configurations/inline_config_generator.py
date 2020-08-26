@@ -17,6 +17,6 @@ def covert_json_to_string(json_config):
 
 def create_inline_config(e2e_config: e2eConfig, jwt):
     json_config = get_data_from_json(e2e_config.value)
-    json_config["jwt"] = jwt.decode('UTF-8')
+    json_config["jwt"] = jwt
     formatted_config = covert_json_to_string(json_config)
     return formatted_config

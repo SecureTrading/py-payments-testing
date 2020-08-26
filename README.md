@@ -33,7 +33,7 @@ to the `hosts` file.
 
 If you have multiple application images with different branches you can specify which image should be used for tests, eg.:
 
-`APP_BRANCH=master docker-compose up -d`
+`APP_TAG=master docker-compose up -d`
 
 #### To test a different application (eg. js-payments-card)
 
