@@ -364,11 +364,11 @@ def step_impl(context):
 @step('User will be sent to page with url "(?P<url>.+)" having params')
 def step_impl(context, url: str):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    #ToDo - temporary wait for one test
+    wait_for_url = False
     if "update_jwt_test" in context.scenario.tags:
-        time.sleep(2)
+        wait_for_url = True
     with soft_assertions():
-        payment_page.validate_base_url(url)
+        payment_page.validate_base_url(url, wait_for_url)
         for param in context.table:
             payment_page.validate_if_url_contains_param(param['key'], param['value'])
 
