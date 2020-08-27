@@ -14,7 +14,7 @@ SMTP_PORT = 993
 def gmail_login():
     try:
         mail = imaplib.IMAP4_SSL(SMTP_SERVER)
-        mail.login(EMAIL_LOGIN, EMAIL_PWD)
+        mail.login(EMAIL_LOGIN, EMAIL_PASSWORD)
         mail.select('inbox')
         return mail
     except Exception as e:
