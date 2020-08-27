@@ -348,7 +348,7 @@ def step_impl(context):
 @then("User remains on checkout page")
 def step_impl(context):
     payment_page = context.page_factory.get_page(page_name='payment_methods')
-    payment_page.validate_base_url(CONFIGURATION.URL.BASE_URL[8:])
+    payment_page.validate_base_url(CONFIGURATION.URL.BASE_URL[8:], False)
 
 
 @given('JS library is configured with (?P<e2e_config>.+) and (?P<jwt_config>.+)')
