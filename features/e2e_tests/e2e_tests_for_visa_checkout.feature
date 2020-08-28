@@ -5,6 +5,7 @@ Feature: Visa checkout E2E tests
   To use defined card
 
   @reactJS
+  @angular
   Scenario Outline: Successful Authentication by Visa checkout
     Given JS library is configured with VISA_CHECKOUT_CONFIG and BASE_JWT
     And User opens example page

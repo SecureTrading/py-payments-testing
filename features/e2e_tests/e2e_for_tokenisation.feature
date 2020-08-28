@@ -4,6 +4,7 @@ Feature: E2E for tokenisation
   To execute payment with only cvv
 
   @reactJS
+  @angular
   @e2e_for_tokenisation @jwt_config_visa_frictionless_with_parenttransaction
   Scenario: Visa Frictionless tokenisation
     Given JS library is configured with TOKENISATION_CONFIG and JWT_VISA_FRICTIONLESS_PARENT_TRANSACTION

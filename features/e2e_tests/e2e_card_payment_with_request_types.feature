@@ -5,6 +5,7 @@ Feature: E2E Card Payments with request types in config
   In order to check full payment functionality
 
   @reactJS
+  @angular
   Scenario: Successful payment with config's requestTypes param having values in valid order
     Given JS library is configured with REQUEST_TYPE_ACC_TDQ_AUTH_RISK_CONFIG and BASE_JWT
     And User opens example page
