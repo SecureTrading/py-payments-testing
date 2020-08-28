@@ -73,7 +73,7 @@ def stub_st_request_type(mock_json, request_type):
         request=MappingRequest(
             method=HttpMethods.POST,
             url=MockUrl.GATEWAY_MOCK_URI.value,
-            body_patterns=[{"contains": request_type}]
+            body_patterns=[{"matchesJsonPath": "$.request[:1][?(@.requesttypedescriptions==["+request_type+"])]"}]
         ),
         response=MappingResponse(
             status=200,

@@ -31,6 +31,7 @@ Feature: E2E Card Payments with updated jwt
   #just to make sure data are taken from updated jwt
   @reactJS
   @angular
+  @update_jwt_test
   Scenario: Successful payment with updated jwt without locale param and submit on success config
     Given JS library is configured with DEFER_INIT_AND_SUBMIT_ON_SUCCESS_CONFIG and JWT_WITHOUT_LOCALE
     And User opens example page WITH_UPDATE_JWT

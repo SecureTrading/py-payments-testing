@@ -6,8 +6,7 @@ Feature: Successfull payments with start on load configuration
 
   Background:
     Given JavaScript configuration is set for scenario based on scenario's @config tag
-
-
+    
   @config_start_on_load_requestTypes_tdq
   Scenario: Successful payment with startOnLoad and request types THREEDQUERY
     When THREEDQUERY mock response is set to "NOT_ENROLLED_N"

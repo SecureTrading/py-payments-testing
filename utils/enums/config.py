@@ -40,6 +40,8 @@ config = {
     "config_requestTypes_tdq_submit_on_success": "configRequestTypesTDQSubmitOnSuccess.json",
     "config_requestTypes_tdq_submit_on_error": "configRequestTypesTDQSubmitOnError.json",
     "config_requestTypes_tdq_auth": "configRequestTypesTdqAuth.json",
+    "config_requestTypes_acheck_tdq_auth_subscription": "configRequestTypesAcheckTdqAuthSubs.json",
+    "config_requestTypes_tdq_acheck_riskdec_auth": "configRequestTypesTdqAcheckRiskdecAuth.json",
     "config_immediate_payment_riskdec_acheck_tdq_auth": "configImmediatePaymentRiskdecAcheckTdqAuth.json",
     "config_immediate_payment_tdq": "configImmediatePaymentTDQ.json",
     "config_immediate_payment_tdq_auth": "configImmediatePaymentTdqAuth.json",
@@ -84,5 +86,7 @@ config = {
     "e2e_config_defer_init_true": "e2eConfigWithDeferinitTrue.json",
     "e2e_config_for_iframe": "e2e_config/e2eConfigForIframe.json",
     "e2e_config_for_iframe_start_on_load_true": "e2e_config/e2eConfigForIframeStartOnLoadTrue.json",
-    "e2e_button_id_config": "e2e_config/e2eButtonIdConfig.json"
+    "e2e_button_id_config": "e2e_config/e2eButtonIdConfig.json",
+    "form_id_config": "configFormId.json",
+    "form_id_config_visa_checkout": "configFormIdVisaCheckout.json"
 }

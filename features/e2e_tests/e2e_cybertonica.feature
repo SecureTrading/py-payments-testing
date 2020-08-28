@@ -26,7 +26,7 @@ Feature: E2E Cybertonica
 
   @e2e_config_cybertonica
   Scenario: Cybertonica - successfull payment with startOnLoad
-    Given JS library is configured with CYBERTONICA_START_ON_LOAD_CONFIG and JWT_WITH_CARD_DATA
+    Given JS library is configured with CYBERTONICA_START_ON_LOAD_CONFIG and JWT_WITH_NON_FRICTIONLESS_CARD
     And User opens example page WITHOUT_SUBMIT_BUTTON
     And User fills V2 authentication modal
     Then User will see payment status information: "Payment has been successfully processed"

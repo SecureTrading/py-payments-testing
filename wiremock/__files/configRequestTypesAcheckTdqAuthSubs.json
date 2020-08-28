@@ -1,0 +1,76 @@
+{
+  "analytics": true,
+  "animatedCard": false,
+  "bypassCards": [
+    "PIBA"
+  ],
+  "deferInit": false,
+  "fieldsToSubmit": [
+    "pan",
+    "expirydate",
+    "securitycode"
+  ],
+  "buttonId": "merchant-submit-button",
+  "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhbTAzMTAuYXV0b2FwaSIsImlhdCI6MTU3MTY0NzEyMC4xNzQzNDk1LCJwYXlsb2FkIjp7ImJhc2VhbW91bnQiOiIxMDAwIiwiYWNjb3VudHR5cGVkZXNjcmlwdGlvbiI6IkVDT00iLCJjdXJyZW5jeWlzbzNhIjoiR0JQIiwic2l0ZXJlZmVyZW5jZSI6InRlc3QxIiwibG9jYWxlIjoiZW5fR0IifX0._VTiUjM-op-4KUoVGtqA92HwgwTNi_XckqP8pdcyKFc",
+  "panIcon": true,
+  "styles": {
+    "defaultStyles": {
+      "background-color-input": "AliceBlue"
+    },
+    "notificationFrame": {
+      "color-error": "#FFF333"
+    },
+    "controlFrame": {
+      "color-error": "#3358FF"
+    }
+  },
+  "submitOnSuccess": false,
+  "submitCallback": "",
+  "translations": {
+    "An error occurred": "Wystąpił błąd"
+  },
+  "components": {
+    "requestTypes": [
+      "ACCOUNTCHECK",
+      "THREEDQUERY",
+      "AUTH",
+      "SUBSCRIPTION"
+    ]
+  },
+  "applePay": {
+    "buttonStyle": "white-outline",
+    "buttonText": "donate",
+    "merchantId": "merchant.net.securetrading.test",
+    "paymentRequest": {
+      "countryCode": "US",
+      "currencyCode": "USD",
+      "merchantCapabilities": [
+        "supports3DS",
+        "supportsCredit",
+        "supportsDebit"
+      ],
+      "supportedNetworks": [],
+      "total": {
+        "label": "Secure Trading Merchant",
+        "amount": "10.00"
+      }
+    },
+    "placement": "st-apple-pay"
+  },
+  "visaCheckout": {
+    "buttonSettings": {
+      "size": "154",
+      "color": "neutral"
+    },
+    "livestatus": 0,
+    "merchantId": "SDUT1MEXJO10RARJF2S521ImTyKfn3_JmxePdXcydQIUb4kx4",
+    "paymentRequest": {
+      "subtotal": "20.00"
+    },
+    "placement": "st-visa-checkout",
+    "settings": {
+      "displayName": "My Test Site"
+    }
+  },
+  "cybertonicaApiKey": ""
+}
