@@ -1,3 +1,4 @@
+import os
 import time
 
 from locators.visa_checkout_locators import VisaCheckoutLocators
@@ -6,6 +7,7 @@ from utils.enums.field_type import FieldType
 from utils.helpers import gmail_service
 
 from utils.enums.visa_checkout_field import VisaCheckoutField
+from utils.helpers.gmail_service import EMAIL_LOGIN
 
 
 class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
@@ -21,7 +23,7 @@ class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
 
     def fill_selected_field(self, field):
         if field == VisaCheckoutField.EMAIL_ADDRESS.value:
-            self.fill_email_address("securetestpgs@gmail.com")
+            self.fill_email_address(EMAIL_LOGIN)
         elif field == VisaCheckoutField.ONE_TIME_PASSWORD.value:
             self._executor.wait_for_element_visibility(VisaCheckoutLocators.visa_one_time_code)
             mail_ids = gmail_service.get_unseen_mail_ids_with_wait(5)

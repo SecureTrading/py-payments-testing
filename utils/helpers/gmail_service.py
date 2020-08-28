@@ -4,8 +4,8 @@ import email
 import time
 
 #imap need to be enabled on gmail account and access for less secure devices need to be anabled for that google account
-EMAIL_LOGIN = os.environ.get('EMAIL_LOGIN') or 'securetestpgs@gmail.com'
-EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD') or 'you_will_never_guess'
+EMAIL_LOGIN = os.environ.get('EMAIL_LOGIN')
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 SMTP_SERVER = 'imap.gmail.com'
 SMTP_PORT = 993
