@@ -89,10 +89,10 @@ Feature: Bypass Cards config
     And AUTH, RISKDEC ware sent only once in one request
 
   @config_bypass_cards_tdq_acheck_riskdec_auth
-  Scenario: Successful payment with bypassCard and custom request types: THREEDQUERY, ACCOUNTCHECK, RISKDEC, AUTH
+  Scenario: Invalid payment with bypassCard and custom request types: THREEDQUERY, ACCOUNTCHECK, RISKDEC, AUTH
     When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button - ACCOUNTCHECK, RISKDEC, AUTH response is set to "OK"
-    Then User will see payment status information: "Payment has been successfully processed"
-    And User will see that notification frame has "green" color
+    And User will see payment status information: "Invalid field"
+    And User will see that notification frame has "red" color
     And THREEDQUERY request was not sent
     And ACCOUNTCHECK, RISKDEC, AUTH ware sent only once in one request

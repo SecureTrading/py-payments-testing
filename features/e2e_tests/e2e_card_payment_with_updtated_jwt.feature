@@ -28,6 +28,7 @@ Feature: E2E Card Payments with updated jwt
     And User will see that notification frame has "green" color
 
   #just to make sure data are taken from updated jwt
+  @update_jwt_test
   Scenario: Successful payment with updated jwt without locale param and submit on success config
     Given JS library is configured with DEFER_INIT_AND_SUBMIT_ON_SUCCESS_CONFIG and JWT_WITHOUT_LOCALE
     And User opens example page WITH_UPDATE_JWT

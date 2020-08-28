@@ -398,9 +398,10 @@ class PaymentMethodsPage(BasePage):
         add_to_shared_dict("assertion_message", assertion_message)
         assert expected_url in actual_url, assertion_message
 
-    def validate_base_url(self, url: str):
+    def validate_base_url(self, url: str, wait_for_url):
         self._executor.wait_for_javascript()
-        #self._executor.wait_until_url_contains(url)
+        if wait_for_url:
+            self._executor.wait_until_url_contains(url)
         actual_url = self._executor.get_page_url()
         parsed_url = urlparse(actual_url)
         assertion_message = f'Url is not correct, should be: "{url}" but is: "{actual_url}"'
