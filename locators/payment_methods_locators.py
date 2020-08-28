@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from selenium.webdriver.common.by import By
 
+from utils.enums.field_type import FieldType
+
 
 @dataclass
 class PaymentMethodsLocators:
@@ -23,6 +25,13 @@ class PaymentMethodsLocators:
 
     # Notification frame
     notification_frame: By = (By.CSS_SELECTOR, '.st-form__group.notification-frame')
+
+    # Iframe
+    card_number_iframe: By = (By.ID, FieldType.CARD_NUMBER.value)
+    expiration_date_iframe: By = (By.ID, FieldType.EXPIRATION_DATE.value)
+    security_code_iframe: By = (By.ID, FieldType.SECURITY_CODE.value)
+    animated_card_iframe: By = (By.ID, FieldType.ANIMATED_CARD.value)
+    parent_iframe: By = (By.ID, FieldType.PARENT_IFRAME.value)
 
     # payment methods
     pay_mock_button: By = (By.ID, 'merchant-submit-button')
