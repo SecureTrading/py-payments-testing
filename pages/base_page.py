@@ -34,5 +34,6 @@ class BasePage:
             self.open_page(url)
 
     def wait_for_iframe(self):
-        self._waits.wait_until_iframe_is_presented_and_switch_to_it(FieldType.SECURITY_CODE.value)
-        self._action.switch_to_default_iframe()
+        if 'Chrome' in CONFIGURATION.REMOTE_BROWSER:
+            self._waits.wait_until_iframe_is_presented_and_switch_to_it(FieldType.SECURITY_CODE.value)
+            self._action.switch_to_default_iframe()

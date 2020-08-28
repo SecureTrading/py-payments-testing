@@ -31,7 +31,7 @@ class AnimatedCardPage(BasePage):
 
     def validate_credit_card_icon(self, expected_card_icon, is_field_in_iframe):
         if is_field_in_iframe:
-            self._action.switch_to_iframe(FieldType.ANIMATED_CARD.value)
+            self._action.switch_to_iframe(PaymentMethodsLocators.animated_card_iframe)
         actual_credit_card_icon = self.get_card_type_icon_from_animated_card()
         assertion_message = f'Credit card icon is not correct, ' \
                             f'should be: "{expected_card_icon}" but is: "{actual_credit_card_icon}"'

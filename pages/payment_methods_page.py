@@ -28,13 +28,13 @@ class PaymentMethodsPage(BasePage):
 
     def fill_credit_card_field(self, field_type, value):
         if field_type == FieldType.CARD_NUMBER.name:
-            self._action.switch_to_iframe_and_send_keys(FieldType.CARD_NUMBER.value,
+            self._action.switch_to_iframe_and_send_keys(PaymentMethodsLocators.card_number_iframe,
                                                         PaymentMethodsLocators.card_number_input_field, value)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            self._action.switch_to_iframe_and_send_keys(FieldType.EXPIRATION_DATE.value,
+            self._action.switch_to_iframe_and_send_keys(PaymentMethodsLocators.expiration_date_iframe,
                                                         PaymentMethodsLocators.expiration_date_input_field, value)
         elif field_type == FieldType.SECURITY_CODE.name:
-            self._action.switch_to_iframe_and_send_keys(FieldType.SECURITY_CODE.value,
+            self._action.switch_to_iframe_and_send_keys(PaymentMethodsLocators.security_code_iframe,
                                                         PaymentMethodsLocators.security_code_input_field, value)
 
     def fill_credit_card_field_ie_browser(self, field_type, value):
@@ -141,13 +141,13 @@ class PaymentMethodsPage(BasePage):
     def is_field_enabled(self, field_type):
         is_enabled = False
         if field_type == FieldType.CARD_NUMBER.name:
-            is_enabled = self._action.switch_to_iframe_and_check_is_element_enabled(FieldType.CARD_NUMBER.value,
+            is_enabled = self._action.switch_to_iframe_and_check_is_element_enabled(PaymentMethodsLocators.card_number_iframe,
                                                                                     PaymentMethodsLocators.card_number_input_field)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            is_enabled = self._action.switch_to_iframe_and_check_is_element_enabled(FieldType.EXPIRATION_DATE.value,
+            is_enabled = self._action.switch_to_iframe_and_check_is_element_enabled(PaymentMethodsLocators.expiration_date_iframe,
                                                                                     PaymentMethodsLocators.expiration_date_input_field)
         elif field_type == FieldType.SECURITY_CODE.name:
-            is_enabled = self._action.switch_to_iframe_and_check_is_element_enabled(FieldType.SECURITY_CODE.value,
+            is_enabled = self._action.switch_to_iframe_and_check_is_element_enabled(PaymentMethodsLocators.security_code_iframe,
                                                                                     PaymentMethodsLocators.security_code_input_field)
         elif field_type == FieldType.SUBMIT_BUTTON.name:
             is_enabled = self._action.is_element_enabled(PaymentMethodsLocators.pay_mock_button)
@@ -181,28 +181,28 @@ class PaymentMethodsPage(BasePage):
     def get_field_validation_message(self, field_type):
         validation_message = ""
         if field_type == FieldType.CARD_NUMBER.name:
-            validation_message = self._action.switch_to_iframe_and_get_text(FieldType.CARD_NUMBER.value,
+            validation_message = self._action.switch_to_iframe_and_get_text(PaymentMethodsLocators.card_number_iframe,
                                                                             PaymentMethodsLocators.card_number_field_validation_message)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            validation_message = self._action.switch_to_iframe_and_get_text(FieldType.EXPIRATION_DATE.value,
+            validation_message = self._action.switch_to_iframe_and_get_text(PaymentMethodsLocators.expiration_date_iframe,
                                                                             PaymentMethodsLocators.expiration_date_field_validation_message)
         elif field_type == FieldType.SECURITY_CODE.name:
-            validation_message = self._action.switch_to_iframe_and_get_text(FieldType.SECURITY_CODE.value,
+            validation_message = self._action.switch_to_iframe_and_get_text(PaymentMethodsLocators.security_code_iframe,
                                                                             PaymentMethodsLocators.security_code_field_validation_message)
         return validation_message
 
     def get_element_attribute(self, field_type, attribute):
         attribute_value = ""
         if field_type == FieldType.CARD_NUMBER.name:
-            attribute_value = self._action.switch_to_iframe_and_get_element_attribute(FieldType.CARD_NUMBER.value,
+            attribute_value = self._action.switch_to_iframe_and_get_element_attribute(PaymentMethodsLocators.card_number_iframe,
                                                                                       PaymentMethodsLocators.card_number_input_field,
                                                                                       attribute)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            attribute_value = self._action.switch_to_iframe_and_get_element_attribute(FieldType.EXPIRATION_DATE.value,
+            attribute_value = self._action.switch_to_iframe_and_get_element_attribute(PaymentMethodsLocators.expiration_date_iframe,
                                                                                       PaymentMethodsLocators.expiration_date_input_field,
                                                                                       attribute)
         elif field_type == FieldType.SECURITY_CODE.name:
-            attribute_value = self._action.switch_to_iframe_and_get_element_attribute(FieldType.SECURITY_CODE.value,
+            attribute_value = self._action.switch_to_iframe_and_get_element_attribute(PaymentMethodsLocators.security_code_iframe,
                                                                                       PaymentMethodsLocators.security_code_input_field,
                                                                                       attribute)
         elif field_type == FieldType.EMAIL.name:
@@ -213,15 +213,15 @@ class PaymentMethodsPage(BasePage):
     def get_field_css_style(self, field_type, property):
         background_color = ""
         if field_type == FieldType.CARD_NUMBER.name:
-            background_color = self._action.switch_to_iframe_and_get_css_value(FieldType.CARD_NUMBER.value,
+            background_color = self._action.switch_to_iframe_and_get_css_value(PaymentMethodsLocators.card_number_iframe,
                                                                                PaymentMethodsLocators.card_number_input_field,
                                                                                property)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            background_color = self._action.switch_to_iframe_and_get_css_value(FieldType.EXPIRATION_DATE.value,
+            background_color = self._action.switch_to_iframe_and_get_css_value(PaymentMethodsLocators.expiration_date_iframe,
                                                                                PaymentMethodsLocators.expiration_date_input_field,
                                                                                property)
         elif field_type == FieldType.SECURITY_CODE.name:
-            background_color = self._action.switch_to_iframe_and_get_css_value(FieldType.SECURITY_CODE.value,
+            background_color = self._action.switch_to_iframe_and_get_css_value(PaymentMethodsLocators.security_code_iframe,
                                                                                PaymentMethodsLocators.security_code_input_field,
                                                                                property)
         elif field_type == FieldType.NOTIFICATION_FRAME.name:
@@ -243,7 +243,7 @@ class PaymentMethodsPage(BasePage):
         return is_displayed
 
     def get_card_type_icon_from_input_field(self):
-        credit_card_icon = self._action.switch_to_iframe_and_get_element_attribute(FieldType.CARD_NUMBER.value,
+        credit_card_icon = self._action.switch_to_iframe_and_get_element_attribute(PaymentMethodsLocators.card_number_iframe,
                                                                                    PaymentMethodsLocators.card_icon_in_input_field,
                                                                                    'alt')
         credit_card_icon = credit_card_icon.upper()
@@ -252,20 +252,20 @@ class PaymentMethodsPage(BasePage):
     def get_element_translation(self, field_type, locator):
         element_translation = ""
         if field_type == FieldType.CARD_NUMBER.name:
-            element_translation = self._action.switch_to_iframe_and_get_text(FieldType.CARD_NUMBER.value,
+            element_translation = self._action.switch_to_iframe_and_get_text(PaymentMethodsLocators.card_number_iframe,
                                                                              locator)
         elif field_type == FieldType.EXPIRATION_DATE.name:
-            element_translation = self._action.switch_to_iframe_and_get_text(FieldType.EXPIRATION_DATE.value,
+            element_translation = self._action.switch_to_iframe_and_get_text(PaymentMethodsLocators.expiration_date_iframe,
                                                                              locator)
         elif field_type == FieldType.SECURITY_CODE.name:
-            element_translation = self._action.switch_to_iframe_and_get_text(FieldType.SECURITY_CODE.value,
+            element_translation = self._action.switch_to_iframe_and_get_text(PaymentMethodsLocators.security_code_iframe,
                                                                              locator)
         elif field_type == FieldType.SUBMIT_BUTTON.name:
             element_translation = self._action.get_text(locator)
         return element_translation
 
     def switch_to_parent_iframe(self):
-        self._action.switch_to_iframe(FieldType.PARENT_IFRAME.value)
+        self._action.switch_to_iframe(PaymentMethodsLocators.parent_iframe)
 
     def validate_field_validation_message(self, field_type, expected_message):
         actual_message = self.get_field_validation_message(field_type)
