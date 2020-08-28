@@ -18,6 +18,7 @@ Feature: Successfull payments with start on load configuration
   @config_start_on_load_sub_acheck_tdq_aut
   Scenario: Successful payment with startOnLoad and request types ACCOUNTCHECK, THREEDQUERY, AUTH, SUBSCRIPTION
     When ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    And ACS mock response is set to "OK"
     And AUTH, SUBSCRIPTION mock response is set to OK
     And User opens prepared payment form page WITHOUT_SUBMIT_BUTTON
     Then User will see payment status information: "Payment has been successfully processed"

@@ -54,8 +54,7 @@ Feature: Tokenisation
   @config_tokenisation_visa_request_types
   Scenario: Tokenisation - successful payment by VISA with request types: RISKDEC, ACCOUNTCHECK, TDQ, AUTH
     When User fills "SECURITY_CODE" field "123"
-    And RISKDEC, ACCOUNTCHECK, THREEDQUERY mock response for tokenisation is set to OK
-    And ACS mock response is set to "OK"
+    And RISKDEC, ACCOUNTCHECK, THREEDQUERY mock response is set to OK
     And User clicks Pay button - AUTH response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And RISKDEC, ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
