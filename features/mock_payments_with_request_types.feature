@@ -82,6 +82,7 @@ Feature: Successfull payments with various request types configurations
     Given User opens page with payment form
     When User fills payment form with defined card VISA_NON_FRICTIONLESS
     And ACCOUNTCHECK, THREEDQUERY mock response is set to OK
+    And ACS mock response is set to "OK"
     And User clicks Pay button - AUTH, SUBSCRIPTION response is set to "OK"
     Then User will see payment status information: "Payment has been successfully processed"
     And ACCOUNTCHECK, THREEDQUERY ware sent only once in one request
@@ -90,9 +91,9 @@ Feature: Successfull payments with various request types configurations
   @config_requestTypes_tdq_acheck_riskdec_auth
   Scenario: Successful payment with additional request types: THREEDQUERY, ACCOUNTCHECK, RISKDEC, AUTH
     Given User opens page with payment form
+    And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     When User fills payment form with defined card VISA_NON_FRICTIONLESS
-    And THREEDQUERY mock response is set to OK
     And User clicks Pay button - ACCOUNTCHECK, RISKDEC, AUTH response is set to "OK"
-    Then User will see payment status information: "Payment has been successfully processed"
+    Then User will see payment status information: "Invalid field"
     And THREEDQUERY ware sent only once in one request
     And ACCOUNTCHECK, RISKDEC, AUTH ware sent only once in one request
