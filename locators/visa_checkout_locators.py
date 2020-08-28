@@ -17,6 +17,7 @@ class VisaCheckoutLocators:
     visa_continue_payment_process: By = (By.NAME, 'btnContinue')
     visa_one_time_code: By = (By.CSS_SELECTOR, '.single-input-form #code')
     visa_close_popup_button: By = (By.CSS_SELECTOR, 'button.close:not(.icon)')
+    visa_security_code: By = (By.ID, 'code')
 
     @property
     def visa_card_with_ending_number(self):

@@ -67,3 +67,10 @@ class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
         self.visa_card_with_ending_number = card_number
         self._executor.wait_for_element_visibility(self.visa_card_with_ending_number)
         self._action.click(self.visa_card_with_ending_number)
+
+    def fill_security_code(self):
+        self._executor.wait_for_element_visibility(VisaCheckoutLocators.visa_security_code)
+        self._action.send_keys(VisaCheckoutLocators.visa_security_code, '123')
+
+    def is_security_code_displayed(self):
+        self._action.is_element_displayed(VisaCheckoutLocators.visa_security_code)
