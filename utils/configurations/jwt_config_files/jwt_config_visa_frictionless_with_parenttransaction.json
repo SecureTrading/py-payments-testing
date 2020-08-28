@@ -1,7 +1,7 @@
 {
   "iat": 1595513452,
   "payload": {
-    "baseamount": "1000",
+    "baseamount": "2000",
     "accounttypedescription": "ECOM",
     "currencyiso3a": "GBP",
     "sitereference": "test_james38641",
