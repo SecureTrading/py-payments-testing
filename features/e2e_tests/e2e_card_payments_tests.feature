@@ -70,8 +70,8 @@ Feature: E2E Card Payments
   Scenario: Successful payment after form validation
     Given JS library is configured with BASIC_CONFIG and BASE_JWT
     And User opens example page
-    And User clicks Pay button
-    When User fills payment form with defined card VISA_NON_FRICTIONLESS
+    When User clicks Pay button
+    And User fills payment form with defined card VISA_NON_FRICTIONLESS
     And User clicks Pay button
     And User fills V2 authentication modal
     Then User will see payment status information: "Payment has been successfully processed"

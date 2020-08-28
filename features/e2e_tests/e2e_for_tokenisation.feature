@@ -43,7 +43,7 @@ Feature: E2E for tokenisation
   @reactJS
   @angular
   @update_jwt_test
-  Scenario: Ipdating payment references for tokenization
+  Scenario: Updating payment references for tokenization
     Given JS library is configured with TOKENISATION_AND_SUBMIT_ON_SUCCESS_CONFIG and JWT_AMEX_NON_FRICTIONLESS_PARENT_TRANSACTION
     And User opens example page WITH_UPDATE_JWT
       | jwtName                                            |
