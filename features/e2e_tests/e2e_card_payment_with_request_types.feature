@@ -22,3 +22,13 @@ Feature: E2E Card Payments with request types in config
     And User clicks Pay button
     Then User will see payment status information: "Invalid field"
     And User will see that notification frame has "red" color
+
+  @reactJS
+  @angular
+  Scenario: Successful payment with config's requestTypes ACCOUNTCHECK, TDQ, AUTH, SUBSCRIPTION
+    Given JS library is configured with REQUEST_TYPE_ACHECK_TDQ_AUTH_SUB_CONFIG and JWT_WITH_SUBSCRIPTION
+    And User opens example page
+    When User fills payment form with defined card MASTERCARD_CARD
+    And User clicks Pay button
+    Then User will see payment status information: "Payment has been successfully processed"
+    And User will see that notification frame has "green" color
