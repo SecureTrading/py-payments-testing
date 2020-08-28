@@ -40,7 +40,7 @@ class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
             self.fill_one_time_code(code)
             self.click_continue_checkout_process()
             mail_index -= 1
-            time.sleep(1)
+            time.sleep(4)
 
 
     def fill_email_address(self, email):
