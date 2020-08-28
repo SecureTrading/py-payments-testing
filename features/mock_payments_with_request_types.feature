@@ -89,7 +89,7 @@ Feature: Successfull payments with various request types configurations
     And AUTH, SUBSCRIPTION ware sent only once in one request
 
   @config_requestTypes_tdq_acheck_riskdec_auth
-  Scenario: Successful payment with additional request types: THREEDQUERY, ACCOUNTCHECK, RISKDEC, AUTH
+  Scenario: Invalid payment with additional request types: THREEDQUERY, ACCOUNTCHECK, RISKDEC, AUTH
     Given User opens page with payment form
     And THREEDQUERY mock response is set to "NOT_ENROLLED_N"
     When User fills payment form with defined card VISA_NON_FRICTIONLESS
