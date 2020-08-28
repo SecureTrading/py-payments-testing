@@ -8,6 +8,7 @@ Feature: Cardinal Commerce E2E tests
     And User opens example page
 
   @reactJS
+  @angular
   @base_config @cardinal_commerce_v2.0
   Scenario: Successful Frictionless Authentication - MasterCard
     When User fills payment form with defined card MASTERCARD_SUCCESSFUL_FRICTIONLESS_AUTH
@@ -79,6 +80,8 @@ Feature: Cardinal Commerce E2E tests
     Then User will see payment status information: "Payment has been successfully processed"
     And User will see that notification frame has "green" color
 
+  @reactJS
+  @angular
   @base_config @cardinal_commerce_v2.0
   Scenario: Successful Step Up Authentication - Visa
     When User fills payment form with defined card VISA_NON_FRICTIONLESS
