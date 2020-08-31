@@ -31,20 +31,20 @@ Feature: Card Payments
     When User sets incorrect request type in config file
     Then User will see that application is not fully loaded
 
-  @base_config
-  Scenario: Verify number on JSINIT requests
-    When User opens page with payment form
-    Then JSINIT request was sent only 1
-
-  @base_config
-  Scenario: Verify number of JSINIT requests together with UpdateJWT
-    Given User opens prepared payment form page WITH_UPDATE_JWT
-      | jwtName          |
-      | BASE_UPDATED_JWT |
-    When User calls updateJWT function by filling amount field
-    And User calls updateJWT function by filling amount field
-    Then JSINIT request was sent only 2
-    And JSINIT requests contains updated jwt
+#  @base_config
+#  Scenario: Verify number on JSINIT requests
+#    When User opens page with payment form
+#    Then JSINIT request was sent only 1
+#
+#  @base_config
+#  Scenario: Verify number of JSINIT requests together with UpdateJWT
+#    Given User opens prepared payment form page WITH_UPDATE_JWT
+#      | jwtName          |
+#      | BASE_UPDATED_JWT |
+#    When User calls updateJWT function by filling amount field
+#    And User calls updateJWT function by filling amount field
+#    Then JSINIT request was sent only 2
+#    And JSINIT requests contains updated jwt
 
   @base_config
   Scenario: Security code re-enabled if server error on PIBA
