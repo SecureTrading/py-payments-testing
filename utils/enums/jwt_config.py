@@ -15,3 +15,4 @@ class JwtConfig(Enum):
     JWT_NON_FRICTIONLESS_CARD_SUBSCRIPTION = "jwt_config_non_frictionless_card_subscription.json"
     JWT_WITHOUT_LOCALE = "jwt_config_without_locale.json"
     JWT_WITHOUT_LOCALE_AND_UPDATED_AMOUNT_AND_CURRENCY = "jwt_config_without_locale_and_updated_amount_and_currency.json"
+    INVALID_JWT = "invalid_jwt_config_wrong_locale_data.json"

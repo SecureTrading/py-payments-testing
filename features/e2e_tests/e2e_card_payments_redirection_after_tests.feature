@@ -49,6 +49,20 @@ Feature: E2E Card Payments - redirection
       | currencyiso3a | GBP     |
       | errorcode     | 70000   |
 
+  @reactJS
+  @angular
+  @e2e_config_submit_on_error_invalid_jwt
+  Scenario: Unsuccessful payment with submitOnError enabled
+    Given JS library is configured with SUBMIT_ON_ERROR_CONFIG and INVALID_JWT
+    And User opens example page
+    Then User will not see notification frame
+    And User will be sent to page with url "www.example.com" having params
+      | key          | value         |
+      | errormessage | Invalid field |
+      | errorcode    | 30000         |
+      | errordata    | locale        |
+
+
   @e2e_config_submit_on_success_security_code
   Scenario: Successful payment with submitOnSuccess enabled with field to submit securitycode
     Given JS library is configured with SUBMIT_ON_SUCCESS_SECURITY_CODE_CONFIG and JWT_WITH_PARENT_TRANSACTION
