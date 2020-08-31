@@ -26,7 +26,7 @@ class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
             self.fill_email_address(EMAIL_LOGIN)
         elif field == VisaCheckoutField.ONE_TIME_PASSWORD.value:
             self._executor.wait_for_element_visibility(VisaCheckoutLocators.visa_one_time_code)
-            mail_ids = gmail_service.get_unseen_mail_ids_with_wait(5)
+            mail_ids = gmail_service.get_unseen_mail_ids_with_wait(8)
             self.fill_one_time_password_with_wait(mail_ids)
             if self._action.is_element_displayed(VisaCheckoutLocators.visa_one_time_code):
                 mail_ids = gmail_service.get_last_five_mail_ids_with_wait(3)
@@ -73,4 +73,6 @@ class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
         self._action.send_keys(VisaCheckoutLocators.visa_security_code, '123')
 
     def is_security_code_displayed(self):
-        self._action.is_element_displayed(VisaCheckoutLocators.visa_security_code)
+        if self._action.is_element_displayed(VisaCheckoutLocators.visa_security_code) is True:
+            self.fill_security_code()
+            self.click_continue_visa_payment_process()

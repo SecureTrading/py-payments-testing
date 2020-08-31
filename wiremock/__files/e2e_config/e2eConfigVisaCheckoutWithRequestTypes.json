@@ -17,9 +17,7 @@
     },
     "requestTypes": [
       "ACCOUNTCHECK",
-      "THREEDQUERY",
-      "AUTH",
-      "RISKDEC"
+      "AUTH"
     ]
   }
 }
