@@ -44,6 +44,15 @@ Feature: E2E Card Payments
     And User will see that "EXPIRATION_DATE" field is highlighted
     And User will see "Invalid field" message under field: "EXPIRATION_DATE"
 
+  @e2e_config_bypass_maestro
+  Scenario: Unsuccessful payment with bypassCard using Maestro - invalid expiration date
+    Given JS library is configured with BYPASS_CARDS_CONFIG and BASE_JWT
+    And User opens example page
+    When User fills payment form with defined card MAESTRO_CARD
+    And User clicks Pay button
+    Then User will see payment status information: "Maestro must use SecureCode"
+    And User will see that notification frame has "red" color
+
   @reactJS
   @angular
   Scenario: Successful payment with frictionless card

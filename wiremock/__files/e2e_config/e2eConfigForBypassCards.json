@@ -4,7 +4,8 @@
     "AMEX",
     "DISCOVER",
     "JCB",
-    "DINERS"
+    "DINERS",
+    "MAESTRO"
   ],
   "panIcon": true,
   "submitOnSuccess": false
