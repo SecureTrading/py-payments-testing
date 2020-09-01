@@ -29,9 +29,13 @@ class BasePage:
         self._executor.scroll_to_top()
 
     def is_connection_not_private_dispayed(self, url):
-        if 'Safari' in CONFIGURATION.REMOTE_BROWSER and  \
+        if 'Safari' in CONFIGURATION.REMOTE_BROWSER and \
                 (len(self._action.find_elements(PaymentMethodsLocators.not_private_connection_text)) > 0):
             self.open_page(url)
+
+    def wait_for_parent_iframe(self):
+        self._waits.wait_until_iframe_is_presented_and_switch_to_it(FieldType.SECURITY_CODE.value)
+        self._action.switch_to_default_iframe()
 
     def wait_for_iframe(self):
         if 'Edge' not in CONFIGURATION.REMOTE_BROWSER:
