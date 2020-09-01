@@ -1,6 +1,7 @@
 import os
 import time
 
+from configuration import CONFIGURATION
 from locators.visa_checkout_locators import VisaCheckoutLocators
 from pages.base_page import BasePage
 from utils.enums.field_type import FieldType
@@ -73,6 +74,7 @@ class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
         self._action.send_keys(VisaCheckoutLocators.visa_security_code, '123')
 
     def is_security_code_displayed(self):
+        CONFIGURATION.TIMEOUT = 3
         if self._waits.wait_and_check_is_element_displayed(VisaCheckoutLocators.visa_security_code) is True:
             self.fill_security_code()
             self.click_continue_visa_payment_process()
