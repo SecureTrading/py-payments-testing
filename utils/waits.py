@@ -18,6 +18,14 @@ class Waits:
     def wait_for_element(self, locator):
         return self._wait.until(ec.presence_of_element_located(locator))
 
+    def wait_and_check_is_element_displayed(self, locator):
+        self._timeout = 10
+        try:
+            element = self._wait.until(ec.presence_of_element_located(locator)).is_displayed()
+            return element is not None
+        except:
+            return False
+
     def wait_for_element_to_be_clickable(self, locator):
         return self._wait.until(ec.element_to_be_clickable(locator))
 
