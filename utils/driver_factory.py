@@ -102,7 +102,7 @@ class SeleniumDriver(Driver):
         if self._browser_name == "chrome":
             kwargs['chrome_options'] = Options()
             kwargs['chrome_options'].binary_location = "/usr/bin/google-chrome"
-            kwargs['chrome_options'].add_argument('executable_path=/chromedriver.exe')
+            # kwargs['chrome_options'].add_argument('executable_path=/chromedriver')
             kwargs['chrome_options'].headless = True
             kwargs['chrome_options'].add_argument('--no-sandbox')
             kwargs['chrome_options'].add_argument('--disable-dev-shm-usage')
