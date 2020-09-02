@@ -48,6 +48,7 @@ def get_last_five_email_ids():
 
 def get_verification_code_from_email_subject(mail_id):
     mail = gmail_login()
+    time.sleep(3)
     data = mail.fetch(mail_id, '(RFC822)')
     email_txt = str(data[1][0][1], 'utf-8')
     msg = email.message_from_string(email_txt)

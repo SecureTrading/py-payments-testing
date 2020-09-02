@@ -30,7 +30,7 @@ class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
             mail_ids = gmail_service.get_unseen_mail_ids_with_wait(8)
             self.fill_one_time_password_with_wait(mail_ids)
             if self._action.is_element_displayed(VisaCheckoutLocators.visa_one_time_code):
-                mail_ids = gmail_service.get_last_five_mail_ids_with_wait(3)
+                mail_ids = gmail_service.get_last_five_mail_ids_with_wait(5)
                 self.fill_one_time_password_with_wait(mail_ids)
 
 
