@@ -27,10 +27,10 @@ class VisaCheckoutPage(BasePage, VisaCheckoutLocators):
             self.fill_email_address(EMAIL_LOGIN)
         elif field == VisaCheckoutField.ONE_TIME_PASSWORD.value:
             self._executor.wait_for_element_visibility(VisaCheckoutLocators.visa_one_time_code)
-            mail_ids = gmail_service.get_unseen_mail_ids_with_wait(8)
+            mail_ids = gmail_service.get_unseen_mail_ids_with_wait(5)
             self.fill_one_time_password_with_wait(mail_ids)
             if self._action.is_element_displayed(VisaCheckoutLocators.visa_one_time_code):
-                mail_ids = gmail_service.get_last_five_mail_ids_with_wait(5)
+                mail_ids = gmail_service.get_last_five_mail_ids_with_wait(3)
                 self.fill_one_time_password_with_wait(mail_ids)
 
 
